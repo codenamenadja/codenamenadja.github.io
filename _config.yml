@@ -80,4 +80,4 @@ theme: landscape
 deploy:
   repo: https://github.com/codenamenadja/codenamenadja.github.io.git
   type: git
-  branch: develop
+  branch: master
