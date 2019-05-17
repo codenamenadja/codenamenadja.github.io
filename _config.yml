@@ -83,16 +83,16 @@ deploy:
   branch: master
 
 markdown:
-    renderer:
-        html: true
-        xhtmlOut: false
-        breaks: true
-        linkify: true
-        typographer: true
-        quotes: '“”‘’'
-    plugins:
-        - markdown-it-abbr
-        - markdown-it-footnote
-        - markdown-it-ins
-        - markdown-it-sub
-        - markdown-it-sup
+  renderer:
+    html: true
+    xhtmlOut: false
+    breaks: true
+    linkify: true
+    typographer: true
+    quotes: '“”‘’'
+  plugins:
+    - markdown-it-abbr
+    - markdown-it-footnote
+    - markdown-it-ins
+    - markdown-it-sub
+    - markdown-it-sup
