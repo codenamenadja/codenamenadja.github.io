@@ -1,7 +1,7 @@
 ---
 title: todo_today
 date: 2019-05-14 17:14:37
-tags: todo
+tags: ['todo']
 ---
 
 ## 1. postgresql 기본 정리
