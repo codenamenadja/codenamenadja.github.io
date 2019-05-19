@@ -1,5 +1,5 @@
 ---
-title: post
+title: postgresql 접속하기
 p: sql/postgresql_basic
 date: 2019-05-14 19:03:54
 tags: [sql, postgresql]
