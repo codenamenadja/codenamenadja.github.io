@@ -72,7 +72,6 @@ tags: [django s3 boto3 aws]
     ```python
     STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}/
     ```
-
    1. OPTIONALS
 
     ```python
@@ -82,3 +81,19 @@ tags: [django s3 boto3 aws]
    'CacheControl': 'max-age=86400',
     }
     ```
+
+   > STATICFILES_STORAGE가 부트스트래핑 되는 자원에 대한 고유한 저장소라면 DEFAULT_FILE_STORAGE는 모델에서 저장되는 파일에 대한 기본적인 저장소로 연결되도록 django-storages가 처리해준다.
+
+   1. DEFAULT_FILE_STORAGE: settings.py의 StaticStorage를 오버라이딩한 기본 모델의 파일 저장소 세팅
+    ```python
+    from storages.backends.s3boto3 import S3Boto3Storage
+
+    class MediaStorage(S3Boto3Storage):
+        location = ''
+        bucket_name = 'media.oh-mon-lesiles.shop'
+        file_overwrite = False
+        custom_domain = f'http://{bucket_name}/'
+    ```
+      - STATIC_URL이 settings.py 에서 Static_storage의 엔트포인트라면,
+      - custom_domain은 static을 제외한 것들이 statuc_url대신에 가질 수 있는 엔드포인트
+
