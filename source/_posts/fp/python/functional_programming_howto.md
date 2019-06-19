@@ -2,7 +2,7 @@
 title: functional programming howto 번역
 p: fp/python/functional_programming_howto
 date: 2019-06-19 18:57:26
-tags: ['python', 'functional programming', 'translates']
+tags: ['python', 'functional programming', 'translates', 'ongoing']
 ---
 
 
@@ -42,12 +42,12 @@ iterators는 파이썬의 함수형 스타일의 중요한 기초이다.
 
 iterator은 데이터의 스트림을 대표하는 객체이다.
 이 객체는 한번에 하나의 데이터만 리턴한다.
-파이썬 이터레이터는 ```__next__()```라는 메서드를 지원해야한다. 그것은 어떤 매개변수를 받지 않고, 스트림의 다음 요소만을 반환한다.
-만약 다음요소가 없다면, 그것은 ```StopIteration```예외를 발생시킨다.
+파이썬 이터레이터는 `__next__()`라는 메서드를 지원해야한다. 그것은 어떤 매개변수를 받지 않고, 스트림의 다음 요소만을 반환한다.
+만약 다음요소가 없다면, 그것은 `StopIteration`예외를 발생시킨다.
 iterator은 한정되야할 필요는 없다. 이터레이터가 무한한 스트림의 데이터를 생성하는 것은 합리적인 것이다.
 
-빌트인 ```iter()```함수는 그 aribitary한 객체를 받아서, 그 객체의 컨텐츠나 요소들을 반환하는  **iterator**을 반환하려고 한다.
-만약 객체가 **iteration**을 지원하지 않는다면, ```TypeError```을 Raise한다.
+빌트인 `iter()`함수는 그 aribitary한 객체를 받아서, 그 객체의 컨텐츠나 요소들을 반환하는  **iterator**을 반환하려고 한다.
+만약 객체가 **iteration**을 지원하지 않는다면, `TypeError`을 Raise한다.
 몇몇 파이썬 빌트인 데이터 타입은 iteration을 지원한다. 가장 흔한 것은 lists와 dictionary들이다.
 객체는 **iterable**하다고 불릴 수 있다, 만약 거기서 **iterator**을 얻을 수 있다면.
 
@@ -68,8 +68,8 @@ Traceback (most recent call last):
 StopIteration
 >>>
 ```
-파이썬은 **iterable objects**를 다양한 컨텍스트에서 예상한다. 가장 중요한 개체는 ```for```진술이다.
-```for X in Y``` 진술에서, **Y**는 이터레이터거나, ```iter()```가 **iterator**을 생성할 수 있는 것이다.
+파이썬은 **iterable objects**를 다양한 컨텍스트에서 예상한다. 가장 중요한 개체는 `for`진술이다.
+`for X in Y` 진술에서, **Y**는 이터레이터거나, `iter()`가 **iterator**을 생성할 수 있는 것이다.
 
 아래 두 진술은 동일하다.
 ```python
@@ -79,7 +79,7 @@ for i in iter(obj):
 for i in obj:
     print(i)
 ```
-이터레이터는 <u>list, tuple등으로 물질화 될 수 있다.</u> ```list() tuple()```  constructor함수를 사용함 으로써.
+이터레이터는 <u>list, tuple등으로 물질화 될 수 있다.</u> `list() tuple()`  constructor함수를 사용함 으로써.
 
 ```python
 >>> L = [1, 2, 3]
@@ -97,11 +97,11 @@ for i in obj:
 >>> a, b, c
 (1, 2, 3)
 ```
-> ```for X in somelist```는 물질화된 것이고  
-```for X in iterator```은 그렇지 않은 것이다.
+> `for X in somelist`는 물질화된 것이고  
+`for X in iterator`은 그렇지 않은 것이다.
 > - 갯수가 정말 작다면, 혹은 단계적으로 찾아가서 특정조건까지 Search하는 경우가 아니라면 materialed한 Iterator을 사용하는 것이 더 바람직 할 수 있으나,
-> - ```max() min()```
-> - ```if X in iterator```
+> - `max() min()`
+> - `if X in iterator`
 > - 등의 경우에 무엇이 효과적인지 잘 알고 있을 것이다.
 
 > 파이썬의 리스트는 지역성이 제한적으로 성립되는 value의 모임이 아닌, reference들의 모임이기 때문에.  
@@ -120,7 +120,7 @@ max(), min()같은 빌트인 함수들은 하나의 이터레이터 매개변수
 
 우리는 이미 어떻게 리스트와 튜플이 이터레이터를 지원하는 지 보았다. 사실 어떤 파이썬 시퀸스 타입은 자동으로 이터레이터의 셍성을 도울 것이다.
 
-```iter()```를 딕셔너리에 대해서 호출하는 것은, Keys에 대해서 루프 하게 된다.
+`iter()`를 딕셔너리에 대해서 호출하는 것은, Keys에 대해서 루프 하게 된다.
 ```python
 m = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
   'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
@@ -141,15 +141,14 @@ Dec 12
 ```
 > 파이썬 3.7 딕셔너리 이터레이션의 순서는 주입된 순서대로 보장된다.
 
-```iter()```을 사용하면 자동으로 키를 기반으로 이터레이션 루프가 적용된다. 그러나 딕셔너리 그 자체에 이미 다른 이터레이터를 반환하는 메서드가 있다. 
+`iter()`을 사용하면 자동으로 키를 기반으로 이터레이션 루프가 적용된다. 그러나 딕셔너리 그 자체에 이미 다른 이터레이터를 반환하는 메서드가 있다. 
 
-```items() : (key, val)Pair로 원본 객체에 대한 view객체로 만들어준다.```
-
-```values(),keys():위와 동일하게 원본에 대한 레퍼런스를 유지한다.(dynamic-view)```
+`items()` : (key, val)Pair로 원본 객체에 대한 view객체로 만들어준다.
+`values(),keys()` : 위와 동일하게 원본에 대한 레퍼런스를 유지한다.(dynamic-view)
 
 (Key, Value)- 튜플로 구성된 시퀸스를 dict()로 wrap해주면, 마찬가지로 원본의 형태로 객체로 형태를 돌려서 주지만, 원본과의 레퍼런스는 끊어진다.
 
-> 파일에서는, ```readline()``` 그리고 set는 그 자체로 iterable하다.
+> 파일에서는, `readline()` 그리고 set는 그 자체로 iterable하다.
 ***
 ## Generator expressions and list comprehensions
 
@@ -236,10 +235,10 @@ s_yield = outergens.send(999)
 - when it occurs at top-level expression on the right-hand side of an assignment.  
   : 최상위 표현에서, 오른편에 다른 연산이 있을 경우 무조건 괄호를 사용하라.
 
-값들은 제너레이터에 ```send(value)```를 통해서 전달된다.
-이 메서드는 제너레이터의 ```__code__```의 컨텍스트로 진입하고, ```yield```표현은 특정 값을 리턴한다.
+값들은 제너레이터에 `send(value)`를 통해서 전달된다.
+이 메서드는 제너레이터의 `__code__`의 컨텍스트로 진입하고, `yield`표현은 특정 값을 리턴한다.
 
-만약 일반적인 ```__next__()```가 외부에서 불려진다면,
+만약 일반적인 `__next__()`가 외부에서 불려진다면,
 제너레이터 내부에서 yield는 아무것도 반환하지 않는다.
 
 여기에 1씩 증가시키고, 내부적인 카운터를 변화시키는 것을 허락하는 단순한 함수가 있다.
@@ -273,18 +272,18 @@ i5 = next(it)
 # return None문을 만나 Stopiteration을 Raise
 ```
 send가 기본으로 일어나는 작용이니, next를 통해서 계속 하기 보다는,
-```send(None)```이 본래 모습이라는 것을 정확히 캐치하고 사용하길 바란다.
+`send(None)`이 본래 모습이라는 것을 정확히 캐치하고 사용하길 바란다.
 
-```send()```에 따라서, 제너레이터에는 2가지 메서드가 더 있다:
+`send()`에 따라서, 제너레이터에는 2가지 메서드가 더 있다:
 
-1. ```throw(type, value = None, traceback =None)```  
+1. `throw(type, value = None, traceback =None)`  
     - 제너레이터 내부의 컨텍스트에서 Exception을 raise한다;  
 멈춰진 yield의 시점을 통해서 예외처리가 된다.
   
-2. ```close()```
+2. `close()`
     - 제너레이터가 이터레이션을 삭제시키기 위해서, GeneratorExit라는 exception을 발생시킨다.
-    - 이 exception을 받을때에, 제너레이터의 코드는 ```GeneratorExit``` 또는 ```StopIteration```을 내부적으로 처리해야 한다.
-    - 예외를 처리하는 어긋난 것(어떠한 에러를 Raise)을 행한다면, ```RuntimeError.close()```를 촉발시킨다.
+    - 이 exception을 받을때에, 제너레이터의 코드는 `GeneratorExit` 또는 `StopIteration`을 내부적으로 처리해야 한다.
+    - 예외를 처리하는 어긋난 것(어떠한 에러를 Raise)을 행한다면, `RuntimeError.close()`를 촉발시킨다.
     - 그것은 파이썬 garbage collector에게서 불려지는 것이며, 제너레이터가 소멸되는 것이다.
     > 만약 GeneratorExit가 일어날때, 코드를 정리하고 싶다면,
     > 
@@ -311,6 +310,6 @@ send가 기본으로 일어나는 작용이니, next를 통해서 계속 하기 
 제너레이터는 또한 **coroutine**이 된다.
 **subroutine**은 컨텍스트의 주도권을 갖은 후 최상위에서 시작해서, return 지점에서 끝나지만,
 
-**coroutine**은, 시작되고, 종료되고, 재진입이 매우 다양한 위치에서 진행된 수 있다.(```yield```선언문을 통해서)
+**coroutine**은, 시작되고, 종료되고, 재진입이 매우 다양한 위치에서 진행된 수 있다.(`yield`선언문을 통해서)
 
 ## Built-in functions
