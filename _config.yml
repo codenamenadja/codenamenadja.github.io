@@ -82,17 +82,13 @@ deploy:
   type: git
   branch: master
 
-markdown:
-  renderer:
+markdown_it_plus:
+    highlight: true
     html: true
-    xhtmlOut: false
+    xhtmlOut: true
     breaks: true
+    langPrefix:
     linkify: true
-    typographer: true
-    quotes: '“”‘’'
-  plugins:
-    - markdown-it-abbr
-    - markdown-it-footnote
-    - markdown-it-ins
-    - markdown-it-sub
-    - markdown-it-sup
+    typographer:
+    quotes: “”‘’
+    pre_class: highlight
