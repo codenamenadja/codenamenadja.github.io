@@ -1,0 +1,82 @@
+---
+title: post
+p: django/view
+date: 2019-05-30 13:17:43
+tags:
+---
+
+1. ContextProcessor
+    - get_context_data메서드를 사용하면, 현재 뷰에서 가공해야할 변수를 만들어 준다. 하지만 모든 뷰에 출력되어야할 내용이 존재한다. (view마다 하나의 모델이 아니라, 기존에 필요한 모델을 유지해야할때)
+
+1. cookie, session
+    - memory session, file session
+        1. 일반적으로는 file session을 이용
+        1. 장고에서는 Db에서 유저를 관리
+
+
+```python
+# 함수형 뷰처럼 모든 내용을 직접 구현하고 싶을 때는 View를 상속받는다.
+from django.shorcuts import render
+from django.views.generic import View
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+class IndexView(view):
+    def get(self, *args, **kwargs):
+        return render(self.request, 'blog/text.html')
+
+class JsonView(View):
+    def get(self, *args, **kwargs):
+        return JsonResponse({"data":"test"})
+
+class PostList(View):
+    model = Post
+    # default = 'appname/appname_list.html' 
+    template_name = 'blog/post_list.html'
+    
+def postList(req):
+    obj_list = Post.objects.all() # CBV : get_queryset
+    return render(req, 'blog_list.html', {'object_list':obj_list})
+
+class PostDetail(DetailView):
+    model = Post
+    template_name = 'blog/post_detail.html'
+    pk_url_kwarg = 'post_id'
+    """
+    setup()
+    dispatch()
+    get()
+    get_object() - get_queryset()
+    get_context_data()
+    render_to_response()
+    """
+
+def postDetail(req, pk):
+    obj_list = Post.objects.all()
+    obj = obj_list.get(pk=pk, none)
+    return render(req, 'blog/post_detail.html', {'object_list':obj_list, 'object':})
+
+def PostCreate(CreateView):
+    model =Post 
+    fields = ['title','text']
+    template_name = 'blog/post_create.html'
+    # success_url 이 있는 Create Update Delete의 경우
+    # 클래스의 속성값을 이용해서 URL을 만들 수 있다.
+    # success_url = 'detail/{pk}/'
+
+    def form_valid(self, form): # 작성자가 있는 경우
+        form.instance.author_id = self.req.user.id
+```
+```python
+# urls.py
+[
+path('', IndexView.as_view(), name='index'),
+path('api/', JsonView.as_view(), name='json'),
+]
+```
+
+```python
+class Comment(models.Model):
+    contents_type = 
+```

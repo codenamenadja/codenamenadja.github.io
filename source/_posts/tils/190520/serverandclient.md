@@ -2,7 +2,7 @@
 title: server and client
 p: tils/190520/serverandclient
 date: 2019-05-20 10:19:37
-tags:
+tags: ['til']
 ---
 
 ## client Request
@@ -153,3 +153,4 @@ tags:
                 custom_domain = ''
             ```
             - CDN을 사용하는 이유, https에서 문제가..
+
