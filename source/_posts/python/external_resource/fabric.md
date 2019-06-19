@@ -1,10 +1,11 @@
 ---
-title: post
+title: fabric 기본적인 스크립트 작성하기
 p: python/external_resource/fabric
 date: 2019-06-19 16:17:52
-tags: ['fabric', 'python']
+tags: ['fabric', 'python', 'ongoing']
 ---
-# Fabric을 이욜한 자동 배포 스크립트 작성
+
+## Fabric을 이욜한 자동 배포 스크립트 작성
 
 1. 기본 설치
     - Fabric3

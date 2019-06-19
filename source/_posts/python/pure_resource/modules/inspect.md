@@ -2,21 +2,8 @@
 title: Inspect 모듈 파헤치기
 p: python/pure_resource/module/inspect
 date: 2019-06-19 16:37:06
-tags: ['python', 'python module']
+tags: ['python', 'python module', 'ongoing']
 ---
-<style>
-a{text-decoration:underline}
-button.index{
-   position:relative; left:70vw; color:orange; width:100px; height:50px; background-color:#333333; border:none;font-size:1.2em; font-family:; font-weight:bold; letter-spacing:2px; border-radius:12px;
-   transition: background-color .7s, color .7s;
-   text-decoration:underline
-   }
-button.index:hover{
-   cursor:pointer;
-   background-color:black;
-   color:white;
-}
-</style>
 
 ## Index
 1. Inspect 모듈 깊이 알기
@@ -33,6 +20,3 @@ button.index:hover{
     2. 소스코드 획득
     3. 클래스 와 함수 측정
     4. 인터프리터 스텍 확인
-
-
-<a href="#index"><button class='index'>Index</button></a>
