@@ -1,5 +1,5 @@
 ---
-title: post
+title: file path getter
 p: python/custom_module/file_getter
 date: 2019-07-03 17:39:54
 tags: ['file', 'python', 'custom module']
