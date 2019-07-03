@@ -1,6 +1,6 @@
 ---
 title: django-uwsgi-nginx 서버 매커니즘 정리`
-p: til/190521/serverinfra
+p: todos/190521/serverinfra
 date: 2019-05-21 10:08:30
 tags: ['nginx', 'django']
 ---

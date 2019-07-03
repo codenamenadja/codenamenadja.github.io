@@ -15,7 +15,7 @@
     - post
     - django
     - flask
-  - function
+  - custom_module
 - functional_programming
    - python
 - linux
@@ -36,13 +36,14 @@
 ## TODO Plan
 
 1. 190624
-   - annotation in python
-   - python module type
-   - python module typing
+  - annotation in python
+  - python module type
+  - python module typing
 1. 190625
-   - python module docstring
-   - python module doctest
-   - python library mypy
-   - flask
+  - python module docstring
+  - python module doctest
+  - python library mypy
+  - flask
 1. 190626
-   - python library pytest
+  - python library pytest
+

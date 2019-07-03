@@ -1,8 +1,8 @@
 ---
 title: todo
-p: tils/190624/todo
+p: todos/190624/todo
 date: 2019-06-24 20:06:44
-tags: ['todo', 'tils']
+tags: ['todo']
 ---
 
 ## todo
