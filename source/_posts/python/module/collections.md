@@ -14,7 +14,6 @@ ___
 1. [**namedtuple**][i3]
 1. [**Counter**][i4]
 1. [**UserDict**][i5]
-1. [**UserList**][i6]
 
 ___
 
@@ -40,7 +39,7 @@ ___
 
 ## ChainMap
 
-[i2]: #ChainMap
+[i2]: #chainmap
 
 ### ChainMap_introduction
 
@@ -231,7 +230,7 @@ Account(type='premium', balance=0)
 
 ## Counter
 
-[i4]: #Counter
+[i4]: #counter
 
 ### Counter_개요
 카운터툴은 빠르고 편리한 합계를 위해 제공된다.
@@ -283,7 +282,7 @@ Counter({'a': 3, 'b': 0, 'c': 3, 'd': -6, 'e': 3})
 
 ## UserDict
 
-[i5]: #UserDict
+[i5]: #userdict
 
 ### UserDict_양상
 
