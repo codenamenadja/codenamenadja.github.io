@@ -2,7 +2,7 @@
 title: basic concept of linux / process and Thread
 p: linux/basic_concept_procss_2
 date: 2019-08-12 13:07:34
-tags: ["linux", "process", "thread"]
+tags: ["linux"]
 ---
 
 ## Index

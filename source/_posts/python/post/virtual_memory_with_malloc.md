@@ -2,7 +2,7 @@
 title: 파이썬의 가상 메모리
 p: python/post/virtual_memory_with_malloc
 date: 2019-06-19 18:05:23
-tags: ['python','python post', 'memory']
+tags: ['python','python post']
 ---
 
 * ### Heap을 구현한(및 연결점인) C의 malloc()이 느리기 때문에, HEAP이 느리다

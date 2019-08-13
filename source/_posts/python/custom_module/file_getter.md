@@ -2,7 +2,7 @@
 title: file path getter
 p: python/custom_module/file_getter
 date: 2019-07-03 17:39:54
-tags: ['file', 'python', 'custom module']
+tags: ['python', 'custom module']
 ---
 
 ## 프로젝트 아래 특정하는 폴더 아래의 폴더, 파일 리스트를 검색하고, 완전한 path로 돌려받을 수 있는 모듈

@@ -2,7 +2,7 @@
 title: 파이썬의 메모리 관리 번역
 p: python/post/memory_management
 date: 2019-06-19 18:20:11
-tags: ['python', 'memory', 'python post']
+tags: ['python', 'python post']
 ---
 
 파이썬 내의 메모리 관리는 사적인 힙을 포함한다, 모든 파이썬 객체와 자료구조를 포함하는.

@@ -2,7 +2,7 @@
 title: basic concept of linux / about file
 p: linux/basic_concept
 date: 2019-08-12 10:09:52
-tags: ["linux", "file system"]
+tags: ["linux"]
 ---
 
 ## Index

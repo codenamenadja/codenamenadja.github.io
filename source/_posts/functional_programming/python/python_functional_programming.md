@@ -2,7 +2,7 @@
 title: 파이썬의 함수형 프로그래밍에 대한 서론 번역
 p: functional_programming/python/functional_programming_intro
 date: 2019-06-19 18:39:22
-tags: ['python', 'functional programming', 'translates']
+tags: ['python', 'functional programming']
 ---
 
 출처 : [https://www.dataquest.io/blog/introduction-functional-programming-python](https://www.dataquest.io/blog/introduction-functional-programming-python)

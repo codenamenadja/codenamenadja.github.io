@@ -2,7 +2,7 @@
 title: 커널의 이해와 시스템 콜 이해
 p: linux/understanding_kernel
 date: 2019-08-11 17:35:49
-tags: ["linux", "os"]
+tags: ["linux"]
 ---
 
 ## Index

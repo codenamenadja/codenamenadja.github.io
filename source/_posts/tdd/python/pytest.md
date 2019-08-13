@@ -2,7 +2,7 @@
 title: pytest 이해와 사용 
 p: tdd/python/pytest
 date: 2019-06-12 21:02:11
-tags: ['pytest', 'tdd']
+tags: ['testing', 'python']
 ---
 
 ## major deminority of Default TestCase

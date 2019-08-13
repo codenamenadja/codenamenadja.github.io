@@ -2,7 +2,7 @@
 title: ec2에서 nginx uwsgi로 장고앱 세팅
 p: server/webserver
 date: 2019-05-22 10:17:35
-tags: ['nginx', 'server', 'uwsgi']
+tags: ['nginx','django']
 ---
 
 ## webserver

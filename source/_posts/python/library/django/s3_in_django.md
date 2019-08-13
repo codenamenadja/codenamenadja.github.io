@@ -2,7 +2,7 @@
 title: connect s3, RDS in django
 p: django/s3_in_django
 date: 2019-05-15 16:47:58
-tags: ['django', 's3']
+tags: ['django']
 ---
 
 1. ## awscli설정

@@ -2,7 +2,7 @@
 title: how to use pipenv 100%
 p: python/external_resource/pipenv
 date: 2019-05-15 02:19:43
-tags: ['python', 'virtualenv', 'pipenv']
+tags: ['python', 'pipenv']
 ---
 
 

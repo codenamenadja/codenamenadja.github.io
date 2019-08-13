@@ -2,7 +2,7 @@
 title: functional programming howto 번역
 p: functional_programming/python/functional_programming_howto
 date: 2019-06-19 18:57:26
-tags: ['python', 'functional programming', 'ongoing']
+tags: ['python', 'functional programming']
 ---
 
 

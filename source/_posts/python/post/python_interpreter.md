@@ -2,7 +2,7 @@
 title: 파이썬 인터프리터에 대한 이해
 p: python/post/python_interpreter
 date: 2019-06-19 18:44:43
-tags: ['python', 'interpreter', 'python post']
+tags: ['python', 'python post']
 ---
 
 

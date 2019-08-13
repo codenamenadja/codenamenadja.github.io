@@ -2,7 +2,7 @@
 title: 비동기 코루틴 번역-1
 p: python/post/async_coroutine_1
 date: 2019-06-19 18:11:02
-tags: ['python', 'python post', 'async', 'coroutine']
+tags: ['python', 'python post']
 ---
 
 > 이 글은 너무 유명한 글이라 출처 링크는 생략합니다.

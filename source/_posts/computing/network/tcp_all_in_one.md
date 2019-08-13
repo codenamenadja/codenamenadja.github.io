@@ -1,8 +1,8 @@
 ---
 title: TCP분석과 이해
-p: computing/post/tcp_all_in_one
+p: computing/network/tcp_all_in_one
 date: 2019-06-19 18:34:26
-tags: ['computing', 'tcp', 'network']
+tags: ['network']
 ---
 
 TCP의 중요한 성질

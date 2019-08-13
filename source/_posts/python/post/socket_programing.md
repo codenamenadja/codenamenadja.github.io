@@ -2,7 +2,7 @@
 title: 소켓프로그래밍 python C nodejs
 p: python/post/socket_programing
 date: 2019-06-19 18:27:36
-tags: ['socket', 'tcp', 'python', 'c', 'nodejs', 'python post']
+tags: ['python', 'python post']
 ---
 
 > 소켓프로그래밍을 이해할때, 객체 지향적인 언어의 API를 이용해 왔다. nodeJS의 경우와 파이썬의 경우를 먼저 짧게 보여주기로 한다.

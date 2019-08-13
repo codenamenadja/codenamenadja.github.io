@@ -1,8 +1,8 @@
 ---
 title: TCP의 3단계 절차
-p: computing/post/3_step_in_tcp
+p: computing/network/3_step_in_tcp
 date: 2019-06-19 18:32:33
-tags: ['computing', 'network', 'tcp', 'post']
+tags: ['network']
 ---
 
 

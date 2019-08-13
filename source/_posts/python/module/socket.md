@@ -2,7 +2,7 @@
 title: 파이썬 Socket 모듈 정리
 p: python/module/socket
 date: 2019-06-19 18:47:15
-tags: ['python', 'python module', 'socket']
+tags: ['python', 'python module']
 ---
 
 1. socket.socket(family,type,proto,fileno)

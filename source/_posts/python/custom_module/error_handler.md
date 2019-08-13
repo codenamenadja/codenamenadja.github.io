@@ -2,7 +2,7 @@
 title: 에러처리 Decorator과 logging, write to csv
 p: python/custom_module/error_handler
 date: 2019-08-09 17:22:43
-tags: ['logging', 'error', 'python', 'custom module']
+tags: ['python', 'custom module']
 ---
 
 

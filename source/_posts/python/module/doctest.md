@@ -2,7 +2,7 @@
 title: python module doctest
 p: python/module/doctest
 date: 2019-06-26 15:36:31
-tags: ['python', 'python module', 'linting']
+tags: ['python', 'python module']
 ---
 
 

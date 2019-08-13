@@ -2,7 +2,7 @@
 title: 파이썬 바이트코드에 대한 이해
 p: python/post/bytecode_in_python
 date: 2019-06-19 18:42:39
-tags: ['python', 'bytecode', 'python post']
+tags: ['python', 'python post']
 ---
 
 

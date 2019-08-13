@@ -2,7 +2,7 @@
 title: type-annotation in python
 p: python/post/type_annotation_in_python
 date: 2019-06-24 19:41:31
-tags: ['python', 'python post', 'type']
+tags: ['python', 'python post']
 ---
 
 ## Index

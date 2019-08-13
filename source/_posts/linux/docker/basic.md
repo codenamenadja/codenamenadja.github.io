@@ -2,7 +2,7 @@
 title: docker basic
 p: linux/docker/basic
 date: 2019-06-20 12:59:09
-tags: ['linux', 'docker']
+tags: ['docker']
 ---
 
 

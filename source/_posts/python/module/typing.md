@@ -2,7 +2,7 @@
 title: typing
 p: python/module/typing
 date: 2019-06-25 13:07:47
-tags: ['python', 'python module', 'type']
+tags: ['python', 'python module']
 ---
 
 ## Index

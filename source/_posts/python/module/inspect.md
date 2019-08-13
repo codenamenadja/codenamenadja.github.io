@@ -2,7 +2,7 @@
 title: Inspect 모듈 파헤치기
 p: python/pure_resource/module/inspect
 date: 2019-06-19 16:37:06
-tags: ['python', 'python module', 'ongoing']
+tags: ['python', 'python module']
 ---
 
 ## Index

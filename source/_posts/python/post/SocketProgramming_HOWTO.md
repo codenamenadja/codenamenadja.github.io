@@ -2,7 +2,7 @@
 title: SocketProgramming_HOW 번역
 p: python/post/SocketProgramming_HOWTO
 date: 2019-06-19 18:48:54
-tags: ['python', 'python post', 'socket']
+tags: ['python', 'python post']
 ---
 
 ## Author: Gordon McMillan

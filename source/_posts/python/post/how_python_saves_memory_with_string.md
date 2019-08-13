@@ -2,7 +2,7 @@
 title: 파이썬이 문자열을 저장할 때 어떻게 데이터를 저장하는가? 번역
 p: python/post/how_python_saves_memory_with_string
 date: 2019-06-19 18:25:35
-tags: ['python', 'memory', 'python post']
+tags: ['python', 'python post']
 ---
 
 ## 출처 : [https://rushter.com/blog/python-strings-and-memory](https://rushter.com/blog/python-strings-and-memory/)

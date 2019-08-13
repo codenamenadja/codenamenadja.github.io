@@ -2,7 +2,7 @@
 title: boto3로 sqs자원 사용하기
 p: python/custom_module/using_sqs
 date: 2019-05-27 15:39:22
-tags: ['sqs', 'aws', 'python', 'custom module']
+tags: ['python', 'custom module']
 ---
 
 1. que네임을 기반으로 url받아오기

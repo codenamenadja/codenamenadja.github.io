@@ -2,7 +2,7 @@
 title: 파이썬의 GC와 메모리 관리자
 p: python/post/memory_and_GC
 date: 2019-06-19 18:22:23
-tags: ['python', 'memory', 'garbage collector','python post']
+tags: ['python', 'python post']
 ---
 - ## reference counting -official Python doc
 1. Py_INCEREF(), Py_DECREF()등을 통하여 레버런스 Count를 관리하고,
