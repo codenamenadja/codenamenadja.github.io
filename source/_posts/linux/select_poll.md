@@ -9,8 +9,8 @@ tags: ['linux']
 
 1. [**다중 입출력**][i1]
 2. [**select**][i2]
-   3. [**pselect**]
 3. [**poll**][i3]
+4. [**poll vs select**][i4]
 
 ___
 
@@ -273,7 +273,9 @@ int main(void)
 }
 ```
 
-## POLL_과_SELECT_비교
+## POLL과_SELECT비교
+
+[i4]: #poll과_select비교
 
 * `poll()`은 가장 높은 파일디스크립터 값에 1을 더해서 인자로 전달할 필요가 없다.
 * `poll()`은 파일 디스크립터 숫자가 큰 경우에 좀 더 효율적을 동작한다.  
