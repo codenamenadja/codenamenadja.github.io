@@ -77,14 +77,14 @@ ___
 
 ## 스레드_세이프:Thread_safe
 
-[i2]: #스레드_세이프:thread_safe
+[i2]: #스레드_세이프thread_safe
 
 pass
 ___
 
-## 벡터_입출력:Vector_io
+## 벡터_입출력Vector_io
 
-[i3]: #벡터_입출력:vector_io
+[i3]: #벡터_입출력vector_io
 
 > 버퍼세그먼트의 집합을 벡터라 한다.
 
