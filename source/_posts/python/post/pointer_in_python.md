@@ -5,7 +5,7 @@ date: 2019-08-30 20:21:27
 tags: ["python", "python post"]
 ---
 
-# [Pointer in python: What's the point](https://realpython.com/pointers-in-python/)
+## [Pointer in python: What's the point](https://realpython.com/pointers-in-python/)
 
 > 번역, 정리글입니다.
 
@@ -15,14 +15,13 @@ tags: ["python", "python post"]
 2. [**Objects in Python**][i2]
 3. [**Immutables vs Mutable objects**][i3]
 4. [**Understading Variables**][i4]
-   1. [**Variables in C**]
-   2. [**Names in Python**]
-   3. [**A Note on Intern Objects in Python**]
-5. [**Simulating Pointers in Python**]
+   1. **Variables in C**
+   2. **Names in Python**
+   3. **A Note on Intern Objects in Python**
+5. [**Simulating Pointers in Python**][i5]
    1. [**Using Mutable Types as Pointers**]
    2. [**Using Python Objects**]
-6. [**Real Pointers With ctypes**]
-7. [**Conclusion**]
+6. [**Real Pointers With ctypes**][i6]
 
 ## 왜_파이썬에는_포인터가_없는가
 
@@ -320,3 +319,253 @@ ___
 ## Understanding_Variables
 
 [i4]: #understanding_variables
+
+파이썬의 변수는 구조적으로 C, C++과 다르다. 사실, 파이썬은 변수가 존재 하지 않고, `names`가 존재한다.  
+이것은 현학적으로 보일 수 있다. 대부분의 경우에 파이썬의 names를 변수로 이해하는 경우가 많다. 그러나 차이를 아는 것은 중요하다.  
+C에서 변수와 파이썬의 name을 대조하는 것으로 이해하자.
+
+* C
+
+```c
+int x = 2337;
+// x.Location = 0x7f1
+// x.value = 2337
+
+x = 2338;
+// x.Location = 0x7f1
+// x.value = 2338
+
+int y = x;
+// y.Location = 0x7f5
+// y.value = 2338
+```
+
+* Python
+
+```python
+x = 2337
+x = 2338
+y = x
+```
+
+1. Create PyObject
+2. set The typecode to integer to PyObject
+3. Set the value to 2337 for the PyObject
+4. Create a name called x
+5. Point x to the new PyObject
+6. Increase the refcount of the PyObject by 1
+
+| name  | PyObject-Type | PyObject-Value | PyObject_RefCount |
+| :---: | :-----------: | :------------: | :---------------: |
+|   x   |    integer    |      2337      |       1->0()        |
+|   x   |    integer    |      2338      |       0->1        |
+|   y   |    integer    |      2338      |       1->2        |
+
+```python
+"""
+>>> y is x
+True
+"""
+```
+
+> 파이썬에서 너는 변수에 값을 할당하는 것이 아니라, 이름을 Pyobject_레퍼런스에 할당하는 것이다.
+
+### A_Note_on_Intern_objects_in_python
+
+```python
+"""
+>>> x = 1000
+>>> y = 1000
+>>> x is y
+True
+
+>>> x = 1000
+>>> y = 499 + 501
+>>> x is y
+False
+"""
+```
+
+1. Create PyObject(1000)
+2. Assign the name `x` to that object
+3. Create PyObject(499)
+4. Create PyObject(501)
+5. Add these two Objects
+6. Create new PyObject(1000)
+7. Assign the name `y` to that object
+
+> 위에 과정은 REPL에서만 위처럼 동작한다.  
+> 만약 파일로서 만들고 실행하면, `x is y`라는 것은 True가 나올 것이다.
+>
+> 이것은 CPython컴파일러가 영리하게 처리하기 때문에 그렇다.
+> Cpython컴파일러의 Optimizations를 `peephole optimizations`으로 수행하려 하는데,  
+> 실행부를 최대한 줄이려고 하는 것이다.  
+> [SourceCode on peephole.c](https://github.com/python/cpython/blob/master/Python/peephole.c)를 확인가능하다.
+
+```python
+"""
+>>> x = 20
+>>> y = 19 + 1
+>>> x is y
+True
+"""
+```
+
+위의 결과가 위의 결과가 다른 이유는 파이썬의 이미 존재하는 객체를 재사용 하는 특성 때문이다.(interned object)  
+파이썬은 일부의 셋의 객체를 실행할 떄 미리 만들고, global namespace에 저장해놓고 사용한다.
+
+CPython 3.7에 따르면 Interned Object는 아래를 따른다.
+
+1. integer numbers between -5 and 256
+2. String taht contains ASCII letters , digits, or underscores only
+
+위의 범위에 포함되는 값들의 타입을 생성하면, 내제되있는 미리 생성된 global namespace에 존재하는 것을 레퍼런싱 하도록 한다.  
+그것은 물론 Cpython based 3.7이상이라면, 프로세스가 종료될 때까지 유효하다.  
+이를 통해서 작은 값들은 미리 존재하는 것들을 사용해서(자주 사용될 것으로 예상되는 범위의 것들을) 메모리 할당을 줄인다.
+
+```python
+"""
+>>> s1 = "realpython"
+>>> s2 = "realpython"
+>>> s1 is s2
+True
+
+>>> s1 = "Real Python!"
+>>> s2 = "Real Python!"
+>>> s1 is s2
+False
+
+>>> import sys
+>>> sys.intern(s2)
+"Real Python"
+"""
+```
+
+위의경우는 `!`(exclumation mark)때문에 생기는 현상이다.
+이 문자열은 내부 저장된 값이 아닌 것을 사용하기 때문에, 완전히 새로운 Pyobject를 생성하는 것이다.
+___
+
+## simulating_pointers_in_python
+
+[i5]: #simulating_pointers_in_python
+
+파이썬에 포인터가 구현되어 있지 않다고 해서, 포인터를 사용하는 것에서 이점을 얻을 수 없다는 것은 아니다.  
+사실 포인터를 흉내낼 수 있는 여러 방법이 있다.
+
+1. Using mutable types as pointers
+2. Using custom Python objects
+
+### using_mutable_types_as_pointers
+
+```python
+# mutable인 List 사용해서 흉내
+"""
+>>> def add_one(x):
+>>>     x[0] += 1
+>>> #
+>>> y = [2337]
+>>> add_one(y)
+>>> y[0]
+2338
+"""
+# mutable인 dict 사용해서 흉내
+"""
+>>> counters = {"func_calls": 0}
+>>> def bar():
+>>>     counters["func_calls"] += 1
+>>> #
+>>> def foo():
+>>>     counters["func_calls"] += 1
+>>>     bar()
+>>> #
+>>> foo()
+>>> counters["func_calls"]
+2
+"""
+```
+
+> 이것은 C나 C++의 실제 포인터가 아니라, 흉내내는 것이기 때문에,  
+> 논법적으로 봤을때, 이 행동으로 조정하는 것은  
+> C나 C++의 포인터를 다루는 것보다 훨씬 비용이 비싸다.
+
+### using_python_objects
+
+```python
+class Metrics(object):
+    def __init__(self):
+        self._metrics = {
+            "func_calls": 0,
+            "cat_pictures_served": 0,
+        }
+
+    @property
+    def func_calls(self):
+        return self._metrics["func_calls"]
+
+    @property
+    def cat_pictures_served(self):
+        return self._metrics["cat_pictures_served"]
+
+    def inc_func_calls(self):
+        self._metrics["func_calls"] += 1
+
+    def inc_cat_pics(self):
+        self._metrics["cat_pictures_served"] += 1
+```
+
+> `func_calls`나 `cat_pictures_served`속성자를 통해서 포인터처럼 접근 할 수 있지만,  
+> 이것 또한 그저 흉내이고, 이것은 자주 변경되는 것을 처리할 때 유용한 방식이다.
+___
+
+## real_pointers_with_ctypes
+
+[i6]: #real_pointers_with_ctypes
+
+`ctypes`모듈을 사용하면 Cpython에서 포인터를 사용할 수 있다.  
+[ctypes](https://dbader.org/blog/python-ctypes-tutorial)에 대해서 사용법이 궁금하다면 이 포스트가 도움이 될 것이다.
+
+1. c함수 파일
+
+    ```c
+    void add_one(int *x) {
+        *x += 1;
+    }
+    ```
+
+2. 컴파일
+
+    ```bash
+    gcc -c -Wall -Werror -fpic add.c
+    gcc -shared -o libadd1.so add.o
+    ```
+
+3. python에서 사용
+
+    ```python
+    import ctypes
+    add_lib = ctypes.CDLL("..libadd1.so")
+    """
+    >>> add_lib.add_one
+    <_FuncPtr object at 0x7f9f3b8852a0>
+    """
+
+    add_one = add_lib.add_one
+    add_one.argtypes = [ctypes.POINTER(ctypes.c_int)]
+    """
+    >>> add_one(1)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    ctypes.ArgumentError: argument 1: <class 'TypeError'>: \
+    expected LP_c_int instance instead of int
+    """
+
+    x = ctypes.c_int()
+    """
+    >>> x
+    c_int(0)
+    >>> add_one(ctypes.byref(x))
+    998793640
+    >>> x
+    c_int(1)
+    """
+    ```
