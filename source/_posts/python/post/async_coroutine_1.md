@@ -5,12 +5,12 @@ date: 2019-06-19 18:11:02
 tags: ['python', 'python post']
 ---
 
-> 이 글은 너무 유명한 글이라 출처 링크는 생략합니다.
+## [A Web crawler with ayncio Coroutines](https://www.aosabook.org/en/500L/a-web-crawler-with-asyncio-coroutines.html)
 
-# A Web crawler with ayncio Coroutines
-## A.Jesse Jiryu and guido van Rossum
+## Written by, A.Jesse Jiryu and guido van Rossum
 
 ### intoduction
+
 고전적인 컴퓨터 과학은 강조한다 효율적인 알고리즘을, 컴퓨테이션을 가능한 빠르게 수행하는 알고리즘.
 그러나 많은 네트워크 프로그램은 그들의 시간이 아니라, 많은 연결을 유지하는 곳에, 그것은 느리거나 드문 이벤트를 지닌다.
 이 프로그램들은 많은 다른 도전을 과시한다.: 많은 거대한 네트워크 이벤트들을 효과적으로 기다리기를.
@@ -32,6 +32,7 @@ tags: ['python', 'python post']
 셋째 스테이지: 우리는 최대로 능력을 끌어올린 파이썬 코루틴을 사용할 것이다. 파이썬의 표준 "asyncIO"라이브러리, 그리고 그들을 async queue를 이용해 조직화 한다.
 
 ### The Task
+
 웹 크롤러는 모든 페이지를 찾고 다운로드한다, 비록 그들을 기록하거나, 번호를 메기려 할 목적이라도 말이다. 루트 URL로 시작해서, 모든 페이지를 fetch하고, 그것을 보여지지 않은 페이지들의 링크로 파싱한다. 그리고 그들을 queue에 올린다. 이것은 모든페이지에 대해서 Fetch가 완료하고, queue가 비었을 때 멈출 것이다.
 
 우리는 이 프로세스를 많은 페이지를 동시적으로 다운로드 함으로써, 가속할 수 있다. 크롤러가 새로운 링크를 찾으면, 이것은 동시Fetch 명령을 실행한다.(개별소켓위의 새로운 페이지들을 얻어 오기 위한)
@@ -41,23 +42,26 @@ tags: ['python', 'python post']
 일부 진행중인 리퀘스트가 끝날 때까지.
 
 ### Traditional approach
+
 고전적으로 우리는 쓰레드 풀을 생성해서 크롤러를 동시적으로 만들었다. 각 쓰레드는 소켓을 통해서 한번에 하나의 페이지를 다운받는 역할을 맡고 있었다. 예를 들어 다운로드 xkcd.com을 한다면:
+
 ```python
 def fetch(url):
-	sock = socket.socket()
-	sock.connect(("xkcd.com",80))
-	req = 'GET {} HTTP/1.0\r\nHost: xkcd.com/r/n/r/n'.format(url)
-	sock.send(request.encode('ascii'))
-	response = b''
-	chunk = sock.recv(4096)
-	while chunk:
-		response += chunk
-		chunk = scok.recv(4096)
+    sock = socket.socket()
+    sock.connect(("xkcd.com",80))
+    req = 'GET {} HTTP/1.0\r\nHost: xkcd.com/r/n/r/n'.format(url)
+    sock.send(request.encode('ascii'))
+    response = b''
+    chunk = sock.recv(4096)
+    while chunk:
+        response += chunk
+        chunk = scok.recv(4096)
 
-	#Page is now downloaded.
-	links = parse_links(response)
-	q.add(links)
+    #Page is now downloaded.
+    links = parse_links(response)
+    q.add(links)
 ```
+
 기본적으로 소켓의 수행은 블로킹이다. 쓰레드가 connect, recv등을 수행할때 그러하다. 이것은 수행이 끝날때까지 멈춰있다.
 동시적으로 많은 페이지를 한번에 받기위해서, 우리는 많은 쓰레드가 필요하다. 정교한 어플리케이션은 쓰레드를 생성하는 비용을 쓰레드풀에 대기중인 쓰레드를 보관함으로써 분할처리한다. 그리고 그들을 동시적인 일에 재사용 할 수 있게 체크해나간다. 이것은 소켓의 커넥션풀과 동일한 것을 하는 것이다.
 
