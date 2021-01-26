@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="with python and javascript, could be some descriptions or workflow writtens for project">
+<meta name="keywords" content="python django">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Junehan&#39;s workbook">
+<meta property="og:url" content="https://codenamenadja.github.io/page/5/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="with python and javascript, could be some descriptions or workflow writtens for project">
+<meta property="og:locale" content="ko">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Junehan&#39;s workbook">
+<meta name="twitter:description" content="with python and javascript, could be some descriptions or workflow writtens for project">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-python/library/fabric" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/19/python/library/fabric/" class="article-date">
+  <time datetime="2019-06-19T07:17:52.000Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/19/python/library/fabric/">fabric 기본적인 스크립트 작성하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<ol>
+<li><a href="#custom-id">공식문서 정의</a>
+<ol>
+<li><a href="#i-1-1">sample 출력기능</a></li>
+</ol>
+</li>
+<li><a href="#i-2">간단한 구현</a>
+<ol>
+<li><a href="#i-2-1">another 출력기능</a></li>
+</ol>
+</li>
+<li><a href="#i-3">나아가서 구현</a></li>
+<li><a href="#i-4">마치며</a></li>
+</ol>
+<h3 id="sample"><a class="markdownIt-Anchor" href="#sample"></a> sample</h3>
+<h1 id="header-with-custom-id"><a class="markdownIt-Anchor" href="#header-with-custom-id"></a> Header with custom ID</h1>
+<ol>
+<li>
+<p>기본 설치</p>
+<ul>
+<li>Fabric3</li>
+<li>pycrpyto: for secure connection</li>
+<li>paramiko: for secure connection either.</li>
+</ul>
+</li>
+<li>
+<p><a href="http://fabfile.py" target="_blank" rel="noopener">fabfile.py</a> 생성</p>
+<ul>
+<li>manage.py와 같은 위치에 생성해 주고,</li>
+<li>deploy.json은 deploy_tool 폴더 아래로 생성해준다.</li>
+<li>_로 시작하는 함수는 fab 명령에서 제외</li>
+<li>일반적인 함수 명은 fab deploy, test_connection등으로 실행가능</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># where directory fabfile.py with manage.py</span></span><br><span class="line">PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))</span><br><span class="line"><span class="comment"># one step over fabfile direcotry</span></span><br><span class="line">BASE_DIR = os.path.dirname(PROJECT_DIR)</span><br><span class="line"></span><br><span class="line">json_config_file = os.path.join(PROJECT_DIR, <span class="string">'deploy_tools/deploy.json'</span>)</span><br><span class="line"><span class="keyword">with</span> open(json_config_file) <span class="keyword">as</span> f:</span><br><span class="line">    envs = json.loads(f.read())</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/19/python/library/fabric/" data-id="ckkdb52gz001o1pqkvanmm3et" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fabric/">fabric</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/library/django/admin_customize" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/14/python/library/django/admin_customize/" class="article-date">
+  <time datetime="2019-06-14T04:41:47.000Z" itemprop="datePublished">2019-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/14/python/library/django/admin_customize/">장고에서 admin페이지 커스터마이징하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>order.admin수정해서 action에 행동 추가하기</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.utils <span class="keyword">import</span> timezone</span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">export_to_csv</span><span class="params">(modeladmin, request, queryset)</span>:</span></span><br><span class="line">    <span class="comment"># modeladmin.model - 선택된 객체의 모델 정보</span></span><br><span class="line">    <span class="comment"># request - request정보</span></span><br><span class="line">    <span class="comment"># queryset - 선택된 row들의 쿼리</span></span><br><span class="line">    <span class="comment"># 선택된 주문 정보를 CSV파일로 다운로드 하게 만드는 기능</span></span><br><span class="line">    opts = modeladmin.model_meta</span><br><span class="line"></span><br><span class="line">    response =HttpResponse(content_type=<span class="string">'text/csv'</span>)</span><br><span class="line">    current_time = timezone.now().strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>)</span><br><span class="line"></span><br><span class="line">    response[<span class="string">'Content-Disposition'</span>] = <span class="string">f'attachment;filename=<span class="subst">&#123;opts.verbose_name&#125;</span>-<span class="subst">&#123;current_time&#125;</span>.csv'</span></span><br><span class="line">    writer = csv.writer(response)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 필드 값 작성</span></span><br><span class="line">    fields = [field <span class="keyword">for</span> field <span class="keyword">in</span> opts.get_fields() <span class="keyword">if</span> (<span class="keyword">not</span> field.many_to_many) <span class="keyword">and</span> (<span class="keyword">not</span> field.one_to_many)]</span><br><span class="line">    writer.writerow([field.verbose_name <span class="keyword">for</span> field <span class="keyword">in</span> fields])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 데이터 작성</span></span><br><span class="line">    <span class="keyword">for</span> obj <span class="keyword">in</span> queryset:</span><br><span class="line">        <span class="comment"># 선택된 요소들에 대한 내용을 출력</span></span><br><span class="line">        ordered_items = getattr(obj, <span class="string">'items'</span>).all()</span><br><span class="line">        values = [getattr(obj, field.name).strftime(<span class="string">'%Y-%m-%d'</span>) <span class="keyword">if</span> field.datetime <span class="keyword">else</span> getattr(obj, field.name) <span class="keyword">for</span> field <span class="keyword">in</span> fields]</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> ordered_items:</span><br><span class="line">            order_detail = [item.product.id, item.price, item.quantity]</span><br><span class="line">            writer.writerow(values+order_detail)</span><br><span class="line">export_to_csv.short_description = <span class="string">'Order Export to CSV'</span> <span class="comment"># 여</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderOption</span><span class="params">(admin.ModelAdmin)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    ...</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    actions = [export_to_csv]</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>Page 추가하기</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.utils.safestring <span class="keyword">import</span> mark_safe</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">order_detail</span><span class="params">(obj)</span>:</span></span><br><span class="line">    href = reverse(<span class="string">'order:admin_detail'</span>)</span><br><span class="line">    <span class="keyword">return</span> mark_safe(<span class="string">f'&lt;a href="<span class="subst">&#123;href&#125;</span>"&gt;to Detail&lt;/a&gt;'</span>)</span><br><span class="line"></span><br><span class="line">order_detail.short_description = <span class="string">'details'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">order_pdf</span><span class="params">(obj)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> mark_safe(<span class="string">'PDF'</span>)</span><br><span class="line"></span><br><span class="line">order_pdf.short_description = <span class="string">'to_pdf'</span></span><br><span class="line"></span><br><span class="line">OrderOption.list_display += [order_pdf, order_detail]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># order.views.py</span></span><br><span class="line"><span class="keyword">from</span> django.shorcuts <span class="keyword">import</span> get_object_or_404</span><br><span class="line"><span class="keyword">from</span> django.contrib.admin.views.decorators <span class="keyword">import</span> staff_member_required</span><br><span class="line"></span><br><span class="line"><span class="meta">@staff_member_required</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">admin_order_detail</span><span class="params">(req, order_id)</span>:</span></span><br><span class="line">    order = get_object_or_404(Order, id=order_id)</span><br><span class="line">    <span class="keyword">return</span> render(req, <span class="string">'order/admin/order_detail.html'</span>, &#123;<span class="string">'order'</span>:order&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># order.urls.py</span></span><br><span class="line">app_name = <span class="string">'order'</span></span><br><span class="line">urlpatterns += [</span><br><span class="line">    path(<span class="string">'admin/detail/&lt;int:order_id&gt;'</span>, admin_order_detail, name=<span class="string">'order_detail'</span>)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;%extends 'admin/base_site.html'%&#125;</span><br><span class="line"></span><br><span class="line">&#123;%block breadcrumbs%&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">'breadcrumbs'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'&#123;url "admin:index"&#125;'</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'&#123;url "admin:order_order_changelist"&#125;'</span>&gt;</span>Orders<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'&#123;url "admin:order_order_change" order.id&#125;'</span>&gt;</span>Order &#123;&#123;order.id&#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    Detail</span><br><span class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;%endblock%&#125;</span><br><span class="line"></span><br><span class="line">&#123;%block content%&#125;</span><br><span class="line">// order객체 가지고 표시</span><br><span class="line">&#123;%endblock%&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>weasyprint로 PDF출력하기</li>
+</ol>
+<p>pip install weasyprint</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.template.loader <span class="keyword">import</span> render_to_string</span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">import</span> weasyprint</span><br><span class="line"></span><br><span class="line"><span class="meta">@staff_member_required</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">admin_order_pdf</span><span class="params">(req, order_id)</span>:</span></span><br><span class="line">    order = get_object_or_404(Order, id=order_id)</span><br><span class="line">    html = render_to_string(<span class="string">'order/admin/pdf.html'</span>, &#123;<span class="string">'order'</span>:order&#125;)</span><br><span class="line">    response = HttpResponse(content_type=<span class="string">'application/pdf'</span>)</span><br><span class="line">    response[<span class="string">'Content-Disposition'</span>] = <span class="string">f'filename=invoice_<span class="subst">&#123;order.id&#125;</span>.pdf'</span></span><br><span class="line">    weasyprint.HTML(string=html).write_pdf(response)</span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+<ul>
+<li>다운로드 Disposition = attachment</li>
+<li>웹 뷰어로 보기 Disposition = invoice</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/14/python/library/django/admin_customize/" data-id="ckkdb52it00501pqkh722ej51" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/">django</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tdd/python/pytest" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/12/tdd/python/pytest/" class="article-date">
+  <time datetime="2019-06-12T12:02:11.000Z" itemprop="datePublished">2019-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/12/tdd/python/pytest/">pytest 이해와 사용</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="major-deminority-of-default-testcase"><a class="markdownIt-Anchor" href="#major-deminority-of-default-testcase"></a> major deminority of Default TestCase</h2>
+<ol>
+<li>Specific test method names (ie, ‘assertIsNone’, ‘assertDictEqual’… elses)</li>
+<li>no database access? then may be to use ‘SimpleTestCase’</li>
+<li>Test in the same class diff methods uses identical test database in order to properly user setup method.</li>
+</ol>
+<h2 id="differences-between-pure-django-test-and-pytest"><a class="markdownIt-Anchor" href="#differences-between-pure-django-test-and-pytest"></a> differences between pure django test and pytest</h2>
+<ul>
+<li>default TestCase</li>
+</ul>
+<pre><code><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.test <span class="keyword">import</span> TestCase</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a+b</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestAdd</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_add_positive_numbers</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.assertEqual(add(<span class="number">2</span>, <span class="number">2</span>), <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_add_negative_numbers</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.assertEqual(add(<span class="number">-2</span>, <span class="number">-2</span>), <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ul>
+<li>Pytest</li>
+</ul>
+<pre><code><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> upper <span class="keyword">import</span> add</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.mark.parametrize('a, b, expected', [</span></span><br><span class="line">(<span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>), (<span class="number">-2</span>, <span class="number">-2</span>, <span class="number">-4</span>)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_add</span><span class="params">(a, b, expected)</span>:</span></span><br><span class="line">    <span class="keyword">assert</span> add(a, b) == expected</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h2 id="pytest-idioms-and-features"><a class="markdownIt-Anchor" href="#pytest-idioms-and-features"></a> pytest idioms and features</h2>
+<ul>
+<li>간단한 assert문을 사용한다. pytest는 무엇이 assert되었는지에 따라 적절한 차이를 아웃풋 할것이다.</li>
+<li>테스트를 클래스기반으로 그룹 짓지 않고 작성할 수 있다.</li>
+<li>재사용 가능한 'fixtures’를 통해서 상태를 셋업 할 수있다. 픽스쳐는 다양한 스코프에서 사용이 가능하다.</li>
+<li>__Markers__를 통하여 테스트를 카테고리화 하고, 그들의 실행 자원을 변경할 수 있다.</li>
+<li>서드파티 라이브러리의, 픽스쳐, 마커, 그리고 테스트 실행 기능성을 위한 플러그인 시스템</li>
+</ul>
+<h2 id="어떻게-테스트주도개발을-할-것인가"><a class="markdownIt-Anchor" href="#어떻게-테스트주도개발을-할-것인가"></a> 어떻게 테스트주도개발을 할 것인가?</h2>
+<ol>
+<li>고비용의 통합테스트를 조금 작성한다.</li>
+<li>많은 분기의 핸들링을 가지고 있는 부분을 결정한다(ie: error handling). 우리는 그들을 다수의 유닛 테스트로 커버할 수 있다.</li>
+<li>어플리케이션 단에서 제어할 수 없는 부분을 정의한다(ie: 외부 API)</li>
+<li>앱이 모양을 갖추고 나면, 사이에 생략된 테스트들을 작성한다.</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/12/tdd/python/pytest/" data-id="ckkdb52hx002w1pqkrxx5kn1r" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/testing/">testing</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/custom_module/using_sqs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/27/python/custom_module/using_sqs/" class="article-date">
+  <time datetime="2019-05-27T06:39:22.000Z" itemprop="datePublished">2019-05-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/27/python/custom_module/using_sqs/">boto3로 sqs자원 사용하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>
+<p>que네임을 기반으로 url받아오기</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">helper_get_que</span><span class="params">(key)</span>:</span></span><br><span class="line">    sqs = boto3.client(<span class="string">'sqs'</span>)</span><br><span class="line">    response = sqs.list_queues()</span><br><span class="line">    urlLists = response[<span class="string">"QueueUrls"</span>]</span><br><span class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> urlLists:</span><br><span class="line">       <span class="keyword">if</span> key <span class="keyword">in</span> url:</span><br><span class="line">           <span class="keyword">return</span> url</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>url을 엔트포인트로 메세지 발송</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">helper_send_message</span><span class="params">(url, title, author, body)</span>:</span></span><br><span class="line">    sqs = boto3.client(<span class="string">'sqs'</span>)</span><br><span class="line">    reponse = sqs.send_message(</span><br><span class="line">        QueueUrl=url,</span><br><span class="line">        DelaySeconds=<span class="number">10</span>,</span><br><span class="line">        MessageAttributes=&#123;</span><br><span class="line">            <span class="string">'Title'</span>: &#123;<span class="string">'DataType'</span>: <span class="string">'String'</span>, <span class="string">'StringValue'</span>: title&#125;,</span><br><span class="line">            <span class="string">'Author'</span>: &#123;<span class="string">'DataType'</span>: <span class="string">'String'</span>, <span class="string">'StringValue'</span>: author&#125;,</span><br><span class="line">            <span class="string">'WeeksOn'</span>: &#123;<span class="string">'DataType'</span>: <span class="string">'Number'</span>, <span class="string">'StringValue'</span>: <span class="string">'6'</span>&#125;,</span><br><span class="line">                       &#125;,</span><br><span class="line">    MessageBody=(<span class="string">f"<span class="subst">&#123;body&#125;</span>"</span>)</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> reponse</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>queue가 존재하지 않을때 만들기</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">helper_create_queue</span><span class="params">(name)</span>:</span></span><br><span class="line">    sqs = boto3.client(<span class="string">'sqs'</span>)</span><br><span class="line">    response = sqs.create_queue(</span><br><span class="line">        QueueName=<span class="string">f"<span class="subst">&#123;name&#125;</span>"</span>,</span><br><span class="line">        Attributes=&#123;<span class="string">'DelaySeconds'</span>: <span class="string">'60'</span>,</span><br><span class="line">                    <span class="string">'MessageRetentionPeriod'</span>: <span class="string">'86400'</span></span><br><span class="line">                    &#125;</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>메세지 받아오기</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">helper_get_message</span><span class="params">(endpoint)</span>:</span></span><br><span class="line">    sqs = boto3.client(<span class="string">'sqs'</span>)</span><br><span class="line"></span><br><span class="line">    queue_url = helper_get_que(endpoint)</span><br><span class="line">    response = sqs.receive_message(</span><br><span class="line">        QueueUrl=queue_url,</span><br><span class="line">        AttributeNames=[</span><br><span class="line">            <span class="string">'SentTimestamp'</span></span><br><span class="line">        ],</span><br><span class="line">        MaxNumberOfMessages=<span class="number">1</span>,</span><br><span class="line">        MessageAttributeNames=[</span><br><span class="line">            <span class="string">'All'</span></span><br><span class="line">        ],</span><br><span class="line">        VisibilityTimeout=<span class="number">0</span>,</span><br><span class="line">        WaitTimeSeconds=<span class="number">0</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> response[<span class="string">'Messages'</span>][<span class="number">0</span>]</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/05/27/python/custom_module/using_sqs/" data-id="ckkdb52gx001n1pqka7fcfr3i" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-server/webserver" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/22/server/webserver/" class="article-date">
+  <time datetime="2019-05-22T01:17:35.000Z" itemprop="datePublished">2019-05-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/22/server/webserver/">ec2에서 nginx uwsgi로 장고앱 세팅</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="webserver"><a class="markdownIt-Anchor" href="#webserver"></a> webserver</h2>
+<ul>
+<li>웹서버가 하는 일은 사용자가 네트워크를 통해 요청을 보내면, 요청에 대한 해석과 응답을 돌려주는 역할. 요청을 해석할때, 어떤 리소스를 찾느냐에 대한 처리를 진행, WAS와 통신하요 사용자 요텅을 해성하는 어플에 대한 호출과 콜백을 처리</li>
+</ul>
+<ol>
+<li>APACHE
+<ul>
+<li>메인 쓰레드가 있고, 하위에 워커등의 방식으로 서브 프로레스를 만들어서 다량의 요청을 처리</li>
+</ul>
+</li>
+<li>NGINX
+<ul>
+<li>이벤트 처리방식, 요청이 들어오면 어플리케이션에 요청처리를 부탁하고 본인은 계속 들어온 요청에 대한 대응을 수행한다. Apache에 비해서 적은 리소스를 사용하고 빠른 처리가 가능</li>
+</ul>
+</li>
+</ol>
+<h2 id="nginx설치"><a class="markdownIt-Anchor" href="#nginx설치"></a> nginx설치</h2>
+<ol>
+<li><code>sudo apt install nginx</code></li>
+<li><code>service nginx status</code> or <code>systemctl status nginx</code></li>
+<li><code>ec2-52-78-46-217.ap-northeast-2.compute.amazonaws.com:80</code> 웹 브라우저 동작 테스트</li>
+<li>설정파일로 프로그램 설정</li>
+<li><code>sudo cp /etc/nginx/site-available/default /etc/nginx/sites-available</code></li>
+<li><code>vim /etc/nginx/site-available/staticweb</code></li>
+</ol>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server 80;</span><br><span class="line">listen [::]:80;</span><br><span class="line"></span><br><span class="line">root /var/www/staticweb;</span><br><span class="line"></span><br><span class="line">server_name ec2-52-78-46-217.ap-northeast-2.compute.amazonaws.com; #EC2 인스턴스의 퍼블릭 인스턴스 DNS</span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ol>
+<li>설정파일을 제대로 했다면, Nginx를 재시작 해여한다.</li>
+<li>설정파일이 올바른지 확인하는 법</li>
+</ol>
+<pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$:sudo nginx -t</span><br><span class="line"><span class="built_in">test</span> is successful</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ol>
+<li>해당 설정파일을 Nginx로 연결시켜야 한다. sudo ln -s /etc/nginx/sites-available/staticweb /etc/nginx/sites-enabled/</li>
+<li>test</li>
+<li><code>sudo vim etc/nginx/nginx.conf</code></li>
+</ol>
+<pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">24 server_name_hash_size 128</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ol>
+<li>고정 IP가 필요한 이유는 도메인 연결을 하기 위해서</li>
+<li>route53에서 ip주소에 따른 주소 생성하고</li>
+<li>IP를 바인딩 하는 순간 기존 퍼블릭 도메인네임 으로 접속하는 것은 끝남</li>
+<li><code>ssh -i ~/.ssh/aws-ec2-junehan.pen ubuntu@52.78.68.43</code></li>
+<li>서비스 한번 리스타트 해주고</li>
+<li>접속이 잘 된다</li>
+<li>staticweb의 servername을 route53에 매칭한 주소로 바꿔준다.</li>
+</ol>
+<h2 id="백업-재활용을-위한-이미지-생성"><a class="markdownIt-Anchor" href="#백업-재활용을-위한-이미지-생성"></a> 백업, 재활용을 위한 이미지 생성</h2>
+<ol>
+<li>인스턴스 탭에서 이미지 생성</li>
+<li>images AMIs에 있음</li>
+</ol>
+<h2 id="웹서버가-웹-어플을-관리하기-위한-계정-생성"><a class="markdownIt-Anchor" href="#웹서버가-웹-어플을-관리하기-위한-계정-생성"></a> 웹서버가 웹 어플을 관리하기 위한 계정 생성</h2>
+<ol>
+<li>
+<p><code>sudo useradd -g www-data -b /home -m -s /bin/bash django</code></p>
+<ul>
+<li>www-data: nginx설치시 생성된 그룹</li>
+<li><code>-b</code> : 루트 디렉터리(유저의 홈폴터</li>
+<li><code>-m</code> : 자신의 계정 명의</li>
+<li><code>-s</code> : 로그인 기본쉘</li>
+</ul>
+</li>
+<li>
+<p><code>sudo mkdir -p /var/www/django</code></p>
+</li>
+<li>
+<p><code>sudo chown django:www-data /var/www/django</code></p>
+</li>
+<li>
+<p><code>sudo usermod -a -G www-data ubuntu</code> 루트권한 유저 그룹 변경</p>
+<ul>
+<li>a :add</li>
+<li>G :group</li>
+</ul>
+</li>
+<li>
+<p><code>sudo chmod g+w /var/www/django</code></p>
+</li>
+<li>
+<p>python <a href="http://manage.py" target="_blank" rel="noopener">manage.py</a> runserver 0:8000</p>
+</li>
+<li>
+<p>제대로 출력되지 않으면 ALLOWED_HOST 설정 += ‘*’</p>
+</li>
+<li>
+<p>80번 포트에 nginx가 req를 받으면, uwsgi를 통해서 8000번 포트로 인계하라는 명령을?</p>
+</li>
+<li>
+<p><code>pip install uwsgi</code></p>
+<ul>
+<li>nginx랑 uwsgi 붙어 있는가?</li>
+<li>uwsgi랑 django랑 잘 붙어 있는가?</li>
+</ul>
+</li>
+<li>
+<p><code>uwsgi --http :8000 --home /var/www/django/venv/ --chdir /var/www/django/ --module config.uwsgi</code></p>
+<ul>
+<li>uwsgi는 run을 통해 소켓 파일을 생성한다.</li>
+</ul>
+</li>
+<li>
+<p><code>mkdir run logs</code></p>
+</li>
+<li>
+<p><code>chown django:</code></p>
+</li>
+<li>
+<p>uwsgi의 실행 프로세스 자동화, 컴퓨터 재시작시 자동 시작 프로세스에 등록하기, 그 시작에 해당 자동화 설정을 포함하기</p>
+</li>
+<li>
+<p>mkdir</p>
+</li>
+<li>
+<p>uswgi.ini</p>
+<ul>
+<li>vacuum = true : 원래 만들어져 있던 파일을 지운다.</li>
+<li>uswgi.ini외에도 [Service]의 ExecStart에서는 폴더를 기준으로 실행하기 때문에, 설정 파일이 복수로 있다면, 다수의 장고앱을 실행한다.</li>
+</ul>
+</li>
+<li>
+<p>staticweb 일때만 root가 필요하다i.</p>
+</li>
+</ol>
+<h2 id="흐름-정리"><a class="markdownIt-Anchor" href="#흐름-정리"></a> 흐름 정리</h2>
+<ol>
+<li>nginx&lt;-&gt;uwsgi site-available/django <code>restart nginx</code></li>
+<li>uWSGI uwsgi.service <code>systemctl deamon-reload</code>, <code>restart uwsgi</code></li>
+<li>uWSGI &lt;-&gt; djnago uwsgi.ini or django code diff? <code>uwsgi restart</code></li>
+</ol>
+<h2 id="step-24-장고-소스코드가-있는-폴더의-소유자와-권한을-변경"><a class="markdownIt-Anchor" href="#step-24-장고-소스코드가-있는-폴더의-소유자와-권한을-변경"></a> step 24. 장고 소스코드가 있는 폴더의 소유자와 권한을 변경</h2>
+<p><code>sudo chown -R django:www-data /var/www/django</code><br>
+<code>sudo chmod -R g+w /var/www/django</code></p>
+<h2 id="위지윅-에디터"><a class="markdownIt-Anchor" href="#위지윅-에디터"></a> 위지윅 에디터</h2>
+<ul>
+<li>자바스크립트 라이브러리를 가지고 설정</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/05/22/server/webserver/" data-id="ckkdb52ft000j1pqk7ougtmwi" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/">django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/">nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/library/django/server_basic" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/20/python/library/django/server_basic/" class="article-date">
+  <time datetime="2019-05-20T01:19:37.000Z" itemprop="datePublished">2019-05-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/20/python/library/django/server_basic/">server and client</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="client-request"><a class="markdownIt-Anchor" href="#client-request"></a> client Request</h2>
+<ol>
+<li>
+<p>브라우저 동작을 통해 보내는 요청</p>
+<ol>
+<li>링크를 클릭해서 해당 주소로 이동하면서 생기는 요청</li>
+<li>주소를 브라우저 주소창에 입력해서 접속</li>
+<li>폼의 제출 버튼을 눌러서 접속</li>
+</ol>
+<blockquote>
+<p>page reload first -&gt; also req</p>
+</blockquote>
+</li>
+<li>
+<p>브라우저의 요청을 흉내내서 보내는 요청</p>
+<ol>
+<li>Ajax(Asyncronous javascript and xml request)</li>
+</ol>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url: <span class="string">"somepage.com/..."</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    ).done(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123;</span><br><span class="line">    </span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Request header</p>
+<ol>
+<li>req target</li>
+<li>req method
+<ol>
+<li>Put : 전체 수정</li>
+<li>Delete : 삭제 요청</li>
+<li>Fetch : 일부 혹은 전체 데이터의 수정</li>
+<li>HEAD : GET으로 받는 정보 중에 헤더 정보만 req</li>
+<li>OPTIONS : 해당 URL에 대해 허용하는 메서드 확인 req</li>
+</ol>
+</li>
+<li>http version</li>
+<li>header
+<ol>
+<li>HOST</li>
+<li>User-Agent</li>
+<li>Accept</li>
+<li>connection</li>
+<li>content-type</li>
+</ol>
+</li>
+<li>Body</li>
+</ol>
+</li>
+<li>
+<p>Django</p>
+<ol>
+<li><a href="http://Settings.py" target="_blank" rel="noopener">Settings.py</a> middleware</li>
+<li>URLCONF동작 : url을 파싱하고 동작시켜야 할 뷰 연결</li>
+</ol>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">path(<span class="string">'admin/'</span>, func),</span><br><span class="line">path(<span class="string">'update/&lt;int:pk&gt;/'</span>,func), <span class="comment"># int:pk : namedGroup</span></span><br><span class="line">namedGroup은 뷰에 매개변수로 전달</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(req, pk)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DUpdate</span><span class="params">(UpdateView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, req, *args, **kwargs)</span>:</span></span><br><span class="line">        pk = kwargs[<span class="string">'pk'</span>]</span><br></pre></td></tr></table></figure>
+<ol>
+<li>
+<p>view</p>
+<ul>
+<li>with model: 해당 뷰에 유효한, 모델에 대해서 ORM을 이용해 추상화하고 데이터베이스 종류에 맞춰서 쿼리문 전달
+<ul>
+<li>ORM을 사용하면 데이터베이스 서비스 종속성이 없다.(SQL Query -&gt; mysql, ms-sql, postgresql …)</li>
+<li>QuerySet: django에서 ORM을 다루기 위한 스킬</li>
+</ul>
+</li>
+<li>with Template :</li>
+</ul>
+</li>
+<li>
+<p>bootstrap</p>
+<ol>
+<li><a href="http://settings.py" target="_blank" rel="noopener">settings.py</a>
+<ol>
+<li>ROOT_URLCONF = <code>config.urls</code></li>
+<li>WSGI_APPLICATION = ‘config.wsgi.application’</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<pre><code><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">os.environ.setdefault(<span class="string">'DJANGO_SETTINGS_MODULE'</span>, <span class="string">'config.settings'</span>)</span><br><span class="line">application = get_wsgi_application()</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ol>
+<li>Infra
+<ul>
+<li>
+<p>Tier</p>
+<ul>
+<li>몇 개층으로 서버 인프라를 구성 했느냐?</li>
+</ul>
+<ol>
+<li>1: 로컬 프로그램</li>
+<li>2: 클라이언트 - 데이터</li>
+<li>3: 클라이언트 - 비지니스 로직 - 데이터 (웹앱까지 유효하게 구성했을때)</li>
+</ol>
+</li>
+<li>
+<p>스케일링</p>
+<ul>
+<li>요청이나 수행의 분담을 분할</li>
+</ul>
+<ol>
+<li>Up-scaling :</li>
+<li>Out-scaling : 데이터의 동기화 문제 발생(racecondition)</li>
+</ol>
+<ul>
+<li>동기화 문제에 대한 해결
+<ol>
+<li>데이터베이스 중앙화</li>
+<li>파일 서버 중앙화</li>
+</ol>
+</li>
+<li>스케일링은 자동화도 가능하다. 하지만 반 자동화가 일반적</li>
+<li>WarmUP : 사용자가 늘거라고 예상되는 시점이 있을 때, 미리 스케일링</li>
+<li>GIB : 20GB라고 하면 실제 OS에서 운영 가능한 양은 그것보다 적다. GIB는 그것보다 크게 잡아서 실제 20GB를 보장하는 것을 얘기한다.</li>
+<li>RDS region : 실제 서비스하는 지역</li>
+<li>RDS Available zone : 2대 정도는 둔다.(전환 가능한)</li>
+<li>성능을 위해서 READONLYDB(Read replica)를 둔다.</li>
+<li>멀티 리전 : 실제 다른 국가에 인프라 구축, CDN</li>
+</ul>
+</li>
+<li>
+<p>database</p>
+<ol>
+<li>RDS instance 생성</li>
+<li>settings.DATABASES 규정</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># backends는 장고와 데이터베이스 어뎁터 사이를 연결</span></span><br><span class="line"><span class="comment"># psycopg2-binary: 어댑터 - 드라이버 -&gt; 실제로 데이터베이스에 접속해서 명령을 수행</span></span><br><span class="line">DATABASES = &#123;</span><br><span class="line">    <span class="string">'default'</span> = &#123;</span><br><span class="line">        <span class="string">'ENGINE'</span> : <span class="string">'djnago.db.backends.postgresql_psycopg2'</span>,</span><br><span class="line">        <span class="string">'NAME'</span> : <span class="string">'oh_mon_lesiles_db'</span>,</span><br><span class="line">        <span class="string">'USER'</span> : <span class="string">'junehan'</span>,</span><br><span class="line">        <span class="string">'PASSWORD'</span> : <span class="string">'0000'</span>,</span><br><span class="line">        <span class="string">'HOST'</span> : <span class="string">'wps10-dbsetting.cuddiucrfzmn.ap-northeast-2.rds.amazonaws.com'</span>,</span><br><span class="line">        <span class="string">'POST'</span> : <span class="string">'5432'</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>
+<p>migrate</p>
+<ul>
+<li><code>python manage.py makemigrations</code> : 변경사항이 있을때,</li>
+<li><code>python manage.py migrate</code> : 총 제작한 쿼리로 실제 DB에 반영</li>
+<li><code>python manage.py createsuperuser</code> : 장고에서 DB에 대한 최종관리자 권한 생성</li>
+</ul>
+</li>
+<li>
+<p>스케일링이 필요한 시점을 대비한 초기세팅</p>
+<blockquote>
+<p>웹 서비스의 입출력 병목이 발생 했을때, 스케일링.<br>
+스케일링은 동기화 문제를 발생시킬 수 있기 때문에,<br>
+DB의 경우 특이한 구조로 스케일링 진행 (Master/Slave방식)</p>
+</blockquote>
+<ul>
+<li>master DB : 기존에 저장만 가능하고, 저장되면 Read서버로 변경내용을 전달</li>
+<li>Readonly DB : 읽기만 가능.</li>
+</ul>
+<blockquote>
+<p>Master/slave 구조를 구현하기 위해 <strong>DB Routing</strong>을 설정한다.<br>
+특정 모델이 별도 DB를 이용하는 경우를 설정한다.</p>
+</blockquote>
+</li>
+<li>
+<p>DB Scaling</p>
+<ul>
+<li>AWS RDS &gt; DATABSE &gt; ACTION &gt; 읽기전용DB생성</li>
+<li>MASTER에 대한 아웃 스케일링이 필요할 때, AURORADB</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>Storage</p>
+<ul>
+<li>
+<p>개요</p>
+<ol>
+<li>파일 중앙화: 파일의 동기화 문제를 해결</li>
+<li>스토리지 용량 무제한: 미디어 중심 서비스의 경우</li>
+<li>1파일당 용량 2TB: 대형 미디어</li>
+<li>파일의 안정성: 파일이 깨지지 않음을 보장하는 편</li>
+<li>django 3rd-party라이브러리와 호환성이 높다</li>
+</ol>
+</li>
+<li>
+<p>Static and media bucket</p>
+<ul>
+<li>media url을 직접 사용하여 유저가 업로드</li>
+<li>버킷을 생성(리소스 인프라)을 완료하였다면, AWS API에 맞춰야 함</li>
+<li>IAM S3에 맞춰서 생성</li>
+<li><a href="http://settings.py" target="_blank" rel="noopener">settings.py</a></li>
+</ul>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AWS_S3_OBJECT_PARAMETERS = &#123; <span class="comment"># 브라우저가 해당 파일에 접속 했을 때 나타나는 파라미터 값</span></span><br><span class="line">    <span class="string">'CacheControl'</span> : <span class="string">''</span> <span class="comment"># 자주 바꾸는게 아니라면, 한번 다운 받으면 계속 유지되도록</span></span><br><span class="line">    &#125;</span><br><span class="line">AWS_DEFAULT_ACL = <span class="string">'public-read'</span></span><br><span class="line">AWS_S3_SECURE_URLS = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cofnig.s3media.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MedaiStorage</span><span class="params">(S3Boto3Storage)</span>:</span></span><br><span class="line">    location = <span class="string">''</span></span><br><span class="line">    bucket_name = <span class="string">'media.sample.actingprogrammer.io'</span></span><br><span class="line">    custom_domain = <span class="string">''</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>CDN을 사용하는 이유, https에서 문제가…</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/05/20/python/library/django/server_basic/" data-id="ckkdb52iw00531pqkemdghpha" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/">django</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/library/django/s3_in_django" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/15/python/library/django/s3_in_django/" class="article-date">
+  <time datetime="2019-05-15T07:47:58.000Z" itemprop="datePublished">2019-05-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/15/python/library/django/s3_in_django/">connect s3, RDS in django</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>
+<h2 id="awscli설정"><a class="markdownIt-Anchor" href="#awscli설정"></a> awscli설정</h2>
+<ol>
+<li>awscli 설치하기</li>
+</ol>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install awscli</span><br></pre></td></tr></table></figure>
+<ol>
+<li>awscli 설정하기</li>
+</ol>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awscli --configure</span><br></pre></td></tr></table></figure>
+<ul>
+<li>~/.aws/credentials 에 자동으로 키값이 들어간 파일을 만들어 준다.</li>
+</ul>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[default]</span><br><span class="line">aws_access_key_id = *************</span><br><span class="line">aws_secret_access_key = *****************</span><br><span class="line">[guest]</span><br><span class="line">aws_access_key_id = ****************</span><br><span class="line">aws_secret_access_key = **************</span><br></pre></td></tr></table></figure>
+<ol>
+<li>boto3와 awscli를 이용한, 기본 접근키 비밀 키 설정</li>
+</ol>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># settings.py</span></span><br><span class="line"><span class="keyword">import</span> botocore.session</span><br><span class="line">AWS_ACCESS_KEY_ID = botocore.session.get_credentials().access_key</span><br><span class="line">AWS_SECRET_ACCESS_KEY = botocore.session.get_credentials().secret_key</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h2 id="django-storages의-폴더-자동-업로딩을-위한-설정"><a class="markdownIt-Anchor" href="#django-storages의-폴더-자동-업로딩을-위한-설정"></a> django-storages의 폴더 자동 업로딩을 위한 설정</h2>
+<ul>
+<li>최소 업로드: ACCESS_KEY, SECRET_KEY, 버킷이름, Boto3</li>
+</ul>
+<ol>
+<li>STATICFILES_DIRS: Folder dirs to upload as static</li>
+</ol>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#settings.py</span></span><br><span class="line">STATICFILES_DIRS = [</span><br><span class="line">    os.path.join(BASE_DIR, <span class="string">'static'</span>),</span><br><span class="line">]</span><br><span class="line"><span class="comment">#한 폴더에 static을 모은다</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>STATICFILES_STORAGE: meaning S3 resouce on AWS_ACCESS_KEY_ID</li>
+</ol>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">STATICFILES_STORAGE = <span class="string">"storages.backends.s3boto3.S3Boto3Storage"</span></span><br><span class="line"><span class="string">"""to allow collectstatic to automatically put file to bucket"""</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>AWS_STORAGE_BUCKET_NAME: Pure S3 bucket name</li>
+</ol>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AWS_STORAGE_BUCKET_NAME = <span class="string">'static.oh-mon-lesiles.shop'</span></span><br><span class="line"><span class="comment"># s3 bucket name (Usually 'static' or 'sources',etc..)</span></span><br><span class="line"><span class="comment"># but used DNS mapped as bucket name in this case</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>STATIC_URL: used in <code>static 'images/sample.jpg'</code></li>
+</ol>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">STATIC_URL = <span class="string">f'https://<span class="subst">&#123;AWS_STORAGE_BUCKET_NAME&#125;</span>/</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>OPTIONALS</li>
+</ol>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> AWS_LOCATION = <span class="string">''</span></span><br><span class="line"> <span class="comment"># prefix prepended to all uploads</span></span><br><span class="line"> AWS_S3_OBJECT_PARAMETERS = &#123;</span><br><span class="line"><span class="string">'CacheControl'</span>: <span class="string">'max-age=86400'</span>,</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>STATICFILES_STORAGE가 부트스트래핑 되는 자원에 대한 고유한 저장소라면 DEFAULT_FILE_STORAGE는 모델에서 저장되는 파일에 대한 기본적인 저장소로 연결되도록 django-storages가 처리해준다.</p>
+</blockquote>
+<ol>
+<li>DEFAULT_FILE_STORAGE: settings.py의 StaticStorage를 오버라이딩한 기본 모델의 파일 저장소 세팅</li>
+</ol>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> storages.backends.s3boto3 <span class="keyword">import</span> S3Boto3Storage</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MediaStorage</span><span class="params">(S3Boto3Storage)</span>:</span></span><br><span class="line">    location = <span class="string">''</span></span><br><span class="line">    bucket_name = <span class="string">'media.oh-mon-lesiles.shop'</span></span><br><span class="line">    file_overwrite = <span class="literal">False</span></span><br><span class="line">    custom_domain = <span class="string">f'http://<span class="subst">&#123;bucket_name&#125;</span>/'</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>STATIC_URL이 <a href="http://settings.py" target="_blank" rel="noopener">settings.py</a> 에서 Static_storage의 엔트포인트라면,</li>
+<li>custom_domain은 static을 제외한 것들이 statuc_url대신에 가질 수 있는 엔드포인트</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/05/15/python/library/django/s3_in_django/" data-id="ckkdb52iu00511pqkynqhvile" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/">django</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/library/pipenv" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/15/python/library/pipenv/" class="article-date">
+  <time datetime="2019-05-14T17:19:43.000Z" itemprop="datePublished">2019-05-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/15/python/library/pipenv/">how to use pipenv 100%</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<blockquote>
+<ol>
+<li><a href="#%EA%B0%9C%EC%9A%94">개요</a></li>
+<li><a href="#%EB%AA%A9%ED%91%9C">목표</a></li>
+<li><a href="#pipfile">2</a></li>
+<li><a href="#%EA%B8%B0%EB%B3%B8_%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0">3</a></li>
+<li><a href="#%EA%B0%80%EC%83%81%ED%99%98%EA%B2%BD%EA%B4%80%EB%A6%AC">4</a></li>
+<li><a href="#advanced_usage">마치며</a></li>
+</ol>
+</blockquote>
+<h2 id="개요"><a class="markdownIt-Anchor" href="#개요"></a> 개요</h2>
+<p>Pipenv는 모든 최고의 패키징(bundler, composer, npm, cargo, yarn)을 파이썬으로 가져오기 위한 툴입니다.</p>
+<p>이것은 가상환경을 자동으로 생성하고 관리합니다. 또한 <code>Pipfile</code>에서 패키지는 추가하고 삭제함으로써 자동으로 가상환경을 생성하고 관리합니다.</p>
+<p>Pipenv가 해결하는 복합적인 면 문제는 이러합니다.</p>
+<ul>
+<li>당신은 더 이상 <code>pip</code>와 <code>virtualenv</code> 개별적으로 사용하지 않아도 된다.</li>
+<li>reqirements.txt를 관리하는 것은 문제를 발생시킬 여지가 있습니다.<br>
+그래서 우리는 <code>Pipfile</code>, <code>Pipfile.lock</code>을 사용하여 최근에 테스트된 조합에서부터 추상적인 의존성 선언을 분리합니다.</li>
+<li>해쉬들은 보안상 어디에든 쓰입니다. 자동적으로 취약접을 드러냅니다.</li>
+<li>업데이트가 된 요소에 대해서 강하게 최근 버전을 권유함으로써 위험성을 최소화합니다.</li>
+<li><code>pipenv graph</code>를 통해 의존성에 대한 통찰을 드립니다.</li>
+<li><code>.env</code>파일들을 불러옴으로써 개발의 워크플로우를 연결해줍니다.</li>
+</ul>
+<h3 id="basic_concepts"><a class="markdownIt-Anchor" href="#basic_concepts"></a> Basic_concepts</h3>
+<ul>
+<li>가상환경이 자동으로 생성됩니다.</li>
+<li>어떤 파라메터도 <code>install</code> 명령어에 전달되지 않아도, 명시된 <code>[packages]</code>는 설치될 것입니다.</li>
+<li>python3 가상환경을 초기화 하려면 <code>pipenv --three</code></li>
+</ul>
+<h3 id="목표"><a class="markdownIt-Anchor" href="#목표"></a> 목표</h3>
+<ol>
+<li>Pipfile과 Pipfile.lock을 이해한다.</li>
+<li>dev-dependancy와 그렇지 않은 것을 구분한다.</li>
+<li>자유롭게 다룬다.</li>
+</ol>
+<h2 id="pipfile"><a class="markdownIt-Anchor" href="#pipfile"></a> Pipfile</h2>
+<ul>
+<li>
+<p>Example Pipfile</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[[source]]</span><br><span class="line">url = &quot;https://pypi.python.org/simple&quot;</span><br><span class="line">verify_ssl = true</span><br><span class="line">name = &quot;pypi&quot;</span><br><span class="line"></span><br><span class="line">[packages]</span><br><span class="line">requests = &quot;*&quot;</span><br><span class="line"></span><br><span class="line">[dev-packages]</span><br><span class="line">pytest = &quot;*&quot;</span><br><span class="line"></span><br><span class="line">[requires]</span><br><span class="line">python_version = &apos;&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>일반적인 권유, 버전관리</p>
+<ul>
+<li>일반적으로 <code>Pipfile</code>, <code>Pipfile.lock</code>은 버전컨트롤에 포함하십시오.</li>
+<li>만약 복수의 파이썬 버전이 타겟이라면 <code>Pipfile.lock</code>은 포함하지 마십시오.</li>
+<li>당신이 요구하는 파이썬 버전을 Pipfile의 <code>[requires]</code> 섹션에 명시하십시오. 이상적으로라면 하나의 파이썬 버전만 가져야합니다.</li>
+<li><code>pipenv install</code>은 <code>pip install</code>과 완벽히 호환됩니다.</li>
+</ul>
+</li>
+</ul>
+<h2 id="기본_워크플로우"><a class="markdownIt-Anchor" href="#기본_워크플로우"></a> 기본_워크플로우</h2>
+<ol>
+<li>당신의 프로젝트 저장소를 생성하고 클론하십시오: <code>cd my project</code></li>
+<li>Pipfile로부터 설치한다면: <code>pipenv install</code></li>
+<li>새로운 패키지를 추가한다면: <code>pipenv install &lt;package&gt;</code></li>
+<li>Pipfile이 초기화 되었다면: <code>pipenv shell &amp;&amp; python --version</code>
+<ul>
+<li>이것은 새로운 shell subprocess를 생성합니다. <code>exit</code>를 통해 deactivate할 수 있습니다.</li>
+</ul>
+</li>
+</ol>
+<h3 id="업데이트_워크플로우"><a class="markdownIt-Anchor" href="#업데이트_워크플로우"></a> 업데이트_워크플로우</h3>
+<ul>
+<li>무엇이 변했는지 확인할 때: <code>pipenv update --outdated</code></li>
+<li>패키지를 업그레이드할 때 2가지 옵션:
+<ol>
+<li>모든 것을 업그레이드: <code>pipenv update</code></li>
+<li>하나씩 업그레이드: <code>pipenv update &lt;pkg&gt;</code>i</li>
+</ol>
+</li>
+</ul>
+<h3 id="requirementstxt를_통해"><a class="markdownIt-Anchor" href="#requirementstxt를_통해"></a> requirements.txt를_통해</h3>
+<p>requirements.txt파일이 존재할 때 <code>pipenv install</code>을 실행하면,   pipenv는 자동적으로 파일의 내용을 가져와 Pipfile을 생성해 줄 것입니다.</p>
+<p>아래처럼 명시적으로 처리하는 것도 가능합니다.<br>
+<code>pipenv install -r path/to/requirements.txt</code></p>
+<h2 id="가상환경관리"><a class="markdownIt-Anchor" href="#가상환경관리"></a> 가상환경관리</h2>
+<p>Pipenv환경을 관리하기 위한 3가지 주요 커맨드가 있습니다.<br>
+<code>pipenv install</code>, <code>pipenv uninstall</code>, <code>pipenv lock</code></p>
+<h3 id="pipenv_install"><a class="markdownIt-Anchor" href="#pipenv_install"></a> pipenv_install</h3>
+<p><code>pipenv install [package names]</code></p>
+<ul>
+<li>
+<p>options</p>
+<ul>
+<li><code>--two</code></li>
+<li><code>--three</code></li>
+<li><code>--python [version number]</code></li>
+<li><code>--dev</code>: <code>Pipfile</code>에 명시된 <code>develop</code>와 <code>default</code>모두 설치합니다.</li>
+<li><code>--system</code>: 가상환경이 아닌 글로벌 <code>pip</code>커맨드를 사용합니다.</li>
+<li><code>--ignore-pipfile</code>: <code>Pipfile</code>을 무시하고 <code>Pipfile.lock</code>으로 설치합니다.</li>
+<li><code>--skip-lock</code>: <code>Pipfile.lock</code>을 무시하고 <code>Pipfile</code>로 설치합니다.<br>
+<code>Pipfile</code>에 생기는 변화가 <code>Pipfile.lock</code>에 반영되지 않습니다.</li>
+</ul>
+</li>
+<li>
+<p>install via vcs</p>
+<ul>
+<li><code>pipenv install -e git+https://github.com/requests/requests.git@v2.20.1#egg=requests</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="pipenv_uninstall"><a class="markdownIt-Anchor" href="#pipenv_uninstall"></a> pipenv_uninstall</h3>
+<p><code>pipenv uninstall</code>은 <code>pipenv install</code>의 모든 커맨드를 지원합니다.</p>
+<ul>
+<li>addtional options
+<ul>
+<li><code>--all</code>: 가상환경의 모든 것을 지우지만 <code>Pipfile</code>을 남깁니다.</li>
+<li><code>--all-dev</code>: <code>Pipfile</code>까지 삭제합니다.</li>
+</ul>
+</li>
+</ul>
+<h2 id="advanced_usage"><a class="markdownIt-Anchor" href="#advanced_usage"></a> Advanced_usage</h2>
+<ol>
+<li>
+<p>패키지 유효성 이슈 검사</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$pipenv</span> check</span><br><span class="line">&lt;!-- vulnerable issue로 버전업데이트가 필요하면 Pipfile에 버전명을 수정 --&gt;</span><br><span class="line"><span class="variable">$pipenv</span> install</span><br><span class="line"><span class="variable">$pipenv</span> check</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>lock이 잘 안된다?</p>
+<ul>
+<li>black을 설치할때, lock파일 해시 생성하는 곳에서 문제가 생기는데 해결법은 2가지가 있다.
+<ol>
+<li><code>pipenv lock --pre</code>: Pre release버전에 대해서 lock을 처리해준다</li>
+<li><code>pipenv install --dev --skip-lock</code>: 만약</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="마치며"><a class="markdownIt-Anchor" href="#마치며"></a> 마치며</h2>
+<p>간단한 시행착오를 통해 최종적으로 이렇게 다루면 Dev depency와 분리해서 사용하기 좋다.</p>
+<ol>
+<li>일반 의존모듈은 pre release가 아니어야한다.</li>
+<li>dev모듈은 lock을 하지 말자</li>
+<li>배포 환경에서는,  pipfile을 가지고 설치하되 dev는 제외하고 설치한다.</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pipenv --three</span><br><span class="line"><span class="comment"># 초기화</span></span><br><span class="line">pipenv install --dev --skip-lock pylint selenium black fabric mypy pytest</span><br><span class="line">pipenv install</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/05/15/python/library/pipenv/" data-id="ckkdb52h1001q1pqk8r3s4w2q" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-sql/postgresql_basic" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/14/sql/postgresql_basic/" class="article-date">
+  <time datetime="2019-05-14T10:03:54.000Z" itemprop="datePublished">2019-05-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/14/sql/postgresql_basic/">postgresql 접속하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1초기-실행-명세"><a class="markdownIt-Anchor" href="#1초기-실행-명세"></a> 1.초기 실행 명세</h2>
+<ol>
+<li>
+<p>지정된 유저로 로그인</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ psql -h localhost -d testdb -U testuser -W</span><br><span class="line">postgres=<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>최초 슈퍼계정으로 로그인 (비밀번호 미설정?)</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo -u postgres psql</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>슈퍼계정 비밀번호 변경</p>
+  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> postgres <span class="keyword">with</span> encrypted <span class="keyword">password</span> <span class="string">'******'</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>로그인 후 기본 명령어</p>
+<ul>
+<li>
+<p><code>\q</code>  : 종료</p>
+</li>
+<li>
+<p><code>\du</code> : 유저 목록 확인</p>
+</li>
+<li>
+<p><code>\l</code>  : DB확인</p>
+</li>
+<li>
+<p><code>\dt</code> : 테이블 확인</p>
+</li>
+<li>
+<p><code>\c</code>  : 접속 정보 확인</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 현재 로그인 유저 확인 --&gt;</span><br><span class="line">$ <span class="keyword">SELECT</span> <span class="keyword">current_user</span>;</span><br><span class="line">&lt;!-- 현재 데이터베이스 확인 --&gt;</span><br><span class="line">$ <span class="keyword">SELECT</span> current_database();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>postgreql서비스 제어</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ service postgreql</span><br><span class="line">Usage: /etc/init.d/postgresql &#123;start|stop|restart|reload|force-reload|status&#125; [verision ..]</span><br><span class="line"></span><br><span class="line">$ /etc/init.d/postgresql status</span><br><span class="line">$ sudo service postgresql [status, restart, stop, start]</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="2db-user-and-database"><a class="markdownIt-Anchor" href="#2db-user-and-database"></a> 2.DB User and DATABASE</h2>
+<ul>
+<li>
+<p>CREATE and DROP DATABASE</p>
+   <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">test</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">DATABASE</span> <span class="keyword">test</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">test</span>(</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">int</span>,</span><br><span class="line">    <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">test</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>add user and DROP user</p>
+   <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">DROP</span> <span class="keyword">ROLE</span> testuser;</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">ROLE</span></span><br><span class="line">$ <span class="keyword">CREATE</span> <span class="keyword">ROLE</span> testuser;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">ROLE</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Change ROLE password</p>
+   <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">ALTER</span> <span class="keyword">ROLE</span> guest LOGIN <span class="keyword">password</span> <span class="number">0000</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>give PRIVILEGE</p>
+   <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> dbname <span class="keyword">TO</span> testuser</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3connect-to-aws-rds-psql"><a class="markdownIt-Anchor" href="#3connect-to-aws-rds-psql"></a> 3.Connect to aws-rds psql</h2>
+<ul>
+<li>
+<p>connect through psql client</p>
+   <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ psql</span><br><span class="line">--host=oh-my-lesiles-db.cuddiucrfzmn.ap-northeast-2.rds.amazonaws.com</span><br><span class="line">--port=5432</span><br><span class="line">--username=junehan</span><br><span class="line">--password</span><br><span class="line">--dbname=oh_my_lesiles_db</span><br><span class="line"></span><br><span class="line">Password <span class="keyword">for</span> user junehan:</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>connect and log through sqlarchemy</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line">logging.getLogger(<span class="string">'sqlalchemy.dialects.postgresql'</span>).setLevel(logging.INFO)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>create orm engine</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">engine = create_engine(</span><br><span class="line"><span class="string">'postgresql+psycopg2://&#123;id&#125;:&#123;password&#125;@&#123;host&#125;/&#123;dbname&#125;'</span>,</span><br><span class="line">use_native_hstore=<span class="literal">False</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>psycopg2</p>
+<ul>
+<li>psycopg2 DBAPI는 내부적으로 serialization을 HSTORE타입을 사용하는 extension을 포함한다.</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/05/14/sql/postgresql_basic/" data-id="ckkdb52fw000l1pqkeuitqa3y" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/4/">&laquo; 이전</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

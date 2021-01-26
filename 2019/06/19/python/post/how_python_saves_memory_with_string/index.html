@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>파이썬이 문자열을 저장할 때 어떻게 데이터를 저장하는가? 번역 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="출처 : https://rushter.com/blog/python-strings-and-memory 파이썬3 이후로 문자 타입은 유니코드를 사용하기 시작했다. 유니코드 문자열은 4bytes(16bits)의 크기까지 캐릭터를 인코딩에 따라 수용할 수 있다. 메모리적 측면에서는 때로 고비용이라고 느껴질 수 있다. 메모리소모를 줄이고 퍼포먼스를 개선하기위해 파">
+<meta name="keywords" content="python,python post">
+<meta property="og:type" content="article">
+<meta property="og:title" content="파이썬이 문자열을 저장할 때 어떻게 데이터를 저장하는가? 번역">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/06/19/python/post/how_python_saves_memory_with_string/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="출처 : https://rushter.com/blog/python-strings-and-memory 파이썬3 이후로 문자 타입은 유니코드를 사용하기 시작했다. 유니코드 문자열은 4bytes(16bits)의 크기까지 캐릭터를 인코딩에 따라 수용할 수 있다. 메모리적 측면에서는 때로 고비용이라고 느껴질 수 있다. 메모리소모를 줄이고 퍼포먼스를 개선하기위해 파">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="파이썬이 문자열을 저장할 때 어떻게 데이터를 저장하는가? 번역">
+<meta name="twitter:description" content="출처 : https://rushter.com/blog/python-strings-and-memory 파이썬3 이후로 문자 타입은 유니코드를 사용하기 시작했다. 유니코드 문자열은 4bytes(16bits)의 크기까지 캐릭터를 인코딩에 따라 수용할 수 있다. 메모리적 측면에서는 때로 고비용이라고 느껴질 수 있다. 메모리소모를 줄이고 퍼포먼스를 개선하기위해 파">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/post/how_python_saves_memory_with_string" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/19/python/post/how_python_saves_memory_with_string/" class="article-date">
+  <time datetime="2019-06-19T09:25:35.000Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      파이썬이 문자열을 저장할 때 어떻게 데이터를 저장하는가? 번역
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="출처-httpsrushtercomblogpython-strings-and-memory"><a class="markdownIt-Anchor" href="#출처-httpsrushtercomblogpython-strings-and-memory"></a> 출처 : <a href="https://rushter.com/blog/python-strings-and-memory/" target="_blank" rel="noopener">https://rushter.com/blog/python-strings-and-memory</a></h2>
+<p>파이썬3 이후로 문자 타입은 유니코드를 사용하기 시작했다. 유니코드 문자열은<br>
+4bytes(16bits)의 크기까지 캐릭터를 인코딩에 따라 수용할 수 있다.<br>
+메모리적 측면에서는 때로 고비용이라고 느껴질 수 있다.</p>
+<p>메모리소모를 줄이고 퍼포먼스를 개선하기위해 파이썬은<br>
+유니코드 문자열의 3가지 내부적인(Internal rep…) 추상화를 이용한다.<br>
+1byte per char(Latin-1 endcoding)<br>
+2bytes per char(UCS-2 endcoding)<br>
+4bytes per char(UCS-4 endcoding)<br>
+파이썬을 프로그래밍할때 파이썬의 모든 문자열은 동일하게 동작한다.<br>
+그리고 대부분의 경우에 우리는 어떤 변화도 눈치채지 못한다.<br>
+그러나 변화는 매우 주목할만하고, 때로는 예상치못하다<br>
+(많은 양의 문자열을 다룰때,)</p>
+<p>내부적인 추상화에서 차이를 확인하려면, 우리는 sys.getsizeof<br>
+를 이용할 수 있다.(그것은 객체의 크기를 bytes로환산해준다.)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">string = <span class="string">'hello'</span></span><br><span class="line">sys.getsizeof(string)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">54</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1-byte encoding</span></span><br><span class="line">sys.getsizeof(string+<span class="string">'!'</span>)-sys.getsizeof(string)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2-byte encoding</span></span><br><span class="line">string2  = <span class="string">'你'</span></span><br><span class="line">sys.getsizeof(string2+<span class="string">'好'</span>)-sys.getsizeof(string2)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#4-byte encoding</span></span><br><span class="line">string3 = <span class="string">'🐍'</span></span><br><span class="line">sys.getsizeof(string3+<span class="string">'💻'</span>)-sys.getsizeof(string3)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">4</span></span><br><span class="line">sys.getsizeof(string3)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">80</span></span><br></pre></td></tr></table></figure>
+<p>당신이 보는 것처럼 문자열의 내용에 따라, 파이썬은 다른 인코딩을 사용한다. 그것을 기억하라,<br>
+파이썬의 모든 개별 문자열은 49~80bytes의 메모리를 추가적인 정보를 보관하는 지점에 추가로 소모한다.<br>
+예를 들면 hash, length in bytes, encoding type, string flags<br>
+등이 있다. 그것이 빈 문자객체가 49byte의 메모리를 소모하는 이유이다.</p>
+<p>우리는 인코딩을 추론할 수 있다, 직접 객체에 대해 ctypes: 를 사용함으로.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PyUnicodeObject</span><span class="params">(ctypes.Structure)</span>:</span></span><br><span class="line">    <span class="comment"># internal fields of the string object</span></span><br><span class="line">    _fields_ = [(<span class="string">"ob_refcnt"</span>, ctypes.c_long),</span><br><span class="line">                (<span class="string">"ob_type"</span>, ctypes.c_void_p),</span><br><span class="line">                (<span class="string">"length"</span>, ctypes.c_ssize_t),</span><br><span class="line">                (<span class="string">"hash"</span>, ctypes.c_ssize_t),</span><br><span class="line">                (<span class="string">"interned"</span>, ctypes.c_uint, <span class="number">2</span>),</span><br><span class="line">                (<span class="string">"kind"</span>, ctypes.c_uint, <span class="number">3</span>),</span><br><span class="line">                (<span class="string">"compact"</span>, ctypes.c_uint, <span class="number">1</span>),</span><br><span class="line">                (<span class="string">"ascii"</span>, ctypes.c_uint, <span class="number">1</span>),</span><br><span class="line">                (<span class="string">"ready"</span>, ctypes.c_uint, <span class="number">1</span>),</span><br><span class="line">                <span class="comment"># ...</span></span><br><span class="line">                <span class="comment"># ...</span></span><br><span class="line">                ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_string_kind</span><span class="params">(string)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> PyUnicodeObject.from_address(id(string)).kind</span><br><span class="line"></span><br><span class="line">get_string_kind(<span class="string">'Hello'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span></span><br><span class="line">get_string_kind(<span class="string">'你好'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span></span><br><span class="line">get_string_kind(<span class="string">'🐍'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p>만약 문자열의 모든 글자들이 ASCll 범위안에 맞을 수 있다면,<br>
+그들은 1-byte Latin-1 인코딩을 사용한다. 기본적으로,<br>
+Latin-1은 최초의 256 유니코드-캐릭터를 추상화한다.<br>
+이것은 많은 라틴어를 지원한다. 그러나 라틴어 계열 언어가 아니라면 그럴 수 없다.<br>
+아시아, 아프리카등 일대의 언어에 대해서 그러하다. 이것이<br>
+그들의 코드포인트(숫자상의 인덱스들)가 1-byte(0-255)범위 밖을 정의하게 된 이유이다.<br>
+이모티콘 절때 쓰지마라 문자의 4배 이상 메모리가 소요된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ord(<span class="string">'a'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">97</span></span><br><span class="line">ord(<span class="string">'你'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">20320</span></span><br><span class="line">ord(<span class="string">'!'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">33</span></span><br></pre></td></tr></table></figure>
+<h3 id="왜-파이썬이-내부적으로-utf-8을-사용하지-않는가"><a class="markdownIt-Anchor" href="#왜-파이썬이-내부적으로-utf-8을-사용하지-않는가"></a> 왜 파이썬이 내부적으로 UTF-8을 사용하지 않는가?</h3>
+<p>UTF-8인코딩에 문자가 저장되어 있다면, 개별 글자는 자신이 추상화<br>
+하는 정보에 따라 1-4bytes의 메모리를 사용하여 encoded된다.<br>
+그것은 저장상 효율적인 인코딩이다.<br>
+그러나 한가지 큰 단점이 있다!<br>
+-개별 문자가 1-4bytes의 메모리에 저장되어 있어서, 문자를 열람하지 않고서, 인덱싱으로 무작위단어에 대해 접근이 불가능하다.<br>
+그래서 쉬운 명령인 string[5]의 경우도 UTF-8파이썬은 요구된 문자를 찾을 때 까지 스캔을 해야한다.<br>
+고정된 길이의 인코딩은 그런 문제가 없다.<br>
+글자를 인덱스에 따라 원본을 찾기위해, 파이썬은 그저 한 캐릭터의 인덱스 번호를 늘리면 그만이다.</p>
+<h3 id="string-interning"><a class="markdownIt-Anchor" href="#string-interning"></a> string interning</h3>
+<p>빈 문자나 ASC2의 문자열중 특정 문자를 다룰 때, 파이썬은 string interning(문자를 잡아 놓음)을 사용한다.<br>
+잡혀있는 문자는 싱글턴 객체처럼 행동해서, 그 말은,<br>
+두개의 독립적인 문자객체가 잡혀있다면, 그들은 그들중 하나의 복사본만 메모리에 보관하는 것이다.</p>
+<ul>
+<li>id()메서드를 통한 다른객체 동일 글자에 대한 동일한 주소에 대한 이야기.<br>
+이것은 파이썬의 문자객체는 immutable하기 때문이다.</li>
+</ul>
+<p>파이썬에서 문자열을 잡아 놓는 것은, 글자나, 빈 문자객체에만 국한되지 않는다.<br>
+문자열,(코드를 컴파일하면서 생성된,)은 그들의 길이가 20글자를 초과하지 않는다면,<br>
+또한 저장될(잡히다) 수 있다.<br>
+이것은 포함한다.<br>
+-함수 &amp; 클래스 이름들<br>
+-변수명들<br>
+-매개변수 이름들<br>
+-상수들(코드에 선언된 모든 문자들)<br>
+-Dictionary의 키 이름들<br>
+-속성의 이름들</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">'teststring'</span></span><br><span class="line">b = <span class="string">'teststring'</span></span><br><span class="line">id(a), id(b), a <span class="keyword">is</span> b</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">4569487216</span>, <span class="number">4569487216</span>, <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">a = <span class="string">'test'</span>*<span class="number">5</span></span><br><span class="line">b = <span class="string">'test'</span>*<span class="number">5</span></span><br><span class="line">len(a), id(a), id(b), a <span class="keyword">is</span> b</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">20</span>, <span class="number">4569499232</span>, <span class="number">4569499232</span>, <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">a = <span class="string">'test'</span>*<span class="number">6</span></span><br><span class="line">b = <span class="string">'test'</span>*<span class="number">6</span></span><br><span class="line">len(a), id(a), id(b), a <span class="keyword">is</span> b</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="number">24</span>, <span class="number">4569479328</span>, <span class="number">4569479168</span>, <span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>open(‘aa.txt’,‘r’).read()등을 통한 할당은 적용되지 않는다.<br>
+그것은 일종의 외부 스트림에 의존 하는 것이지 상수가 아니기 때문이다.</li>
+</ul>
+<p>문자를 잡아 놓는 기술은 동일한 내용의 문자선언을 줄여준다.<br>
+내부적으로, 문자를 잡아 놓는 것은 global dictionary에 의해<br>
+유지된다.(global dictionary, 문자들이 키로서 보관되는 곳이다. 그곳에<br>
+이미 특정 문자열이 메모리 안에 있는지 보기 위해<br>
+파이썬은 dictionary의 key조회하는 명령을 수행한다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/19/python/post/how_python_saves_memory_with_string/" data-id="ckkdb52ho002k1pqki9b6oc0t" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-post/">python post</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/19/python/post/socket_programing/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          소켓프로그래밍 python C nodejs
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/19/python/post/memory_and_GC/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">파이썬의 GC와 메모리 관리자</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>소켓과 스트림을 이해하기 위한 고급 IO함수 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="index  버퍼링 제어하기(linux_gcc buffer) 스레드 세이프(thread safe) 벡터 입출력(Vector IO)    버퍼링_제어하기 표준 입출력은 세가지 유형으로 사용자 버퍼링을 구현하고, 버퍼의 유형과 크기를 다룰 수 있는 인터페이스를 제공한다. 각각의 버퍼링 타입은 저마다의 목적이 있으니 상황에 맞게 사용해야 한다.    type">
+<meta name="keywords" content="c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="소켓과 스트림을 이해하기 위한 고급 IO함수">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/08/27/c/io_functions_advanced/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="index  버퍼링 제어하기(linux_gcc buffer) 스레드 세이프(thread safe) 벡터 입출력(Vector IO)    버퍼링_제어하기 표준 입출력은 세가지 유형으로 사용자 버퍼링을 구현하고, 버퍼의 유형과 크기를 다룰 수 있는 인터페이스를 제공한다. 각각의 버퍼링 타입은 저마다의 목적이 있으니 상황에 맞게 사용해야 한다.    type">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.071Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="소켓과 스트림을 이해하기 위한 고급 IO함수">
+<meta name="twitter:description" content="index  버퍼링 제어하기(linux_gcc buffer) 스레드 세이프(thread safe) 벡터 입출력(Vector IO)    버퍼링_제어하기 표준 입출력은 세가지 유형으로 사용자 버퍼링을 구현하고, 버퍼의 유형과 크기를 다룰 수 있는 인터페이스를 제공한다. 각각의 버퍼링 타입은 저마다의 목적이 있으니 상황에 맞게 사용해야 한다.    type">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-c/io_functions_advanced" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/27/c/io_functions_advanced/" class="article-date">
+  <time datetime="2019-08-27T08:23:28.000Z" itemprop="datePublished">2019-08-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      소켓과 스트림을 이해하기 위한 고급 IO함수
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> index</h2>
+<ol>
+<li><a href="#%EB%B2%84%ED%8D%BC%EB%A7%81_%EC%A0%9C%EC%96%B4%ED%95%98%EA%B8%B0"><strong>버퍼링 제어하기(linux_gcc buffer)</strong></a></li>
+<li><a href="#%EC%8A%A4%EB%A0%88%EB%93%9C_%EC%84%B8%EC%9D%B4%ED%94%84thread_safe"><strong>스레드 세이프(thread safe)</strong></a></li>
+<li><a href="#%EB%B2%A1%ED%84%B0_%EC%9E%85%EC%B6%9C%EB%A0%A5vector_io"><strong>벡터 입출력(Vector IO)</strong></a></li>
+</ol>
+<hr>
+<h2 id="버퍼링_제어하기"><a class="markdownIt-Anchor" href="#버퍼링_제어하기"></a> 버퍼링_제어하기</h2>
+<p>표준 입출력은 세가지 유형으로 사용자 버퍼링을 구현하고,<br>
+버퍼의 유형과 크기를 다룰 수 있는 인터페이스를 제공한다.<br>
+각각의 버퍼링 타입은 저마다의 목적이 있으니 상황에 맞게 사용해야 한다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">type</th>
+<th style="text-align:center">desc</th>
+<th style="text-align:center">ie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">버퍼 미사용</td>
+<td style="text-align:center">사용자 버퍼를 사용하지않고 바로 커널로 데이터를 보낸다. 딱히 이점이 없다.</td>
+<td style="text-align:center"><strong>표준에러<code>stderr</code></strong> 외에 거의 사용하지 않음</td>
+</tr>
+<tr>
+<td style="text-align:center">행 버퍼</td>
+<td style="text-align:center">행 단위 버퍼링 수행. 개행문자가 나타나면 버퍼 내용을 커널로 보낸다. 화면출력을 위한 스트림일 경우 유용, 화면출력 메세지는 개행문자로 구분되기 때문이다.</td>
+<td style="text-align:center"><strong>표준 출력<code>stdin</code></strong> 처럼 터미널에 연결된 스트림에서 기본적으로 사용하는 버퍼링 방식</td>
+</tr>
+<tr>
+<td style="text-align:center">블록 버퍼</td>
+<td style="text-align:center">고정된 바이트수로 표현되는 블록단위로 버퍼링을 수행. 파일에 적합하여 기본적으로 파일과 관련된 모든 스트림은 블록버퍼를 사용한다.</td>
+<td style="text-align:center"><strong>파일 스트림(FILE)</strong>. 표준입출력 에서는 블록버퍼링을 <code>full</code>버퍼링이라고 한다.</td>
+</tr>
+</tbody>
+</table>
+<p>대부분 기본유형의 버퍼링을 사용하는 편이 올바르고 최선이나, 표준입출력은 버퍼링 방식을 제어할 수 있는 인터페이스를 제공한다.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setvbuf</span><span class="params">(FILE *stream, <span class="keyword">char</span> *buf, <span class="keyword">int</span> mode, <span class="keyword">size_t</span> size)</span></span>;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>stream</code>의 <strong>버퍼링 유형</strong>을 <code>mode</code>로 설정한다.
+<ul>
+<li>mode
+<ol>
+<li><code>IONF</code>: 버퍼 미사용</li>
+<li><code>IOLBF</code>: 행 버퍼</li>
+<li><code>IOFBF</code>: 블록 버퍼</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><code>buf</code>와 <code>size</code>를 무시하는 <code>IONF</code>를 제외하고,</li>
+<li>나머지는 <code>size</code>바이트 크기의 버퍼를 가리키는 <code>buf</code>를 주어진 <code>stream</code>을 위한 버퍼로 사용한다.</li>
+<li>만약 <code>buf</code>가 <code>NULL</code>이면, <strong>glibc</strong>가 자동적으로 지정된 크기만큼 메모리를 할당한다. (파일 저장을 생각하면 아마 1024이상 4kb, 8kb 정도가 아닐까?)</li>
+<li><code>setvbuf</code>함수는 스트림을 연다음, 다른 연산(읽기 쓰기 등.)수행하기 전에 호출해야 한다.</li>
+<li>성공시 0을 반환, 실패시 그 외의 값을 반환.</li>
+</ol>
+<p>제공된 버퍼는 스트림이 닫힐 때까지 반드시 존재해야한다.<br>
+흔히 스트림을 받기 전에 끝나는 스코프 내부의 자동변수로 버퍼를 선언하는 실수를 한다.<br>
+특히 <code>main()</code>에서 지역변수로 버퍼를 만든 후, 스트림을 명시적을 닫지 않는 경우.</p>
+<p>아래 코드에는 버그가 있다.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> buf[BUFSIZ];</span><br><span class="line">    <span class="comment">// stdout을 bufsize크게에 맞춰 블록 버퍼로 설정한다.</span></span><br><span class="line"></span><br><span class="line">    setvbuf(<span class="built_in">stdout</span>, buf, _IOFBF, BUFSIZ);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"ARRR!\n"</span>); <span class="comment">// stdout에 버퍼에 들어가고 개행문자를 확인함과 stdout buf에서 fflush되서 화면에 출력된다.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// buf는 스코프를 벗어나고 해제된다. 하지만 stdout을 닫지 않았다!!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>일반적으로 개발자들은 스트림을 다룰 때 버퍼링에 대해 고민할 필요가 없다.<br>
+표준 에러를 제외하고, 터미널은 행 버퍼링으로 동작하는게 맞고 파일은 블록버퍼링을 사용하는게 맞다. 그게 전부다.</p>
+<p>블록 버퍼링에서 버퍼의 기본크기는 <code>BUFSIZ</code>이며 <code>&lt;stdio.h&gt;</code>에 정의되어 있다.<br>
+이 값은 일반적인 블록크기의 정수배인 최적의 값이다.<br>
+<strong>(64비트 운영체제인 내 컴퓨터에서는 <code>8192bytes</code>)</strong></p>
+<hr>
+<h2 id="스레드_세이프thread_safe"><a class="markdownIt-Anchor" href="#스레드_세이프thread_safe"></a> 스레드_세이프:Thread_safe</h2>
+<p>pass</p>
+<hr>
+<h2 id="벡터_입출력vector_io"><a class="markdownIt-Anchor" href="#벡터_입출력vector_io"></a> 벡터_입출력Vector_io</h2>
+<blockquote>
+<p>버퍼세그먼트의 집합을 벡터라 한다.</p>
+</blockquote>
+<p>한번의 시스템콜을 사용해서, 여러개의 버퍼벡터(세그먼트)에 쓰거나, 읽어들일 때 사용.<br>
+백터입출력은 선형입출력 메서드에 비해 다음과 같은 장점을 가지고 있다.</p>
+<ol>
+<li>자연스러운 코딩 패턴
+<ul>
+<li>미리 정의된 구조체가 여러 필드에 걸쳐 데이터가 분리되어 있는 경우,<br>
+벡터입출력을 사용하면 직관적인 방법으로 조작할 수 있다.</li>
+</ul>
+</li>
+<li>효율
+<ul>
+<li>하나의 벡터 입출력 연산은 여러번의 선형 입출력 연산을 대체할 수 있다.</li>
+</ul>
+</li>
+<li>성능
+<ul>
+<li>시스템콜의 횟수를 줄일 뿐 아니라, 내부적으로 선현 입출력 구현에 비해 좀 더 최적화된 구현을 제공.</li>
+</ul>
+</li>
+</ol>
+<h3 id="readv_writev"><a class="markdownIt-Anchor" href="#readv_writev"></a> readv_writev</h3>
+<p><code>read()</code>, <code>write()</code>와 동일하게 동작하지만, 여러 개의 버퍼를 사용한다는 점에서 구분된다.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/uio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span>&#123;</span></span><br><span class="line">    <span class="keyword">void</span> *iov_base; <span class="comment">// 버퍼의 시작 포인터</span></span><br><span class="line">    <span class="keyword">size_t</span> iov_len; <span class="comment">// 버퍼의 바이트 수</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>readv()</code></li>
+</ul>
+<p>파일디스크립터 <code>fd</code>에서 데이터를 읽어 count개수만큼 <code>iov</code>버퍼에 저장.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/uio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ssize_t</span> readv(<span class="keyword">int</span> fd, <span class="keyword">const</span> struct iovec *iov, <span class="keyword">int</span> count);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>writev()</code></li>
+</ul>
+<p>count개수만큼의 <code>iov</code>버퍼에 있는 데이터를 파일디스크립터<code>fd</code>에 저장.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/uio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ssize_t</span> writev(<span class="keyword">int</span> fd, <span class="keyword">const</span> struct iovec *iov, <span class="keyword">int</span> count);</span><br></pre></td></tr></table></figure>
+<p>둘 다 성공시 읽거나 쓴 바이트 개수를 반환한다.<br>
+즉, <code>count * iov_len</code>과 같아야 하며, 에러가 발생하면 -1을 반환하고 errno를 설정한다.</p>
+<p>표준에러에서 추가로 2가지 에러의 상황이 있다.</p>
+<ol>
+<li>반환값의 자료형이 <code>ssize_t</code>이기 때문에 <code>SSZIE_MAX</code>보다 큰 값을 전달했다고 리턴하면 데이터는 전송되지 않고,<br>
+-1을 반환하며 errno는 EINVAL로 설정한다.<br>
+(<code>2**32-1</code>을 바이트 취급하면 <code>4gb</code>)</li>
+<li>POSIX는 count가 반드시 0보다 크고 <code>IOV_MAX</code>와 같거나 작아야한다.<br>
+리눅스에서  IOV_MAX값은 1024로 정의.<br>
+만약 count가 0이면 0을 반환하고(0회 실행했으니 데이터전송량 0바이트),<br>
+IOV_MAX보다 크다면, 데이터는 전송되지 않고 -1을 반환하며 errno는 EINVAL로 설정한다.</li>
+</ol>
+<p>버프의 기본사이즈 인 블록사이즈(메모리 접근 최소 단위)가 내 운영체제에서는 8kb 이기 때문에,<br>
+<code>1024bytes</code>(를 부분 버퍼로)*<code>8</code>(개)이면 데이터가 딱 맞게 <strong>한번의 시스템 콜로</strong> <code>1kb 8개 버퍼</code>를 처리하는 것이다.</p>
+<h3 id="writev_예시"><a class="markdownIt-Anchor" href="#writev_예시"></a> writev_예시</h3>
+<ul>
+<li>Code</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/uio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">iov</span>[3];</span></span><br><span class="line">    <span class="keyword">ssize_t</span> nr;</span><br><span class="line">    <span class="keyword">int</span> fd;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> res;</span><br><span class="line">    <span class="keyword">char</span> *buf[] = &#123;</span><br><span class="line">        <span class="string">"The term buccaneer comes from the word boucan.\n"</span>,</span><br><span class="line">        <span class="string">"A boucan is a wooden frame used for cooking meat.\n"</span>,</span><br><span class="line">        <span class="string">"Buccaneer is the West Indies name for a pirate.\n"</span>&#125;;</span><br><span class="line"></span><br><span class="line">    fd = open(<span class="string">"buccaneer.txt"</span>, O_WRONLY | O_CREAT | O_TRUNC);</span><br><span class="line">    <span class="keyword">if</span> (fd == <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"open"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        iov[i].iov_base = buf[i];</span><br><span class="line">        iov[i].iov_len = <span class="built_in">strlen</span>(buf[i]) + <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"len: %li\n"</span>, <span class="built_in">strlen</span>(buf[i]));</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    nr = writev(fd, iov, <span class="number">3</span>);</span><br><span class="line">    <span class="keyword">if</span> (nr == <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"writev"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"wrote %ld bytes\n"</span>, nr);</span><br><span class="line">    res = close(fd);</span><br><span class="line">    <span class="keyword">if</span> (res == <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"close"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>output</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">len: 47</span><br><span class="line">len: 50</span><br><span class="line">len: 48</span><br><span class="line">wrote 148 bytes</span><br></pre></td></tr></table></figure>
+<ul>
+<li>strace</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">execve(<span class="string">"./writev.out"</span>, [<span class="string">"./writev.out"</span>], 0x7ffecf1aa940 /* 27 vars */) = 0</span><br><span class="line">brk(NULL)                               = 0x55bf90861000</span><br><span class="line">access(<span class="string">"/etc/ld.so.nohwcap"</span>, F_OK)      = -1 ENOENT (No such file or directory)</span><br><span class="line">access(<span class="string">"/etc/ld.so.preload"</span>, R_OK)      = -1 ENOENT (No such file or directory)</span><br><span class="line">openat(AT_FDCWD, <span class="string">"/etc/ld.so.cache"</span>, O_RDONLY|O_CLOEXEC) = 3</span><br><span class="line">fstat(3, &#123;st_mode=S_IFREG|0644, st_size=90249, ...&#125;) = 0</span><br><span class="line">mmap(NULL, 90249, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fe81dace000</span><br><span class="line">close(3)                                = 0</span><br><span class="line">access(<span class="string">"/etc/ld.so.nohwcap"</span>, F_OK)      = -1 ENOENT (No such file or directory)</span><br><span class="line">openat(AT_FDCWD, <span class="string">"/lib/x86_64-linux-gnu/libc.so.6"</span>, O_RDONLY|O_CLOEXEC) = 3</span><br><span class="line"><span class="built_in">read</span>(3, <span class="string">"\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0&gt;\0\1\0\0\0\260\34\2\0\0\0\0\0"</span>..., 832) = 832</span><br><span class="line">fstat(3, &#123;st_mode=S_IFREG|0755, st_size=2030544, ...&#125;) = 0 <span class="comment"># fd에 대한 정보 갱신</span></span><br><span class="line">mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fe81dacc000 <span class="comment"># 가상 메모리의 데이터 매핑 (메모리를 map하다.)</span></span><br><span class="line">mmap(NULL, 4131552, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fe81d4cd000</span><br><span class="line">mprotect(0x7fe81d6b4000, 2097152, PROT_NONE) = 0</span><br><span class="line">mmap(0x7fe81d8b4000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000) = 0x7fe81d8b4000</span><br><span class="line">mmap(0x7fe81d8ba000, 15072, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7fe81d8ba000</span><br><span class="line">close(3)                                = 0</span><br><span class="line">arch_prctl(ARCH_SET_FS, 0x7fe81dacd4c0) = 0 <span class="comment"># 아키텍쳐의 특수 프로세스나 쓰레드 상태를 설정함(성립시킴) 프로세스에 할당되는 쓰레드에 실행중인 코드블록의 주소를 전달하는?</span></span><br><span class="line">mprotect(0x7fe81d8b4000, 16384, PROT_READ) = 0</span><br><span class="line">mprotect(0x55bf90670000, 4096, PROT_READ) = 0</span><br><span class="line">mprotect(0x7fe81dae5000, 4096, PROT_READ) = 0 <span class="comment"># 메모리 주소에 대한 권한 변경</span></span><br><span class="line">munmap(0x7fe81dace000, 90249)           = 0 <span class="comment"># 메모리 해제</span></span><br><span class="line">openat(AT_FDCWD, <span class="string">"buccaneer.txt"</span>, O_WRONLY|O_CREAT|O_TRUNC, 0100750) = 3</span><br><span class="line">fstat(1, &#123;st_mode=S_IFCHR|0620, st_rdev=makedev(136, 1), ...&#125;) = 0</span><br><span class="line">brk(NULL)                               = 0x55bf90861000 <span class="comment"># 실행하는 프로세스에 대해 메모리 세그먼트 변경, 추가 등.</span></span><br><span class="line">brk(0x55bf90882000)                     = 0x55bf90882000</span><br><span class="line">write(1, <span class="string">"len: 47\n"</span>, 8)                = 8</span><br><span class="line">write(1, <span class="string">"len: 50\n"</span>, 8)                = 8</span><br><span class="line">write(1, <span class="string">"len: 48\n"</span>, 8)                = 8</span><br><span class="line">writev(3, [&#123;iov_base=<span class="string">"The term buccaneer comes from th"</span>..., iov_len=48&#125;, &#123;iov_base=<span class="string">"A boucan is a wooden frame used "</span>..., iov_len=51&#125;, &#123;iov_base=<span class="string">"Buccaneer is the West Indies nam"</span>..., iov_len=49&#125;], 3) = 148</span><br><span class="line">write(1, <span class="string">"wrote 148 bytes\n"</span>, 16)       = 16</span><br><span class="line">close(3)                                = 0</span><br><span class="line">exit_group(0)                           = ?</span><br><span class="line">+++ exited with 0 +++</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="readv_예시"><a class="markdownIt-Anchor" href="#readv_예시"></a> readv_예시</h3>
+<ul>
+<li>code</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/uio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> foo[<span class="number">48</span>], bar[<span class="number">51</span>], baz[<span class="number">49</span>];</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">iov</span>[3];</span></span><br><span class="line">    <span class="keyword">ssize_t</span> nr;</span><br><span class="line">    <span class="keyword">int</span> fd, i;</span><br><span class="line"></span><br><span class="line">    fd = open(<span class="string">"buccaneer.txt"</span>, O_RDONLY);</span><br><span class="line">    <span class="keyword">if</span> (fd == <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"open"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    iov[<span class="number">0</span>].iov_base = foo;</span><br><span class="line">    iov[<span class="number">0</span>].iov_len = <span class="keyword">sizeof</span>(foo);</span><br><span class="line"></span><br><span class="line">    iov[<span class="number">1</span>].iov_base = bar;</span><br><span class="line">    iov[<span class="number">1</span>].iov_len = <span class="keyword">sizeof</span>(bar);</span><br><span class="line"></span><br><span class="line">    iov[<span class="number">2</span>].iov_base = baz;</span><br><span class="line">    iov[<span class="number">2</span>].iov_len = <span class="keyword">sizeof</span>(baz);</span><br><span class="line"></span><br><span class="line">    nr = readv(fd, iov, <span class="number">3</span>); <span class="comment">// 블럭 단위 버퍼로 저장한다. BUF_SIZ(8kb)</span></span><br><span class="line">    <span class="comment">// 파일을 읽는 물리 블록 단위는 4096bytes? 그 단위로 읽으면 재정렬이 필요없어.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (nr == <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"readv"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d: %s"</span>, i, (<span class="keyword">char</span> *)iov[i].iov_base);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (close(fd) == <span class="number">-1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"close"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>output</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0: The term buccaneer comes from the word boucan.</span><br><span class="line">1: A boucan is a wooden frame used <span class="keyword">for</span> cooking meat.</span><br><span class="line">2: Buccaneer is the West Indies name <span class="keyword">for</span> a pirate.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>사실 리눅스 커널 내부에 모든 입출력은 벡터 입출력이다.<br>
+<code>read()</code>와 <code>write()</code>구현 역시 하나짜리 세그먼트를 가지는 벡터 입출력으로 되어있다.</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/08/27/c/io_functions_advanced/" data-id="ckkdb52f900041pqkefwekbxn" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/30/python/post/pointer_in_python/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          pointer in python 번역
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/22/linux/select_poll/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">multiple io, select() and poll()</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

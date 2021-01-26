@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>basic concept of linux / process and Thread | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Index  Process Thread 프로세스의 계층 구조 프로세스의 생성   Process   정의 활성화 상태로 실행중인, 코드 세그먼트로 코드(실행 컨텍스트)가 이동한 프로그램. 데이터, 리소스, 상태, 가상화된 컴퓨터를 포함    커널이 이해하는 실행파일 포멧으로 만들어져 실행가능한 오브젝트 코드로 형태 리눅스에서 가장 일반적인 실행파일 포멧은">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="basic concept of linux &#x2F; process and Thread">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/08/12/linux/basic_concept_procss_2/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="Index  Process Thread 프로세스의 계층 구조 프로세스의 생성   Process   정의 활성화 상태로 실행중인, 코드 세그먼트로 코드(실행 컨텍스트)가 이동한 프로그램. 데이터, 리소스, 상태, 가상화된 컴퓨터를 포함    커널이 이해하는 실행파일 포멧으로 만들어져 실행가능한 오브젝트 코드로 형태 리눅스에서 가장 일반적인 실행파일 포멧은">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.071Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="basic concept of linux &#x2F; process and Thread">
+<meta name="twitter:description" content="Index  Process Thread 프로세스의 계층 구조 프로세스의 생성   Process   정의 활성화 상태로 실행중인, 코드 세그먼트로 코드(실행 컨텍스트)가 이동한 프로그램. 데이터, 리소스, 상태, 가상화된 컴퓨터를 포함    커널이 이해하는 실행파일 포멧으로 만들어져 실행가능한 오브젝트 코드로 형태 리눅스에서 가장 일반적인 실행파일 포멧은">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-linux/basic_concept_procss_2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/12/linux/basic_concept_procss_2/" class="article-date">
+  <time datetime="2019-08-12T04:07:34.000Z" itemprop="datePublished">2019-08-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      basic concept of linux / process and Thread
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<ol>
+<li><a href="#process"><strong>Process</strong></a></li>
+<li><a href="#thread"><strong>Thread</strong></a></li>
+<li><a href="#%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%EC%9D%98_%EA%B3%84%EC%B8%B5_%EA%B5%AC%EC%A1%B0"><strong>프로세스의 계층 구조</strong></a></li>
+<li><a href="#%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%EC%9D%98_%EC%83%9D%EC%84%B1"><strong>프로세스의 생성</strong></a></li>
+</ol>
+<h2 id="process"><a class="markdownIt-Anchor" href="#process"></a> Process</h2>
+<ul>
+<li>
+<p>정의</p>
+<p>활성화 상태로 실행중인, 코드 세그먼트로 코드(실행 컨텍스트)가 이동한 프로그램.<br>
+데이터, 리소스, 상태, 가상화된 컴퓨터를 포함</p>
+</li>
+</ul>
+<ol>
+<li>커널이 이해하는 실행파일 포멧으로 만들어져 실행가능한 오브젝트 코드로 형태</li>
+<li>리눅스에서 가장 일반적인 실행파일 포멧은 <code>ELF(Executable and Linkable Format)</code></li>
+<li>실행 파일은 여러 섹션으로 구성</li>
+</ol>
+<ul>
+<li>메타 데이터</li>
+<li>코드</li>
+<li>데이터</li>
+</ul>
+<ol start="4">
+<li>위 섹션은 오브젝트 코드가 담긴 바이트 배열(FILE), 선형 메모리 공간에 적재됨</li>
+<li>섹션에 담긴 바이트들은 접근 권한이 같고 사용목적이 비슷하며, 동일하게 취급.</li>
+</ol>
+<p>가장 중요한 공통 섹션</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">섹션</th>
+<th style="text-align:left">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">텍스트 섹션</td>
+<td style="text-align:left">실행가능 코드, 상수, 변수와 같은 읽기전용 데이터. (읽기전용과 실행가능으로 표시</td>
+</tr>
+<tr>
+<td style="text-align:left">데이터 섹션</td>
+<td style="text-align:left">정의된 값을 할당한 변수와 같은 초기화된 자료. 일반적으로 읽고 쓰기가 가능한 동적 데이터</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>BSS</code>(block storage segment)</td>
+<td style="text-align:left">초기화되지 않은 전역 데이터. 함수 콜스텍처럼 곧 해제될 것으로 기대되는 것이 아닌, 프로그램의 실행과 종료에 생성되면 적지 않게 유지될 전역에 할당되고 사용될 데이터</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>프로세스는 커널이 중재하고 관리하는 다양한 시스템 리소스와 관련이 있다.</li>
+<li>프로세스는 일반적으로 시스템 콜을 이용하여 리소스를 요청하고 조작한다.
+<ul>
+<li>리소스들(타이머, 대기중인 시그널, 열린 파일, 네트워크 연결, 하드웨어, IPC매커니즘)</li>
+</ul>
+</li>
+<li>프로세스 리소스는 자신과 관련한 데이터의 통계정보를 포함하고 있으며, 해당 프로세스의 프로세스 디스크립터 형태로 커널 내부에 저장된다.</li>
+</ul>
+<blockquote>
+<p>프로세스는 가상화를 위한 추상 개념이다.<br>
+선점형 멀티테스킹과 가상메모리를 지원하는 리눅스 커널은 가상화된 프로세서와 가상화된 메모리를 프로세스에 제공한다.</p>
+</blockquote>
+<ul>
+<li>
+<p>프로세스와 커널의 입장에서 본 가상화에 대하여</p>
+<p>커널은 프로세스에 단일 선형 주소공간(Single linear Address space)를 제공하므로, 프로세스 홀로 시스템에 존재하는 모든 메모리를 제어하는 것처럼 보인다.</p>
+<p>커널은 가상 메모리와 페이징 기법(swapping)을 사용해서 프로세스마다 다른 주소공간에서 동작하도록 만들기 때문에, 여러 프로세스가 시스템 상에서 공존.</p>
+<p>최신 프로세서는 운영체제가 독립적인 여러 프로세스 상태를 동시에 관리할 수 있도록 하며, 커널은 이런 하드웨어의 도움을 받아 가상화를 관리한다.</p>
+</li>
+</ul>
+<h2 id="thread"><a class="markdownIt-Anchor" href="#thread"></a> Thread</h2>
+<ul>
+<li>정의</li>
+</ul>
+<p>각 프로세스는 실행 스레드를 하나 이상 포함한다.<br>
+스레드는 프로세스 내부에서 실행하는 활동 단위.<br>
+코드를 실행하고 프로세스 동작 상태를 유지하는 추상개념이다.</p>
+<blockquote>
+<p>유닉스의 간결함을 중시하는 철학과 빠른 프로세스 생성시간, 견고한 IPC매커니즘 떄문에,<br>
+전통적으로 유닉스 프로그램은 싱글 스레드였고, 스레드 기반으로 옮겨 가려는 요구사항이 적었다.</p>
+</blockquote>
+<p>스레드의 구성요소</p>
+<ul>
+<li>독자적 지역 변수를 저장하는 스텍</li>
+<li>프로세서 상태</li>
+<li>오브젝트 코드의 현재 위치(instruction Pointer)</li>
+</ul>
+<p>스케쥴링을 통해 선점한 프로세스의 스레드의 IP를 CPU의 IR로 가져와서 실행됨.</p>
+<p>기타 프로세스에 남아있는 대부분의 리소스는 모든 스레드의 공유자원이다.</p>
+<hr>
+<h3 id="리눅스-커널의-스레드-구현"><a class="markdownIt-Anchor" href="#리눅스-커널의-스레드-구현"></a> 리눅스 커널의 스레드 구현</h3>
+<p>스레드는 단순히 주소공간을 비롯 일부 리소스를 공유하는 일반적인 프로세스일 뿐이다.<br>
+사용자 영역에서 리눅스는 <code>Pthread</code>라 하는 POSIX 1003.1c에 따라 쓰레드를 구현한다.<br>
+<code>glibc</code>의 일부인 현재 리눅스 쓰레드의 구현체 명은 NPTL(<code>Nativa POSIX Threading Library</code>).</p>
+<hr>
+<h2 id="프로세스의_계층_구조"><a class="markdownIt-Anchor" href="#프로세스의_계층_구조"></a> 프로세스의_계층_구조</h2>
+<p>프로세스는 <code>PID</code>라는 고유 양수값으로 구분된다. - (첫번쨰 프로세스의 pid는 1)</p>
+<p>리눅스에서 프로세스는 프로세스 트리라는 계층 구조를 형성한다.<br>
+일반적으로 프로세스 트리는 <code>init</code>프로그램으로 알려진 첫 프로세스가 루트가 된다.</p>
+<p>새로운 프로세스는 <code>fork()</code> 시스템 콜로 만들어진다.<br>
+이 시스템 콜을 호출하는 기준 프로세스를 복사해서 다른 프로세스를 만든다.</p>
+<p>첫번째 프로세스를 제외한 나머지 프로세스는 모두 부모-프로세스가 있고,<br>
+부모-프로세스가 자식-프로세스 보다 먼저 종료 되면, 자식-프로세스를 부모-프로세스로 승격 시킨다.</p>
+<p>프로세스가 종료되면 시스템에서 바로 제거하지 않고, 프로세스 일부를 메모리에 유지한다.<br>
+자식-프로세스가 종료될 때 부모-프로세스가 상태를 검사 할 수 있도록 한다.</p>
+<p>이를 <code>&quot;종료된 프로세스를 기다린다.&quot;</code>고 표현한다.</p>
+<p>만약 자식-프로세스가 종료되었는데 기다리는 부모-프로세스가 없다면, 이때 좀비-프로세스가 탄생한다.<br>
+일상적으로 첫 init프로세스는 자신이 fork한 모든 프로세스를 기다려서 새로 생성된 프로세스가 종료될 때 좀비가 되는 것을 막는다.</p>
+<h2 id="프로세스의_생성"><a class="markdownIt-Anchor" href="#프로세스의_생성"></a> 프로세스의_생성</h2>
+<p>프로세스의 생성목적</p>
+<ol>
+<li>같은 프로그램의 처리를 여러 프로세스가 나눠서 처리, (웹서버 리퀘스트 분산처리)</li>
+<li>전혀 다른 프로그램을 생성, (Bash로 부터 새로운 프로그램 init으로서 생성)</li>
+</ol>
+<blockquote>
+<p>1: <code>fork()</code> 2: <code>execve()</code></p>
+</blockquote>
+<ul>
+<li><code>fork()</code>의 양상</li>
+</ul>
+<ol>
+<li>자식 프로세스의 메모리 영역을 미리 할당(init에서 부터 발행하는 시점에 메모리)</li>
+<li><code>fork()</code>함수의 리턴값이 각기 다른 것을 이용하여, 부모와 자식을 다른 코드를 실행하도록 분기. (1개의 스크립트 -&gt; 2개의 실행)</li>
+<li>부모 프로세스는 <code>fork()</code>로 부터 복귀, 자식 프로세스는 <code>fork()</code>로부터 리턴되는 것</li>
+</ol>
+<figure class="highlight c"><figcaption><span>fork.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;err.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">child</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"I'm child process, pid is %d"</span>, getpid());</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_SUCCESS)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">parent</span><span class="params">(<span class="keyword">pid_t</span> pid_c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"I'm parent process, pid is %d, child pid is %d"</span>, getpid(), pid_c);</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_SUCCESS);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">pid_t</span> ret;</span><br><span class="line">    ret = fork();</span><br><span class="line">    <span class="keyword">if</span> (ret == <span class="number">-1</span>)</span><br><span class="line">        err(EXIT_FAILURE, <span class="string">"fork() failed"</span>);</span><br><span class="line">    <span class="keyword">if</span> (ret == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// child process come here</span></span><br><span class="line">        child();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// parent process come here returns if created child process (&gt; 1)</span></span><br><span class="line">        parent(ret)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// shouldnt come here</span></span><br><span class="line">    err(EXIT_FAILURE, <span class="string">"shouldn't reach here"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cc -o fork fork.c</span><br><span class="line">$ ./fork</span><br><span class="line"><span class="string">"i'm parent process, pid is 4193 child pid is 4194"</span></span><br><span class="line"><span class="string">"i'm child process, pid is 4194"</span></span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>execve()</code>의 양상</li>
+</ul>
+<p>실행 순서</p>
+<ol>
+<li>실행파일을 읽은 다음 프로세스의 메모리 맵에 필요한 정보를 읽어 들입니다.</li>
+<li>현재 프로세스의 메모리를 새로운 프로세스의 데이터로 덮어 씁니다.</li>
+<li>새로운 프로세스의 첫 번째 명령부터 실행합니다.</li>
+</ol>
+<p>기존의 프로세스를 별도의 프로세스로 덮어씌우면서 전환하는 방식.</p>
+<p>프로세스를 실행하는데 필요한 디테일</p>
+<ul>
+<li>실행파일의 inode를 통해 코드를 포함한 HDD영역의 메모리맵 시작주소, 오프셋, 사이즈</li>
+<li>코드 외의 변수등에서의 데이터 영역에 대한 같은 정보(오프셋, 사이즈, 메모리맵 시작주소),초기 실행필요한 메모리</li>
+<li>최초 실행할 명력의 메모리 주소(entry point)</li>
+</ul>
+<p>프로그램의 실행파일 구조</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">이름</th>
+<th style="text-align:center">값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">코드영역 파일상 오프셋</td>
+<td style="text-align:center">100</td>
+</tr>
+<tr>
+<td style="text-align:left">코드 영역 사이즈</td>
+<td style="text-align:center">100</td>
+</tr>
+<tr>
+<td style="text-align:left">코드영역 메모리 시작 주소</td>
+<td style="text-align:center">300</td>
+</tr>
+<tr>
+<td style="text-align:left">데이터 영역 파일상 오프셋</td>
+<td style="text-align:center">200</td>
+</tr>
+<tr>
+<td style="text-align:left">데이터 영역 사이즈</td>
+<td style="text-align:center">200</td>
+</tr>
+<tr>
+<td style="text-align:left">데이터 영역 메모리맵 시작 주소</td>
+<td style="text-align:center">400</td>
+</tr>
+<tr>
+<td style="text-align:left">엔트리 포인트</td>
+<td style="text-align:center">400</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// add.c</span></span><br><span class="line">c = a + b</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># compile to assembly</span><br><span class="line">load m100 r0   # 읽어들여라 / m100 메모리 주소(name a)의 값을 / r0 레지스터에</span><br><span class="line">load m200 r1   # 읽어들여라 / m200 메모리 주소(name b)의 값을 / r1 레지스터에</span><br><span class="line">add r0 r1 r2   # 더해라 / r0 과 r1을 / r2 레지스터에 </span><br><span class="line">store r2 m300  # 저장하라 / r2를 / m300 메모리 주소(name c)에</span><br></pre></td></tr></table></figure>
+<h2 id="실행_포멧_elf_분석"><a class="markdownIt-Anchor" href="#실행_포멧_elf_분석"></a> 실행_포멧_ELF_분석</h2>
+<p>리눅스 대표 실행파일인 ELF포멧의 정보는 <code>readelf</code>명령어로 해석 가능.<br>
+<code>/bin/sleep</code>을 예제로 정보를 가져오면,</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">readelf -h /bin/sleep</span><br><span class="line">ELF Header:</span><br><span class="line"><span class="comment">#   Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00</span></span><br><span class="line"><span class="comment">#   Class:                             ELF64</span></span><br><span class="line"><span class="comment">#   Data:                              2's complement, little endian</span></span><br><span class="line"><span class="comment">#   Version:                           1 (current)</span></span><br><span class="line"><span class="comment">#   OS/ABI:                            UNIX - System V</span></span><br><span class="line"><span class="comment">#   ABI Version:                       0</span></span><br><span class="line"><span class="comment">#   Type:                              DYN (Shared object file)</span></span><br><span class="line"><span class="comment">#   Machine:                           Advanced Micro Devices X86-64</span></span><br><span class="line"><span class="comment">#   Version:                           0x1</span></span><br><span class="line"><span class="comment">#   Entry point address:               0x1b70</span></span><br><span class="line"><span class="comment">#   Start of program headers:          64 (bytes into file)</span></span><br><span class="line"><span class="comment">#   Start of section headers:          33208 (bytes into file)</span></span><br><span class="line"><span class="comment">#   Flags:                             0x0</span></span><br><span class="line"><span class="comment">#   Size of this header:               64 (bytes)</span></span><br><span class="line"><span class="comment">#   Size of program headers:           56 (bytes)</span></span><br><span class="line"><span class="comment">#   Number of program headers:         9</span></span><br><span class="line"><span class="comment">#   Size of section headers:           64 (bytes)</span></span><br><span class="line"><span class="comment">#   Number of section headers:         28</span></span><br><span class="line"><span class="comment">#   Section header string table index: 27</span></span><br></pre></td></tr></table></figure>
+<p><code>Entry point address: 0x1b70</code></p>
+<ol>
+<li>실행해야 하는 코드 주소 위치는 <code>0x1b70</code></li>
+<li>여기서 코드영역과 데이터 영역의 파일상의 오프셋, 사이즈, 메모리맵 시작주소를 얻으려면</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">readelf -S /bin/sleep</span><br><span class="line">There are 28 section headers, starting at offset 0x81b8:</span><br><span class="line"></span><br><span class="line">Section Headers:</span><br><span class="line">  [Nr] Name              Type             Address           Offset</span><br><span class="line">       Size              EntSize          Flags  Link  Info  Align</span><br><span class="line">    <span class="comment">#    중략</span></span><br><span class="line">  [14] .text             PROGBITS         00000000000018d0  000018d0</span><br><span class="line">       0000000000003989  0000000000000000  AX       0     0     16</span><br><span class="line">  [24] .data             PROGBITS         0000000000208000  00008000</span><br><span class="line">       0000000000000080  0000000000000000  WA       0     0     32</span><br><span class="line">  [25] .bss              NOBITS           0000000000208080  00008080</span><br><span class="line">       00000000000001c0  0000000000000000  WA       0     0     32</span><br><span class="line">  <span class="comment"># 중략</span></span><br><span class="line">Key to Flags:</span><br><span class="line">  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),</span><br><span class="line">  L (link order), O (extra OS processing required), G (group), T (TLS),</span><br><span class="line">  C (compressed), x (unknown), o (OS specific), E (exclude),</span><br><span class="line">  l (large), p (processor specific)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/08/12/linux/basic_concept_procss_2/" data-id="ckkdb52fd00071pqkiihy6kr7" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/16/linux/memory_of_process/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          basic concept of linux / about memory
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/12/linux/basic_concept/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">basic concept of linux / about file</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

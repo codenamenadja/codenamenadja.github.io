@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>pytest 이해와 사용 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="major deminority of Default TestCase  Specific test method names (ie, ‘assertIsNone’, ‘assertDictEqual’… elses) no database access? then may be to use ‘SimpleTestCase’ Test in the same class diff met">
+<meta name="keywords" content="python,testing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytest 이해와 사용">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/06/12/tdd/python/pytest/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="major deminority of Default TestCase  Specific test method names (ie, ‘assertIsNone’, ‘assertDictEqual’… elses) no database access? then may be to use ‘SimpleTestCase’ Test in the same class diff met">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pytest 이해와 사용">
+<meta name="twitter:description" content="major deminority of Default TestCase  Specific test method names (ie, ‘assertIsNone’, ‘assertDictEqual’… elses) no database access? then may be to use ‘SimpleTestCase’ Test in the same class diff met">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tdd/python/pytest" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/12/tdd/python/pytest/" class="article-date">
+  <time datetime="2019-06-12T12:02:11.000Z" itemprop="datePublished">2019-06-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pytest 이해와 사용
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="major-deminority-of-default-testcase"><a class="markdownIt-Anchor" href="#major-deminority-of-default-testcase"></a> major deminority of Default TestCase</h2>
+<ol>
+<li>Specific test method names (ie, ‘assertIsNone’, ‘assertDictEqual’… elses)</li>
+<li>no database access? then may be to use ‘SimpleTestCase’</li>
+<li>Test in the same class diff methods uses identical test database in order to properly user setup method.</li>
+</ol>
+<h2 id="differences-between-pure-django-test-and-pytest"><a class="markdownIt-Anchor" href="#differences-between-pure-django-test-and-pytest"></a> differences between pure django test and pytest</h2>
+<ul>
+<li>default TestCase</li>
+</ul>
+<pre><code><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.test <span class="keyword">import</span> TestCase</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a+b</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestAdd</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_add_positive_numbers</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.assertEqual(add(<span class="number">2</span>, <span class="number">2</span>), <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_add_negative_numbers</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.assertEqual(add(<span class="number">-2</span>, <span class="number">-2</span>), <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ul>
+<li>Pytest</li>
+</ul>
+<pre><code><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"><span class="keyword">from</span> upper <span class="keyword">import</span> add</span><br><span class="line"></span><br><span class="line"><span class="meta">@pytest.mark.parametrize('a, b, expected', [</span></span><br><span class="line">(<span class="number">2</span>, <span class="number">2</span>, <span class="number">4</span>), (<span class="number">-2</span>, <span class="number">-2</span>, <span class="number">-4</span>)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_add</span><span class="params">(a, b, expected)</span>:</span></span><br><span class="line">    <span class="keyword">assert</span> add(a, b) == expected</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h2 id="pytest-idioms-and-features"><a class="markdownIt-Anchor" href="#pytest-idioms-and-features"></a> pytest idioms and features</h2>
+<ul>
+<li>간단한 assert문을 사용한다. pytest는 무엇이 assert되었는지에 따라 적절한 차이를 아웃풋 할것이다.</li>
+<li>테스트를 클래스기반으로 그룹 짓지 않고 작성할 수 있다.</li>
+<li>재사용 가능한 'fixtures’를 통해서 상태를 셋업 할 수있다. 픽스쳐는 다양한 스코프에서 사용이 가능하다.</li>
+<li>__Markers__를 통하여 테스트를 카테고리화 하고, 그들의 실행 자원을 변경할 수 있다.</li>
+<li>서드파티 라이브러리의, 픽스쳐, 마커, 그리고 테스트 실행 기능성을 위한 플러그인 시스템</li>
+</ul>
+<h2 id="어떻게-테스트주도개발을-할-것인가"><a class="markdownIt-Anchor" href="#어떻게-테스트주도개발을-할-것인가"></a> 어떻게 테스트주도개발을 할 것인가?</h2>
+<ol>
+<li>고비용의 통합테스트를 조금 작성한다.</li>
+<li>많은 분기의 핸들링을 가지고 있는 부분을 결정한다(ie: error handling). 우리는 그들을 다수의 유닛 테스트로 커버할 수 있다.</li>
+<li>어플리케이션 단에서 제어할 수 없는 부분을 정의한다(ie: 외부 API)</li>
+<li>앱이 모양을 갖추고 나면, 사이에 생략된 테스트들을 작성한다.</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/12/tdd/python/pytest/" data-id="ckkdb52hx002w1pqkrxx5kn1r" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/testing/">testing</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/14/python/library/django/admin_customize/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          장고에서 admin페이지 커스터마이징하기
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/05/27/python/custom_module/using_sqs/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">boto3로 sqs자원 사용하기</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

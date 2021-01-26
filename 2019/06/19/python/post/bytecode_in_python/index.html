@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>파이썬 바이트코드에 대한 이해 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="어떤 언어는 직접 CPUInstruction으로 컴파일하고, 어떤 언어는 실행 중에 즉시 소스코드를 해석한다. 어떤 언어는 중간단계의 세트의 instruction으로 컴파일한다.(실제 CPU를 향한게 아님) 그리고 가상머신(인터프리터)을 실행해서, 실행 중에 그것들을 CPU instruction으로 변환해서 건네준다. 그게 ByteCode이다.   자바도">
+<meta name="keywords" content="python,python post">
+<meta property="og:type" content="article">
+<meta property="og:title" content="파이썬 바이트코드에 대한 이해">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/06/19/python/post/bytecode_in_python/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="어떤 언어는 직접 CPUInstruction으로 컴파일하고, 어떤 언어는 실행 중에 즉시 소스코드를 해석한다. 어떤 언어는 중간단계의 세트의 instruction으로 컴파일한다.(실제 CPU를 향한게 아님) 그리고 가상머신(인터프리터)을 실행해서, 실행 중에 그것들을 CPU instruction으로 변환해서 건네준다. 그게 ByteCode이다.   자바도">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="파이썬 바이트코드에 대한 이해">
+<meta name="twitter:description" content="어떤 언어는 직접 CPUInstruction으로 컴파일하고, 어떤 언어는 실행 중에 즉시 소스코드를 해석한다. 어떤 언어는 중간단계의 세트의 instruction으로 컴파일한다.(실제 CPU를 향한게 아님) 그리고 가상머신(인터프리터)을 실행해서, 실행 중에 그것들을 CPU instruction으로 변환해서 건네준다. 그게 ByteCode이다.   자바도">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/post/bytecode_in_python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/19/python/post/bytecode_in_python/" class="article-date">
+  <time datetime="2019-06-19T09:42:39.000Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      파이썬 바이트코드에 대한 이해
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>어떤 언어는 직접 CPUInstruction으로 컴파일하고,<br>
+어떤 언어는 실행 중에 즉시 소스코드를 해석한다.</p>
+<p>어떤 언어는 중간단계의 세트의 instruction으로 컴파일한다.(실제 CPU를 향한게 아님)<br>
+그리고 가상머신(인터프리터)을 실행해서,<br>
+실행 중에 그것들을 CPU instruction으로 변환해서 건네준다.<br>
+그게 ByteCode이다.</p>
+</blockquote>
+<blockquote>
+<p>자바도 바이트코드로 변환한다, C#도 그렇다. 파이썬도 그렇다.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#fibonacci.py</span></span><br><span class="line"><span class="comment">#fibonacci.pyc -python2</span></span><br><span class="line"><span class="comment">#pycache - python3</span></span><br><span class="line">fib.__code__</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>&lt;code object fib at <span class="number">0x10fb76930</span>, file <span class="string">'&lt;stdin&gt;'</span> line <span class="number">1</span>&gt;</span><br><span class="line"></span><br><span class="line">fib.__code__.co_consts</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="literal">None</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, (<span class="number">0</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">fib.__code__.co_varnames</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(<span class="string">'n'</span>, <span class="string">'current'</span>, <span class="string">'next'</span>) :local-varname</span><br><span class="line"></span><br><span class="line">fib.__code__.co_names</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>() non-localnames</span><br><span class="line"></span><br><span class="line">fib.__code__.co_code</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">b'|\x00d\x01k....'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> dis</span><br><span class="line">dis.opname[<span class="number">124</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'LOAD_FAST'</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="cpython"><a class="markdownIt-Anchor" href="#cpython"></a> Cpython</h2>
+<blockquote>
+<p>CPython은 스텍기반 가상머신이다.<br>
+각 함수는 호출되면, 콜 스텍위로 새로운 엔트리로 콜 프레임(=스텍프레임)을 집어 넣는다.<br>
+함수가 리턴되면, 이것의 프레임은 스텍에서 popped off된다.</p>
+<ul>
+<li>C기반이라, 규칙처럼 적용되서 탈락을 면할 수 없지만,<br>
+Coroutine은 독립된 스텍프레임으로 힙안에 존재하기 때문에,<br>
+함수 실행 이후에(제너레이터 초기화)도  남아있을 수 있다.</li>
+<li>Cpython은 함수가 실행될 때, 두개의 스텍을 사용한다:<br>
+evaluation-stack or data-stack, (이것은 지역변수와 인스트럭션)<br>
+And block-stack(얼마나 많은 블록이 활성화되어있는지 추적한다.<br>
+loops, try/except, with,…)</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fib(8)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">ByteCode</th>
+<th style="text-align:left">VAL</th>
+<th style="text-align:right">Evauation Stack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0 LOAD_GLOBAL</td>
+<td style="text-align:left">0 (fib)</td>
+<td style="text-align:right">2- 8</td>
+</tr>
+<tr>
+<td style="text-align:left">2 LOAD_CONST</td>
+<td style="text-align:left">1 (8)</td>
+<td style="text-align:right">0- function fib</td>
+</tr>
+<tr>
+<td style="text-align:left">4 CALL_FUNCTION</td>
+<td style="text-align:left">1</td>
+<td style="text-align:right"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>자세한 것은 <a href="https://docs.python.org/3/library/dis.html" target="_blank" rel="noopener">공식문서 dis 모듈</a>에 바이트코드에 대한 모든게 들어있다. 꼭 기회를 만들어 보시길.</p>
+</blockquote>
+<blockquote>
+<p>아래는 실제로 c로 돌아가는 코드이다.</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (opcode)&#123;</span><br><span class="line">    TARGET(NOP)</span><br><span class="line">        FAST_DISPATCH();</span><br><span class="line"></span><br><span class="line">    TARGET(LOAD_FAST) &#123;</span><br><span class="line">        PyObject *value - GETLOCAL(oparg);</span><br><span class="line">        <span class="keyword">if</span>(value == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            format_exe_check_arg(</span><br><span class="line">                PyExc_UnboundLocalError,</span><br><span class="line">                UNBOUNDLOCAL_ERROR_MSG,</span><br><span class="line">                PyTuple_GetItem(co-&gt;co_varnames, oparg)</span><br><span class="line">                );</span><br><span class="line">            <span class="keyword">goto</span> error;</span><br><span class="line">        &#125;</span><br><span class="line">        Py_INCREF(value);</span><br><span class="line">        PUSH(value);</span><br><span class="line">        FAST_DISPATCH();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*Many, many more bytecode instructions below...*/</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="what-can-we-learn-from-bytecode"><a class="markdownIt-Anchor" href="#what-can-we-learn-from-bytecode"></a> What can we learn from bytecode?</h2>
+<ol>
+<li>
+<p>Practical한 효과를 그렇게 보기는 힘들 것이다.</p>
+</li>
+<li>
+<p>하지만 stack-oriented virtual machine을 확인하는 것은 다르다.</p>
+<ul>
+<li>넓은 이해를 가질 수 있고, 다양한 스타일의 프로그래밍을 구사하는데 도움이 된다.</li>
+<li>instruction과 stack에 대해서 우리가 할수 있는 것은,<br>
+정말, 정말 극소수지만, 그것은 우리가 찾던 것이다.</li>
+</ul>
+</li>
+<li>
+<p>하지만 실용적인 목적도 있다.</p>
+<ul>
+<li>c를 기반으로 하는 가상머신을 거의 다 이해할 수 있다.</li>
+<li>파이썬도 그냥 그 중 하나이다.</li>
+<li>공부에 대한 통찰력을 길러준다.</li>
+<li>실제 가상머신이 바이트코드를 실행하는 것에 대해서 이해하면 퍼포먼스에 접근할 수 있다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="conclusion"><a class="markdownIt-Anchor" href="#conclusion"></a> Conclusion</h2>
+<blockquote>
+<br>
+<ul>
+<li>Python은 항상 C보다 느리다는 것을 주목하라.</li>
+<li>그러나! 일반적인 가이드라인을 원하지 않는가? 여기 기술한다.</li>
+</ul>
+<h2 id="1-local-names-are-faster-than-global-ones"><a class="markdownIt-Anchor" href="#1-local-names-are-faster-than-global-ones"></a> 1. Local names are Faster than Global ones</h2>
+<ul>
+<li>LOAD_CONST &gt; LOAD_FAST &gt; LOAD_NAME or LOAD_GLOBAL
+<ul>
+<li>왜냐하면 글로벌 네임을 찾아보는 것은 조금 더 복잡하다.</li>
+<li>실제 인스트럭션이 생각보다 길 것이다. (muitple namespaces 사이에서 찾아야 한다.)</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-loops-and-blocks-are-expensive"><a class="markdownIt-Anchor" href="#2-loops-and-blocks-are-expensive"></a> 2. Loops and blocks Are expensive</h2>
+<ul>
+<li>Lookout for SETUP_LOOP, SETUP_WITH and SETUP_EXCEPTION</li>
+</ul>
+<h2 id="3-attribute-acceses-dictionary-lookups-and-list-indexing-are-expensive"><a class="markdownIt-Anchor" href="#3-attribute-acceses-dictionary-lookups-and-list-indexing-are-expensive"></a> 3. <em>Attribute acceses</em>, <em>dictionary lookups</em> and <em>list Indexing</em> are expensive</h2>
+<ul>
+<li>Look out for LOAD_ATTR and BINARY_SUBSCR</li>
+</ul>
+</blockquote>
+<h2 id="addtional-recommends-to-look-for"><a class="markdownIt-Anchor" href="#addtional-recommends-to-look-for"></a> addtional recommends to look for…</h2>
+<h3 id="1-obi-ike-nwosu-inside-the-python-virtual-machine"><a class="markdownIt-Anchor" href="#1-obi-ike-nwosu-inside-the-python-virtual-machine"></a> 1. Obi ike-Nwosu, “inside the Python Virtual Machine”:</h3>
+<ul>
+<li><a href="https://leanpub.com/insidethepythonvirtualmachine/" target="_blank" rel="noopener">https://leanpub.com/insidethepythonvirtualmachine/</a></li>
+</ul>
+<h3 id="2-alison-kaptur-a-python-interpreter-written-in-python"><a class="markdownIt-Anchor" href="#2-alison-kaptur-a-python-interpreter-written-in-python"></a> 2. Alison Kaptur, “A Python Interpreter Written in Python”:</h3>
+<ul>
+<li><a href="http://www.aosabook.org/en/500L/a-python-interpreter-written-in-python.html" target="_blank" rel="noopener">http://www.aosabook.org/en/500L/a-python-interpreter-written-in-python.html</a></li>
+</ul>
+<h3 id="3-the-cpython-bytecode-interpreter"><a class="markdownIt-Anchor" href="#3-the-cpython-bytecode-interpreter"></a> 3. The CPython bytecode interpreter:</h3>
+<ul>
+<li><a href="https://github.com/python/cpython/blob/master/Python/ceval.c" target="_blank" rel="noopener">https://github.com/python/cpython/blob/master/Python/ceval.c</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/19/python/post/bytecode_in_python/" data-id="ckkdb52hn002j1pqkoxf0nlrs" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-post/">python post</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/19/python/post/python_interpreter/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          파이썬 인터프리터에 대한 이해
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/19/functional_programming/python/python_functional_programming/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">파이썬의 함수형 프로그래밍에 대한 서론 번역</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

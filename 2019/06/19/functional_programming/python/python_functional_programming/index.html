@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>파이썬의 함수형 프로그래밍에 대한 서론 번역 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="출처 : https://www.dataquest.io/blog/introduction-functional-programming-python  서문 대부분의 우리는 파이썬을 객체지향언어라고 알고있다. 클래스와 객체가 비록 사용하기 쉽지만, 파이썬을 작성하는 데엔 다른 방법이 있다. 자바등의 언어는 객체지향에서 벗어나기 힘들게 만드는 경향이 있지만, 파이썬은">
+<meta name="keywords" content="python,functional programming">
+<meta property="og:type" content="article">
+<meta property="og:title" content="파이썬의 함수형 프로그래밍에 대한 서론 번역">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/06/19/functional_programming/python/python_functional_programming/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="출처 : https://www.dataquest.io/blog/introduction-functional-programming-python  서문 대부분의 우리는 파이썬을 객체지향언어라고 알고있다. 클래스와 객체가 비록 사용하기 쉽지만, 파이썬을 작성하는 데엔 다른 방법이 있다. 자바등의 언어는 객체지향에서 벗어나기 힘들게 만드는 경향이 있지만, 파이썬은">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.071Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="파이썬의 함수형 프로그래밍에 대한 서론 번역">
+<meta name="twitter:description" content="출처 : https://www.dataquest.io/blog/introduction-functional-programming-python  서문 대부분의 우리는 파이썬을 객체지향언어라고 알고있다. 클래스와 객체가 비록 사용하기 쉽지만, 파이썬을 작성하는 데엔 다른 방법이 있다. 자바등의 언어는 객체지향에서 벗어나기 힘들게 만드는 경향이 있지만, 파이썬은">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-functional_programming/python/python_functional_programming" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/19/functional_programming/python/python_functional_programming/" class="article-date">
+  <time datetime="2019-06-19T09:39:22.000Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      파이썬의 함수형 프로그래밍에 대한 서론 번역
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>출처 : <a href="https://www.dataquest.io/blog/introduction-functional-programming-python" target="_blank" rel="noopener">https://www.dataquest.io/blog/introduction-functional-programming-python</a></p>
+<h2 id="서문"><a class="markdownIt-Anchor" href="#서문"></a> 서문</h2>
+<p>대부분의 우리는 파이썬을 객체지향언어라고 알고있다. 클래스와 객체가 비록 사용하기 쉽지만, 파이썬을 작성하는 데엔 다른 방법이 있다.<br>
+자바등의 언어는 객체지향에서 벗어나기 힘들게 만드는 경향이 있지만, 파이썬은 그렇지 않다.<br>
+파이썬이 코드를 작성하는데에 다른 접근법을 가능하게 한다는 걸 가지고서, 따라오는 논리적인 질문은, 코드를 적는 다른 방법은 무엇일까? 비록 거기에 많은 답들이 있더라도, 가장 흔하고 대체적인 스타일의 코드 작성법은 함수형 프로그래밍이라고 불린다. 함수형 프로그래밍은 메인 로직이 되어가고 있다.</p>
+<p>이 포스트에서 우리는<br>
+-객체지향과 비교해 함수형의 기본을 설명한다<br>
+-당신이 왜 함수형을 적용하기 힘든지 밝혀낸다<br>
+-어떻게 파이썬이 그 둘 사이에서 전환하는지 알려준다</p>
+<h2 id="1객체지향-언어와-비교하여"><a class="markdownIt-Anchor" href="#1객체지향-언어와-비교하여"></a> 1.객체지향 언어와 비교하여,</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LineCounter</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filename)</span>:</span></span><br><span class="line">        self.file = open(filename, <span class="string">'r'</span>)</span><br><span class="line">        self.lines = []</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">read</span><span class="params">(self)</span>:</span></span><br><span class="line">            self.lines = [line <span class="keyword">for</span> line <span class="keyword">in</span> self.file]</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">(self)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> len(self.lines)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>클래스를 사용하는 것은 위의 사례로 대표된다.<br>
+최고의 객체지향은 아니지만, 이것은 객체지향 디자인에 대한 통찰을 보급한다. 클래스 안에서, 거기엔 친숙한 메서드와 속성이라는 개념이 있다. 속성세트와 객체의 상태를 추론하는 속성, 그리고 메서드가 그 상태를 조작한다.</p>
+</li>
+<li>
+<p>그 두 컨셉의 작업에서, 객체의 상태는 시기에따라 계속 변해야한다. 상태를 변화시키는 것은 증거가 된다, lines 속성 속에서, read()메서드를 부른 이후.<br>
+예로서 이것은 우리가 어떻게 이 클래스를 사용할 건지이다.</p>
+</li>
+</ul>
+<hr>
+<h2 id="scenenario"><a class="markdownIt-Anchor" href="#scenenario"></a> Scenenario</h2>
+<ul>
+<li>example_file.txt contains 100 lines.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">lc = LineCounter(<span class="string">'example_file.txt'</span>)</span><br><span class="line">print(lc.lines)</span><br><span class="line">&gt;&gt; []</span><br><span class="line">print(lc.count())</span><br><span class="line">&gt;&gt; <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>The lc object must read the file to set the lines property.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lc.read()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The <code>lc.lines</code> property has been changed.</li>
+<li>This is called changing the state of the lc</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(lc.lines)</span><br><span class="line">&gt;&gt; [[<span class="string">'Hello world!'</span>, ...]]</span><br><span class="line">print(lc.count())</span><br><span class="line">&gt;&gt; <span class="number">100</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>계속 변하는 객체의 상태는 둘다 축복이며 저주이다.</li>
+<li>왜 상태의 변화가 부정적인지 알기 위해서, 우리는 대체제를 소개해야 한다. 대체제는 line counter를 독립적인 함수의 연속으로 설계하는 것이다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(filename, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">return</span> [line <span class="keyword">for</span> line <span class="keyword">in</span> f]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">(lines)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> len(lines)</span><br><span class="line"></span><br><span class="line">example_lines = read(<span class="string">'example_log.txt'</span>)</span><br><span class="line">lines_count = count(example_lines)</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="2순수함수로-작업하기"><a class="markdownIt-Anchor" href="#2순수함수로-작업하기"></a> 2.순수함수로 작업하기</h1>
+<p>이전의 예제에서 우리는 라인들을 함수만을 이용해서 리스트의 길이를 셀 수 있었다.<br>
+우리가 오직 함수만을 사용할 때, 우리는 함수형 접근을 프로그래밍에 하고 있다,<br>
+그 접근은, 놀랍지 않게도, 함수형 프로그래밍이라 불린다.</p>
+<p>함수형프로그래밍 뒤에 있는 개념은 함수가 상태없이 존재 하기를 요구한다.<br>
+그리고 오직 그들에게 주어진 매개변수으로 출력을 하기를 원한다.<br>
+그 기준에 맞는 함수는 순수함수라 불린다. 이것은 함수형 과 아닌 것 사이를 나누기 위한 것이다.</p>
+<hr>
+<p>Create a global variable <code>A</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">A = <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">impure_sum</span><span class="params">(b)</span>:</span></span><br><span class="line">    <span class="comment"># Adds two numbers, but uses the</span></span><br><span class="line">    <span class="comment"># global `A` variable.</span></span><br><span class="line">    <span class="keyword">return</span> b + A</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pure_sum</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="comment"># Adds two numbers, using</span></span><br><span class="line">    <span class="comment"># ONLY the local function inputs.</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line"></span><br><span class="line">print(impure_sum(<span class="number">6</span>))</span><br><span class="line">&gt;&gt; <span class="number">11</span></span><br><span class="line"></span><br><span class="line">print(pure_sum(<span class="number">4</span>, <span class="number">6</span>))</span><br><span class="line">&gt;&gt; <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>이 순수함수의 이점이 외부효과가 있는 함수 명확한 것은, Reduction의 외부효과들이다.</li>
+<li>외부효과들은 함수 밖에 있는 것에 대해서 함수의 실행이 변화를 주었을 때 일어난다.</li>
+<li>예를 들어 그것들은 우리가 객체의 상태를 바꾸려고 했을 때 일어난다. 어떤 I/O 명령을 실행했을 때, 혹은 print()를 호출했을때,</li>
+</ul>
+<hr>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_and_print</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(filename) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="comment"># Side effect of opening a</span></span><br><span class="line">        <span class="comment"># file outside of function.</span></span><br><span class="line">        data = [line <span class="keyword">for</span> line <span class="keyword">in</span> f]</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> data:</span><br><span class="line">        <span class="comment"># Call out to the operating system</span></span><br><span class="line">        <span class="comment"># "println" method (side effect).</span></span><br><span class="line">        print(line)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>함수 내부에서 함수 밖에 메모리를 호출하고 조종한다.</p>
+</li>
+<li>
+<p>프로그래머들은 그들의 코드가 쉽게 테스트되고 디버깅되고 따르기 쉽게 만들기 위해서 외부효과를 줄인다. 그리고 코드의 외부효과가 커질수록, 프로그램을 진행하고 실행의 순서를 이해하기 어려워진다.</p>
+</li>
+<li>
+<p>비록 모든 외부효과를 없애려고 시도하는 것은 편리하더라도,<br>
+그들은 프로그래밍을 쉽게 만든다. 우리가 만약 모든 외부효과를 없애려고 했다면,<br>
+그럼 너는 파일도 읽을 수 없고, print를 호출할 수도 없고<br>
+모든 변수를 함수 내에서만 초기화 해야한다.</p>
+</li>
+<li>
+<p>함수형 프로그래밍의 지지자들은 이 트레이드 오프를 이해하고 있다.<br>
+그리고 개발의 결과의 퍼포먼스를 해치지 않는 선에서 가능한 많은 외부효과를 제거하려고 노력한다.</p>
+</li>
+</ul>
+<hr>
+<h2 id="3람다함수"><a class="markdownIt-Anchor" href="#3람다함수"></a> 3.람다함수</h2>
+<ul>
+<li>def 형식 이외에 함수 선언에서 우리는 lambda표현을 할 수 있다.</li>
+<li>람다 형식은 def선언형식을 가깝게 따라가지만, 이것은 1-1 매핑이 아니다.<br>
+이것은 2개의 정수를 더하는 함수의 예이다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Using `def` (old way).</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">old_add</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line"><span class="comment"># Using `lambda` (new way).</span></span><br><span class="line">new_add = <span class="keyword">lambda</span> a, b: a + old_add(<span class="number">10</span>, <span class="number">5</span>) == new_add(<span class="number">10</span>, <span class="number">5</span>)</span><br><span class="line">&gt;&gt; <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>람다 표현식은 콤마를 사용하여, 매개변수의 연속성을 분리한다.<br>
+그리고, 정확히 인터프리터가 그 문장의 콜론에 닿는 때에,<br>
+이것은 따로 return에 대한 진술없이 표현식을 리턴한다.<br>
+결국, 변수에 람다함수를 할당하는 것은, 파이썬함수처럼 작동하는 것이고,<br>
+변수를 함수처럼 사용할 수 있다.new_add()</p>
+</li>
+<li>
+<p>우리가 비록 람다 차체에 변수이름을 할당하지 않았더라도, 이것은 익명의 함수가 된다.<br>
+이 익명함수는 매우 도움이 된다. 특히 다른 함수의 매개변수가 되는 때에.</p>
+</li>
+<li>
+<p>예를들어, sorted()함수는 옵션의 Key매개변수를 받는다.<br>
+그 매개변수는 어떻게 아이템들이 리스트에서 정렬되야 하는지를 나타낸다.</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">unsorted = [(<span class="string">'b'</span>, <span class="number">6</span>), (<span class="string">'a'</span>, <span class="number">10</span>), (<span class="string">'d'</span>, <span class="number">0</span>), (<span class="string">'c'</span>, <span class="number">4</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Sort on the second tuple value (the integer).</span></span><br><span class="line">print(sorted(unsorted, key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>]))</span><br><span class="line">&gt;&gt; [(<span class="string">'d'</span>, <span class="number">0</span>), (<span class="string">'c'</span>, <span class="number">4</span>), (<span class="string">'b'</span>, <span class="number">6</span>), (<span class="string">'a'</span>, <span class="number">10</span>)]</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="4map함수"><a class="markdownIt-Anchor" href="#4map함수"></a> 4.Map함수</h2>
+<p>파이썬에서 매개변수로 함수를 전달하는게 다른언어와 구별되는 일은 아니지만, 이것은 최근 프로그래밍 언어들에서 사용되는 개발이다. 이러한 타입의 행동을 따르는 함수들을 first-class fucntions라고 부른다. 어떤 first-class Func를 포한하는 언어는 함수형 스타일로 작성될 수 있다.</p>
+<p>first-class Func와 함께 세트로 함수형 패러다임에서 주요 사용되는 것이 있다. 이 함수들은 iterable 객체를 받는다. 마치 sorted()처럼, 요소에 개별적으로 함수를 적용시킨다. 다음 일부 섹션에서, 우리는 그들을 개별적으로 시험해볼 것이다.<br>
+그러나 그들은 일반적인 포멧인<br>
+function_name(function_to_apply, iterable_of_elements).<br>
+를 따른다.</p>
+<ul>
+<li>우리가 실험해볼 함수는 map()함수이다. map()함수는 iterable객체를 받아서, 새로운 iterable객체를 생성한다. 특별한 map객체이다. 새로운 객체는 모든 요소에 적용되는 일급함수를 가지고 있다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Pseudocode for map.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">map</span><span class="params">(func, seq)</span>:</span></span><br><span class="line">    <span class="comment"># Return `Map` object with</span></span><br><span class="line">    <span class="comment"># the function applied to every</span></span><br><span class="line">    <span class="comment"># element.</span></span><br><span class="line">    <span class="keyword">return</span> Map(</span><br><span class="line">        func(x)</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> seq</span><br><span class="line">    )</span><br><span class="line"><span class="comment"># 이것은 우리 어떻게 맵을 사용하여 개별 리스트 요소에 10또는 20을 다하는 방식이다.</span></span><br><span class="line">values = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Note: We convert the returned map object to</span></span><br><span class="line"><span class="comment"># a list data structure.</span></span><br><span class="line">add_10 = list(map(<span class="keyword">lambda</span> x: x + <span class="number">10</span>, values))</span><br><span class="line">add_20 = list(map(<span class="keyword">lambda</span> x: x + <span class="number">20</span>, values))</span><br><span class="line"></span><br><span class="line">print(add_10)</span><br><span class="line">&gt;&gt; [<span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>]</span><br><span class="line"></span><br><span class="line">print(add_20)</span><br><span class="line">&gt;&gt; [<span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">25</span>]</span><br></pre></td></tr></table></figure>
+<p>map()을 리턴하는 것에서 리스트객체를 리턴하는 것으로 바뀌었다는 점을 주목하라.<br>
+돌려받은 map객체룰 사용하는 것은 네가 list처럼 나오는 것을 기대한다면 좀 불편한 것이다. 첫째로, 그것을 출력하는 것은 모든요소를 보여주지 않으며, 둘째로 너는 한번만을 순회하는 것이 가능하다.</p>
+<p>왜냐면, 그 기록이 map객체의 인스턴스에 기록되기 때문이다.</p>
+<hr>
+<h2 id="4filter함수"><a class="markdownIt-Anchor" href="#4filter함수"></a> 4.Filter함수</h2>
+<p>map과 유사하니 일단 통과</p>
+<hr>
+<h2 id="5reduce함수"><a class="markdownIt-Anchor" href="#5reduce함수"></a> 5.Reduce함수</h2>
+<p>우리가 볼 마지막 함수인 reduce()는 functools패키지 내부에 있다. 그 함수는 이터러블 객체를 받아, 이터러블객체를 하나의 value로 줄인다. Reduce는 filter(), map()과는 다르다. 왜냐하면 이것은 해당 함수가 2개의 인자를 받기 때문이다.<br>
+이것은 우리가 어떻게 reduce()를 사용하여 모든 리스트이 요소를 합하는 예이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">values = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">summed = reduce(<span class="keyword">lambda</span> a, b: a + b, values)</span><br><span class="line">print(summed)</span><br><span class="line">&gt;&gt; <span class="number">10</span></span><br><span class="line">실행도</span><br><span class="line">new = <span class="number">1</span>+<span class="number">2</span></span><br><span class="line">(<span class="number">3</span>)</span><br><span class="line">new = new+<span class="number">3</span></span><br><span class="line">(<span class="number">6</span>)</span><br><span class="line">new = new+<span class="number">4</span></span><br><span class="line">(<span class="number">10</span>)</span><br><span class="line"><span class="comment"># 기억해야할 흥미로운점은 람다표현을 사용하면, 두번째 value에 대해선 실행하지 않아도 된다는 점이다.</span></span><br><span class="line"><span class="comment"># 예를 들어 어떤 함수가 이터러블 객체의 첫 요소만 항상 반환한다고 보자</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># By convention, we add `_` as a placeholder for an input</span></span><br><span class="line"><span class="comment"># we do not use.</span></span><br><span class="line">first_value = reduce(<span class="keyword">lambda</span> a, _: a, values)</span><br><span class="line">print(first_value)</span><br><span class="line">&gt;&gt; <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="6list-comprehensions로-재작성"><a class="markdownIt-Anchor" href="#6list-comprehensions로-재작성"></a> 6.List comprehensions로 재작성</h2>
+<p>우리가 결국 리스트로 변환했기 때문에, 우리는 map(),filter()함수를 리스트-C로 재작성해야한다. 우리가 파이썬고유 표현형식을 통해 리스트를 만드는 것으로 이점을 얻을 수 있기 때문에, 이것이 더 그들을 쓰기에 파이써닉한 방법이다. 이것인 이전의 예제를 리스트-C로 변환할 수 있는 방법이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">values = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Map.</span></span><br><span class="line">add_10 = [x + <span class="number">10</span> <span class="keyword">for</span> x <span class="keyword">in</span> values]</span><br><span class="line">print(add_10)</span><br><span class="line">&gt;&gt; [<span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Filter.</span></span><br><span class="line">even = [x <span class="keyword">for</span> x <span class="keyword">in</span> values <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span>]</span><br><span class="line">print(even)</span><br><span class="line">&gt;&gt; [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>]</span><br></pre></td></tr></table></figure>
+<p>예제를 보면, 우리는 람다함수를 더할 필요도 없다! 네가 만약 map()filter()를 너의 코드에 적용하려 한다면, 이것을 가장 추천한다. 먼저 고려해라. 그러나 다음 섹션에서, 우리는 map(),filter()를 사용하여 예시를 보여줄 것이다.</p>
+<hr>
+<h2 id="7function-partials-작성하기"><a class="markdownIt-Anchor" href="#7function-partials-작성하기"></a> 7.function Partials, 작성하기</h2>
+<p>떄로 우리는 함수의 행동은 그대로 사용하고 싶으면서, 들어오는 매개변수의 수를 줄이고 싶다. 목적은 하나의 인풋을 저장하여, 저장된 매개변수를 default로 하는 새로운 함수를 만든다. 예를 들어 우리가 2를 더해주는 함수를 작성한다고 가정하자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_two</span><span class="params">(b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span> + b</span><br><span class="line"></span><br><span class="line">print(add_two(<span class="number">4</span>))</span><br><span class="line">&gt;&gt; <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>add_two함수는 일반적 함수인 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo stretchy="false">)</mo><mo>=</mo><mi>a</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">f(a,b)=a+b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">b</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span> 와 유사하다, 오직 다른건 하나의 매개변수를 기본으로 하고 있다는 것이다.<br>
+(a=2)<br>
+우리는 partial모듈을 사용하여, argument기본이 설정할 수 있다.<br>
+(람다는 초기화 당시에 라서 람다가 평가되는 시점에 유효한 Reference을 읽어내지만,<br>
+이것은 평가시점이 아니라 설정한 당시 value를 유지한다. 마치 클로저변수처럼.</p>
+<p>partial 모듈은 함수를 받아 매개변수를 freezes(value로서)로 고정시킨다, 첫번째 매개변수로부터 시작해서, 디폴트 매개변수 value로서 완성된 새로운 함수를 리턴한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line"></span><br><span class="line">add_two = partial(add, <span class="number">2</span>)</span><br><span class="line">add_ten = partial(add, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">print(add_two(<span class="number">4</span>))</span><br><span class="line">&gt;&gt; <span class="number">6</span></span><br><span class="line">print(add_ten(<span class="number">4</span>))</span><br><span class="line">&gt;&gt; <span class="number">14</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#partials는 어떤 함수도 받을 수 있다. 표준 라이브러리들도 포함해서.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A partial that grabs IP addresses using</span></span><br><span class="line"><span class="comment"># the `map` function from the standard library.</span></span><br><span class="line"></span><br><span class="line">extract_ips = partial(</span><br><span class="line">    map,</span><br><span class="line">    <span class="keyword">lambda</span> x: x.split(<span class="string">' '</span>)[<span class="number">0</span>]</span><br><span class="line">)</span><br><span class="line">lines = read(<span class="string">'example_log.txt'</span>)</span><br><span class="line">ip_addresses = list(extract_ip(lines))</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/19/functional_programming/python/python_functional_programming/" data-id="ckkdb52gr001f1pqk0tzo3pvg" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/19/python/post/bytecode_in_python/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          파이썬 바이트코드에 대한 이해
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/19/computing/network/tcp_all_in_one/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">TCP분석과 이해</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

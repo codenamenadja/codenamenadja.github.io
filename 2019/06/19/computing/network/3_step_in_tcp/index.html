@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>TCP의 3단계 절차 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="TCP의 3단계  1. 연결설정  최초 요청을 주는 쪽에서, connect함수 호출과 동시에, three-way handshake가 실행된다!     requester responser     SYN(SEQ:1000,ACK:-) …listening   waiting… SYN+ACK(SEQ:2000,ACK:1001)   ACK(SEQ:1001,ACK:200">
+<meta name="keywords" content="network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP의 3단계 절차">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/06/19/computing/network/3_step_in_tcp/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="TCP의 3단계  1. 연결설정  최초 요청을 주는 쪽에서, connect함수 호출과 동시에, three-way handshake가 실행된다!     requester responser     SYN(SEQ:1000,ACK:-) …listening   waiting… SYN+ACK(SEQ:2000,ACK:1001)   ACK(SEQ:1001,ACK:200">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.071Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TCP의 3단계 절차">
+<meta name="twitter:description" content="TCP의 3단계  1. 연결설정  최초 요청을 주는 쪽에서, connect함수 호출과 동시에, three-way handshake가 실행된다!     requester responser     SYN(SEQ:1000,ACK:-) …listening   waiting… SYN+ACK(SEQ:2000,ACK:1001)   ACK(SEQ:1001,ACK:200">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-computing/network/3_step_in_tcp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/19/computing/network/3_step_in_tcp/" class="article-date">
+  <time datetime="2019-06-19T09:32:33.000Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TCP의 3단계 절차
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="tcp의-3단계"><a class="markdownIt-Anchor" href="#tcp의-3단계"></a> TCP의 3단계</h1>
+<h2 id="1-연결설정"><a class="markdownIt-Anchor" href="#1-연결설정"></a> 1. 연결설정</h2>
+<blockquote>
+<p>최초 요청을 주는 쪽에서, connect함수 호출과 동시에, three-way handshake가 실행된다!</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">requester</th>
+<th style="text-align:right">responser</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">SYN(SEQ:1000,ACK:-)</td>
+<td style="text-align:right">…listening</td>
+</tr>
+<tr>
+<td style="text-align:left">waiting…</td>
+<td style="text-align:right">SYN+ACK(SEQ:2000,ACK:1001)</td>
+</tr>
+<tr>
+<td style="text-align:left">ACK(SEQ:1001,ACK:2001)</td>
+<td style="text-align:right">…waiting</td>
+</tr>
+<tr>
+<td style="text-align:left">ACK only:lasthandshake</td>
+<td style="text-align:right">receive ACK, ready to send</td>
+</tr>
+<tr>
+<td style="text-align:left">SYN:synchronization</td>
+<td style="text-align:right">ACK: acknowledge</td>
+</tr>
+<tr>
+<td style="text-align:left">now we are connected in TCP.</td>
+<td style="text-align:right"><em><strong>three way hand Shake</strong></em></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>본격적으로 원하는 페이로드를 요청하고 받기 이전에 이 과정이 완료되야 connected했다고 한다.</p>
+</blockquote>
+<blockquote>
+<p>두번째 단계에서는 데이터 송수신이 시작된다.</p>
+</blockquote>
+<hr>
+<h2 id="2-데이터-송수신"><a class="markdownIt-Anchor" href="#2-데이터-송수신"></a> 2. 데이터 송수신</h2>
+<ul>
+<li>데이터 전송 단계에서 <strong>flow control</strong>은 첫 번째 단계보다 훨씬 복잡하다.<br>
+예시는 responser가 requester에게 많은 양의 데이터를 전송하는 상황이다.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">RES</th>
+<th style="text-align:right">REQ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">packet(SEQ:1301, 100bytes)</td>
+<td style="text-align:right">listening(registered requester)</td>
+</tr>
+<tr>
+<td style="text-align:left">waitForACK</td>
+<td style="text-align:right">ACK:1401</td>
+</tr>
+<tr>
+<td style="text-align:left">SEQ:1401, 100bytes</td>
+<td style="text-align:right">…waiting</td>
+</tr>
+<tr>
+<td style="text-align:left">waitForACK…</td>
+<td style="text-align:right">(didnt receive!) …waiting</td>
+</tr>
+<tr>
+<td style="text-align:left">timeout(wait enough!)</td>
+<td style="text-align:right">…waiting</td>
+</tr>
+<tr>
+<td style="text-align:left">SEQ:1401, 100bytes</td>
+<td style="text-align:right">…waiting</td>
+</tr>
+<tr>
+<td style="text-align:left">waitForACK…</td>
+<td style="text-align:right">ACK:1501</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ol>
+<li>100바이트를 전송하면서 <em>SEQ:1301</em> 을 전송한다. 1301으로부터 offset 100.</li>
+<li>ACK패킷이 잘 도착했다면, RES는 1301부터 100떨어진 <em>SEQ1401</em>에서 100byte를 전송한다.</li>
+<li>timeout이 발생, 이전 패킷을 다시 보낸다.</li>
+<li>마지막까지 잘 도착했다면, ACK:1501로 마지막 바이트가 끝난 지점을 보낸다.</li>
+</ol>
+<ul>
+<li>ACK를 수신한 바이트 수만큼 증가시켜서 돌려보내줘야, 유실없이 잘 받았다는 싸인이다.<br>
+IP(internet Protocol)은 기본적으로 패킷의 유실이 발생할 수 있는 불안정적인 연결을 깔고 가고,<br>
+TCP는 그만큼 정확한 체크를 통해 서로 안전한 연결성을 보장한다.</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="3-연결-종료"><a class="markdownIt-Anchor" href="#3-연결-종료"></a> 3. 연결 종료</h2>
+<h3 id="four-way-handshaking"><a class="markdownIt-Anchor" href="#four-way-handshaking"></a> four-way handshaking</h3>
+<ul>
+<li>연결을 종료하는 과정은 소켓프로그래머에게 가장 중요한 단계에 해당된다.</li>
+<li>이번에는 연결을 계속 유지되는 것이 기본 TCP소켓 스트림이기 때문에,<br>
+Client가 server에게 연결종료 하겠다고 알리는 과정이라고 가정한다.</li>
+</ul>
+<hr>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Client</th>
+<th style="text-align:right">Server</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">FIN(SEQ:5000,ACK:-)</td>
+<td style="text-align:right">…waitForClientEvent</td>
+</tr>
+<tr>
+<td style="text-align:left">waitForACK…</td>
+<td style="text-align:right">ACK(SEQ:7500,ACK:5001)</td>
+</tr>
+<tr>
+<td style="text-align:left">waitForFIN…</td>
+<td style="text-align:right">FIN(SEQ:7501,ACK:5001)</td>
+</tr>
+<tr>
+<td style="text-align:left">ACK(SEQ:5001,ACK:7502)</td>
+<td style="text-align:right">…waitForACK</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<blockquote>
+<p>이것은 상호간에 종료 통보와 확인을 교환하는 것이다. 서로 메모리를 아끼는 수단.<br>
+일반적으로 종료 사인을 보내는 사람이 상대방을 향한 소켓을 종료하겠다는 FIN으로 시작하면,<br>
+상대방이 그 FIN에 대해 ACK를 먼저 보내고,<br>
+이후 상대방도 자신도 상대방에게 FIN패킷을 보낸다.<br>
+마지막으로 연결종료를 시도한 사람이 상대방의 FIN에 대한 ACK패킷을 보내면<br>
+통신은 종료되고 서로의 고유한 디스크립터가 붙은 I/O는 캐쉬에서 사라진다.</p>
+</blockquote>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/19/computing/network/3_step_in_tcp/" data-id="ckkdb52gm001b1pqkq7yyi0xe" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">network</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/19/computing/network/tcp_all_in_one/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          TCP분석과 이해
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/19/python/post/socket_programing/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">소켓프로그래밍 python C nodejs</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>file path getter | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="프로젝트 아래 특정하는 폴더 아래의 폴더, 파일 리스트를 검색하고, 완전한 path로 돌려받을 수 있는 모듈 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737">
+<meta name="keywords" content="python,custom module">
+<meta property="og:type" content="article">
+<meta property="og:title" content="file path getter">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/07/03/python/custom_module/file_getter/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="프로젝트 아래 특정하는 폴더 아래의 폴더, 파일 리스트를 검색하고, 완전한 path로 돌려받을 수 있는 모듈 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.079Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="file path getter">
+<meta name="twitter:description" content="프로젝트 아래 특정하는 폴더 아래의 폴더, 파일 리스트를 검색하고, 완전한 path로 돌려받을 수 있는 모듈 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/custom_module/file_getter" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/03/python/custom_module/file_getter/" class="article-date">
+  <time datetime="2019-07-03T08:39:54.000Z" itemprop="datePublished">2019-07-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      file path getter
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="프로젝트-아래-특정하는-폴더-아래의-폴더-파일-리스트를-검색하고-완전한-path로-돌려받을-수-있는-모듈"><a class="markdownIt-Anchor" href="#프로젝트-아래-특정하는-폴더-아래의-폴더-파일-리스트를-검색하고-완전한-path로-돌려받을-수-있는-모듈"></a> 프로젝트 아래 특정하는 폴더 아래의 폴더, 파일 리스트를 검색하고, 완전한 path로 돌려받을 수 있는 모듈</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> typing</span><br><span class="line"></span><br><span class="line">ROOT_DIR: typing.Text</span><br><span class="line">ROOT_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_all_children_path</span><span class="params">(folder_name: typing.Text)</span> -&gt; typing.Iterator[str]:</span></span><br><span class="line">    abs_path: typing.Text</span><br><span class="line">    abs_path = ROOT_DIR + <span class="string">"/"</span> + folder_name</span><br><span class="line">    <span class="keyword">return</span> _map_path(_filter_avails(os.listdir(abs_path)), folder_name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_filter_avails</span><span class="params">(files: typing.List[str])</span> -&gt; typing.Iterator[str]:</span></span><br><span class="line">    condition: typing.Callable</span><br><span class="line">    condition = <span class="keyword">lambda</span> el: el[<span class="number">0</span>] <span class="keyword">not</span> <span class="keyword">in</span> <span class="string">"._"</span></span><br><span class="line">    <span class="keyword">return</span> filter(condition, files)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_filter_files</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    files: typing.Iterator[str], extension: typing.Text</span></span></span><br><span class="line"><span class="function"><span class="params">)</span> -&gt; typing.Iterator[str]:</span></span><br><span class="line">    condition: typing.Callable</span><br><span class="line">    condition = <span class="keyword">lambda</span> el: os.path.isfile(el) <span class="keyword">and</span> extension <span class="keyword">in</span> el</span><br><span class="line">    <span class="keyword">return</span> filter(condition, files)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_filter_folders</span><span class="params">(files: typing.Iterator[str])</span> -&gt; typing.Iterator[str]:</span></span><br><span class="line">    condition: typing.Callable</span><br><span class="line">    condition = <span class="keyword">lambda</span> el: os.path.isdir(el)</span><br><span class="line">    <span class="keyword">return</span> filter(condition, files)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_map_path</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    files: typing.Iterator[str], folder_name: typing.Text</span></span></span><br><span class="line"><span class="function"><span class="params">)</span> -&gt; typing.Iterator[str]:</span></span><br><span class="line">    condition: typing.Callable</span><br><span class="line">    condition = (</span><br><span class="line">        <span class="keyword">lambda</span> el: <span class="string">f"<span class="subst">&#123;ROOT_DIR&#125;</span>/<span class="subst">&#123;el&#125;</span>"</span></span><br><span class="line">        <span class="keyword">if</span> folder_name <span class="keyword">is</span> <span class="string">"."</span></span><br><span class="line">        <span class="keyword">else</span> <span class="string">f"<span class="subst">&#123;ROOT_DIR&#125;</span>/<span class="subst">&#123;folder_name&#125;</span>/<span class="subst">&#123;el&#125;</span>"</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> map(condition, files)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_things</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    folder_name: typing.Text = <span class="string">"."</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    folder: bool = False,</span></span></span><br><span class="line"><span class="function"><span class="params">    extension: typing.Optional[str] = None,</span></span></span><br><span class="line"><span class="function"><span class="params">)</span> -&gt; typing.List[str]:</span></span><br><span class="line">    <span class="string">"""Get files and folder under single folder which you specified.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Keyword Arguments:</span></span><br><span class="line"><span class="string">    folder_name &#123;typing.Text&#125; -- target folder name from ROOT (default: &#123;"."&#125;)</span></span><br><span class="line"><span class="string">    folder &#123;bool&#125; -- enable finding folders (default: &#123;False&#125;)</span></span><br><span class="line"><span class="string">    extension &#123;typing.Optional[str]&#125; -- enable finding files with extension string, if all insert as '' (default: &#123;None&#125;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Raises:</span></span><br><span class="line"><span class="string">    FileNotFoundError: foldername not specified</span></span><br><span class="line"><span class="string">    ValueError: specific file extension with folder not enable</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Returns:</span></span><br><span class="line"><span class="string">    typing.List[str] -- list out as full path</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>helper_pys = get_things(folder_name="helper", extension=".py")</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>any(['python_base/helper/path.py' in el for el in helper_pys])</span></span><br><span class="line"><span class="string">True</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>root_folders = get_things(folder=True, extension="")</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>any(['python_base/helper' in el for el in root_folders])</span></span><br><span class="line"><span class="string">True</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    avail_paths: typing.Iterator</span><br><span class="line">    filterd: typing.Iterator[str]</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> folder_name:</span><br><span class="line">        <span class="keyword">raise</span> FileNotFoundError(<span class="string">"folder_name not specified"</span>)</span><br><span class="line"></span><br><span class="line">    avail_paths = _get_all_children_path(folder_name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">not</span> folder) <span class="keyword">and</span> (extension <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>):</span><br><span class="line">        filterd = _filter_files(avail_paths, extension=extension)</span><br><span class="line">    <span class="keyword">elif</span> (extension <span class="keyword">is</span> <span class="literal">None</span>) <span class="keyword">and</span> folder:</span><br><span class="line">        filterd = _filter_folders(avail_paths)</span><br><span class="line">    <span class="keyword">elif</span> (extension <span class="keyword">is</span> <span class="string">""</span>) <span class="keyword">and</span> folder:</span><br><span class="line">        filterd = avail_paths</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">"extenstion with folder not available"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [_ <span class="keyword">for</span> _ <span class="keyword">in</span> filterd]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> doctest</span><br><span class="line">    doctest.testmod()</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/07/03/python/custom_module/file_getter/" data-id="ckkdb52gw001k1pqkupta4xip" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/03/python/module/collections/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          python collections 모듈
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/26/python/module/doctest/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">python module doctest</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

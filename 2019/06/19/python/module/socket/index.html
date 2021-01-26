@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>파이썬 Socket 모듈 정리 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="socket.socket(family,type,proto,fileno)  주어진 주소를 사용하는 소켓을 생성한다. family는 AF_INET, AF_NET6, AF_UNIX, AF_PACKET, AF_RDS(socket.AF_NET) type은 SOCK_STREAM, SOCK_DGRAM, SOCK_RAW protocol number는 보통 0이다, a">
+<meta name="keywords" content="python,python module">
+<meta property="og:type" content="article">
+<meta property="og:title" content="파이썬 Socket 모듈 정리">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/06/19/python/module/socket/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="socket.socket(family,type,proto,fileno)  주어진 주소를 사용하는 소켓을 생성한다. family는 AF_INET, AF_NET6, AF_UNIX, AF_PACKET, AF_RDS(socket.AF_NET) type은 SOCK_STREAM, SOCK_DGRAM, SOCK_RAW protocol number는 보통 0이다, a">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.083Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="파이썬 Socket 모듈 정리">
+<meta name="twitter:description" content="socket.socket(family,type,proto,fileno)  주어진 주소를 사용하는 소켓을 생성한다. family는 AF_INET, AF_NET6, AF_UNIX, AF_PACKET, AF_RDS(socket.AF_NET) type은 SOCK_STREAM, SOCK_DGRAM, SOCK_RAW protocol number는 보통 0이다, a">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/module/socket" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/19/python/module/socket/" class="article-date">
+  <time datetime="2019-06-19T09:47:15.000Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      파이썬 Socket 모듈 정리
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>
+<p>socket.socket(family,type,proto,fileno)</p>
+<ul>
+<li>주어진 주소를 사용하는 소켓을 생성한다.</li>
+<li>family는 AF_INET, AF_NET6, AF_UNIX, AF_PACKET, AF_RDS(socket.AF_NET)</li>
+<li>type은 SOCK_STREAM, SOCK_DGRAM, SOCK_RAW</li>
+<li>protocol number는 보통 0이다, addrFamily가 AF_CAN이거나 하면 다른 값을 가져야 한다.</li>
+<li>fileno descriptor가 특정되었다면, 파일 디스크립터에 의해서 , 패밀리 타입, 프로토콜번호가 자동으로 잡힌다.</li>
+</ul>
+</li>
+<li>
+<p>serverSocket.listen([backlog]:Optional int)</p>
+<ul>
+<li>서버가 연결을 수락하도록 허용한다.</li>
+<li>백로그가 특정되어있다면, 새로운 연결을 거절하기전에 시스템이 허락한 받아들여지지 않은 연결 수를 특정하는 것이다.</li>
+</ul>
+</li>
+<li>
+<p>serverSocket.accept()</p>
+<ul>
+<li>연결을 받아들인다. 소켓은 주소에 달라붙어있어야하고, 포트 연결에 대해서 수용하고(listen) 있어야 한다.</li>
+<li>return value는 pair로 (conn, address)이다.</li>
+<li>conn은 새로운 소켓객체다, 데이터를 보내고 받는데 사용될 수 있다.</li>
+<li>address는 해당 소켓이 반대쪽 연결의 끝에 어디에 달라붙어 있는지를 얘기한다.</li>
+<li>3.5버전 이후 변경점: 시스템콜이 방해를 받아 signal handler이, exception을 raise하지 않는다면, 이 메서드는 시스템 콜에게 InterruptedError를 raise하지 않고, accept를 재시도 한다.</li>
+</ul>
+</li>
+<li>
+<p>socket.close()</p>
+<ul>
+<li>소켓이 닫혔다는 것을 표시한다. FD같은 잠재된 시스템 자원 또한 모든 IO 버퍼에 대한 FD를 markfile()로 확인해서 모든 파일 객체가 닫혔다면, 닫혀버린다.</li>
+</ul>
+</li>
+<li>
+<p>socket.markfile(mode=‘r’, buffering=None, *,encoding=None, errors=None, newline=None)</p>
+<ul>
+<li>소켓과 연결지어진 파일 객체를 반환한다.</li>
+</ul>
+</li>
+<li>
+<p>file object : 공식문서 용어해설</p>
+<ul>
+<li>파일에 기원을 두는 API를 내부 실제 리소스에게 드러내는 객체.</li>
+<li>read(), write() 등이 그러한 API이다.</li>
+<li>이것이 어떻게 생성됐는지에 따라서, file object는 실제 디스크의 파일이나, 다른 타입의 저장소 혹은 communication device에 접근 할 것인지를 고려할 수 있다.</li>
+<li>해당 underlying resourced의 목록
+<ol>
+<li>statdard input/ouput</li>
+<li>in-memory buffers</li>
+<li>sockets</li>
+<li>pipes, etc…</li>
+</ol>
+</li>
+<li>File Objects는 file-like object 혹은 streams라고 불리기도 한다.</li>
+<li>그들은 주로 세가지 카테고리의 파일 객체(정석의 생성법은 open메서드를 통해)
+<ul>
+<li>binary files, buffered binary files, textfiles</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>socket.recv(bufsize[, flags])</p>
+<ul>
+<li>소켓에서 데이터를 받아온다. 리턴값은 바이트객체.</li>
+<li>한번에 받을 수 있는 데이터 양의 총량은 bufsize에 의해 특정된다.</li>
+</ul>
+<blockquote>
+<p>네트워크와 하드웨어를 생각했을때. 최적의 버프사이즈는 2의 제곱수로 잡는 것이 좋다.</p>
+</blockquote>
+</li>
+<li>
+<p>socket.connect(address)</p>
+<ul>
+<li>해당 주소의 remote socket에 접속한다.</li>
+<li>주소의 포멧은 address family에 의해 결정된다.</li>
+<li>만약 signal에 의해 connection이 interrupted되면, 메서드는 연결이 끝날때 까지 기다리거나,</li>
+<li>raise socket.timeout on timeout 한다. 만약에 signal handler가 exception을 raise하지 않고, 소켓이 블로킹 소켓이거나 timeout을 가졌다면</li>
+<li>논블로킹 소켓에 대해서, 메서드는 InterruptedError exception을 raise한다. 만약 connection 이 signal에 의해 방해 받았을 때.</li>
+</ul>
+</li>
+<li>
+<p>socket.fileno()</p>
+<ul>
+<li>소켓의 파일 descriptor을 반환한다. -1을 반환한 다면 실패. select.select()와 유용하게 쓰인다.</li>
+</ul>
+</li>
+<li>
+<p>select.select(rlist,wlist,xlist[,timeout])</p>
+<ul>
+<li>이것은 UNIX select()시스템 콜을 향한 딱 맞는 인터페이스이다.</li>
+<li>3가지 매개변수는 waitable object의 연속을 전달한다.:
+<ul>
+<li>모두 파일 디스크립터를 통해 fileno() 등을 통해 전달받은 숫자가 된다.</li>
+<li>
+<ol>
+<li>rlist: wait until ready for reading</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>wlist: wait ready for writting</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>xlist: wait for an “exceptional condition(by system)”</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>빈 시퀸스는 허락된다.</li>
+<li>timeout 매개변수가 생략되었을때, 함수는 하나라도 FD가 준비되었을 때까지 block된다.</li>
+<li>리턴하는 것은 준비된 3가지 리스트 객체를 리턴한다.</li>
+<li>시퀸스에 받아들일 수 있는 타입들은,파이썬 fileobjects(sys.stdin, open(), os.popen()), 혹은 소켓 객체가 있다.</li>
+<li>3.5버전의 변화: 함수는 이제 신호에 의해서 interrupted될 때, timeout과 함께 재시도 된다. InterruptedError일 때만 그렇고 다른 에러를 Interrupted 핸들러가 발생시키면 재시도 되지 않는다.</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/19/python/module/socket/" data-id="ckkdb52h8001z1pqk6evw23xq" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-module/">python module</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/19/python/post/SocketProgramming_HOWTO/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          SocketProgramming_HOW 번역
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/19/python/post/python_interpreter/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">파이썬 인터프리터에 대한 이해</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

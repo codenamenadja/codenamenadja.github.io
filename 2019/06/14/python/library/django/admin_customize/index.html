@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>장고에서 admin페이지 커스터마이징하기 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="order.admin수정해서 action에 행동 추가하기  123456789101112131415161718192021222324252627282930313233343536from django.utils import timezonefrom django.http import HttpResponseimport datetimeimport csvdef expor">
+<meta name="keywords" content="django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="장고에서 admin페이지 커스터마이징하기">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/06/14/python/library/django/admin_customize/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="order.admin수정해서 action에 행동 추가하기  123456789101112131415161718192021222324252627282930313233343536from django.utils import timezonefrom django.http import HttpResponseimport datetimeimport csvdef expor">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.079Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="장고에서 admin페이지 커스터마이징하기">
+<meta name="twitter:description" content="order.admin수정해서 action에 행동 추가하기  123456789101112131415161718192021222324252627282930313233343536from django.utils import timezonefrom django.http import HttpResponseimport datetimeimport csvdef expor">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/library/django/admin_customize" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/14/python/library/django/admin_customize/" class="article-date">
+  <time datetime="2019-06-14T04:41:47.000Z" itemprop="datePublished">2019-06-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      장고에서 admin페이지 커스터마이징하기
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>order.admin수정해서 action에 행동 추가하기</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.utils <span class="keyword">import</span> timezone</span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">export_to_csv</span><span class="params">(modeladmin, request, queryset)</span>:</span></span><br><span class="line">    <span class="comment"># modeladmin.model - 선택된 객체의 모델 정보</span></span><br><span class="line">    <span class="comment"># request - request정보</span></span><br><span class="line">    <span class="comment"># queryset - 선택된 row들의 쿼리</span></span><br><span class="line">    <span class="comment"># 선택된 주문 정보를 CSV파일로 다운로드 하게 만드는 기능</span></span><br><span class="line">    opts = modeladmin.model_meta</span><br><span class="line"></span><br><span class="line">    response =HttpResponse(content_type=<span class="string">'text/csv'</span>)</span><br><span class="line">    current_time = timezone.now().strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>)</span><br><span class="line"></span><br><span class="line">    response[<span class="string">'Content-Disposition'</span>] = <span class="string">f'attachment;filename=<span class="subst">&#123;opts.verbose_name&#125;</span>-<span class="subst">&#123;current_time&#125;</span>.csv'</span></span><br><span class="line">    writer = csv.writer(response)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 필드 값 작성</span></span><br><span class="line">    fields = [field <span class="keyword">for</span> field <span class="keyword">in</span> opts.get_fields() <span class="keyword">if</span> (<span class="keyword">not</span> field.many_to_many) <span class="keyword">and</span> (<span class="keyword">not</span> field.one_to_many)]</span><br><span class="line">    writer.writerow([field.verbose_name <span class="keyword">for</span> field <span class="keyword">in</span> fields])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 데이터 작성</span></span><br><span class="line">    <span class="keyword">for</span> obj <span class="keyword">in</span> queryset:</span><br><span class="line">        <span class="comment"># 선택된 요소들에 대한 내용을 출력</span></span><br><span class="line">        ordered_items = getattr(obj, <span class="string">'items'</span>).all()</span><br><span class="line">        values = [getattr(obj, field.name).strftime(<span class="string">'%Y-%m-%d'</span>) <span class="keyword">if</span> field.datetime <span class="keyword">else</span> getattr(obj, field.name) <span class="keyword">for</span> field <span class="keyword">in</span> fields]</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> ordered_items:</span><br><span class="line">            order_detail = [item.product.id, item.price, item.quantity]</span><br><span class="line">            writer.writerow(values+order_detail)</span><br><span class="line">export_to_csv.short_description = <span class="string">'Order Export to CSV'</span> <span class="comment"># 여</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderOption</span><span class="params">(admin.ModelAdmin)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    ...</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    actions = [export_to_csv]</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>Page 추가하기</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.utils.safestring <span class="keyword">import</span> mark_safe</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">order_detail</span><span class="params">(obj)</span>:</span></span><br><span class="line">    href = reverse(<span class="string">'order:admin_detail'</span>)</span><br><span class="line">    <span class="keyword">return</span> mark_safe(<span class="string">f'&lt;a href="<span class="subst">&#123;href&#125;</span>"&gt;to Detail&lt;/a&gt;'</span>)</span><br><span class="line"></span><br><span class="line">order_detail.short_description = <span class="string">'details'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">order_pdf</span><span class="params">(obj)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> mark_safe(<span class="string">'PDF'</span>)</span><br><span class="line"></span><br><span class="line">order_pdf.short_description = <span class="string">'to_pdf'</span></span><br><span class="line"></span><br><span class="line">OrderOption.list_display += [order_pdf, order_detail]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># order.views.py</span></span><br><span class="line"><span class="keyword">from</span> django.shorcuts <span class="keyword">import</span> get_object_or_404</span><br><span class="line"><span class="keyword">from</span> django.contrib.admin.views.decorators <span class="keyword">import</span> staff_member_required</span><br><span class="line"></span><br><span class="line"><span class="meta">@staff_member_required</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">admin_order_detail</span><span class="params">(req, order_id)</span>:</span></span><br><span class="line">    order = get_object_or_404(Order, id=order_id)</span><br><span class="line">    <span class="keyword">return</span> render(req, <span class="string">'order/admin/order_detail.html'</span>, &#123;<span class="string">'order'</span>:order&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># order.urls.py</span></span><br><span class="line">app_name = <span class="string">'order'</span></span><br><span class="line">urlpatterns += [</span><br><span class="line">    path(<span class="string">'admin/detail/&lt;int:order_id&gt;'</span>, admin_order_detail, name=<span class="string">'order_detail'</span>)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;%extends 'admin/base_site.html'%&#125;</span><br><span class="line"></span><br><span class="line">&#123;%block breadcrumbs%&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">'breadcrumbs'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'&#123;url "admin:index"&#125;'</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'&#123;url "admin:order_order_changelist"&#125;'</span>&gt;</span>Orders<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'&#123;url "admin:order_order_change" order.id&#125;'</span>&gt;</span>Order &#123;&#123;order.id&#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    Detail</span><br><span class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;%endblock%&#125;</span><br><span class="line"></span><br><span class="line">&#123;%block content%&#125;</span><br><span class="line">// order객체 가지고 표시</span><br><span class="line">&#123;%endblock%&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>weasyprint로 PDF출력하기</li>
+</ol>
+<p>pip install weasyprint</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.template.loader <span class="keyword">import</span> render_to_string</span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">import</span> weasyprint</span><br><span class="line"></span><br><span class="line"><span class="meta">@staff_member_required</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">admin_order_pdf</span><span class="params">(req, order_id)</span>:</span></span><br><span class="line">    order = get_object_or_404(Order, id=order_id)</span><br><span class="line">    html = render_to_string(<span class="string">'order/admin/pdf.html'</span>, &#123;<span class="string">'order'</span>:order&#125;)</span><br><span class="line">    response = HttpResponse(content_type=<span class="string">'application/pdf'</span>)</span><br><span class="line">    response[<span class="string">'Content-Disposition'</span>] = <span class="string">f'filename=invoice_<span class="subst">&#123;order.id&#125;</span>.pdf'</span></span><br><span class="line">    weasyprint.HTML(string=html).write_pdf(response)</span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+<ul>
+<li>다운로드 Disposition = attachment</li>
+<li>웹 뷰어로 보기 Disposition = invoice</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/14/python/library/django/admin_customize/" data-id="ckkdb52it00501pqkh722ej51" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/">django</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/19/python/library/fabric/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          fabric 기본적인 스크립트 작성하기
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/12/tdd/python/pytest/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">pytest 이해와 사용</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

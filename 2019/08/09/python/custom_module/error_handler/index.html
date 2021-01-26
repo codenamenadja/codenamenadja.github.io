@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>에러처리 Decorator과 logging, write to csv | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Error hanlder with logging  github repo  기초 사용법  Expected Error   2번째 요소를 지정하면서 특정상황에 일으키는 예견된 에러  123456raise ValueError(&quot;some message&quot;, &quot;info&quot;)raise PermissionError(&quot;some message&quot;, &quot;warning&quot;)raise">
+<meta name="keywords" content="python,custom module">
+<meta property="og:type" content="article">
+<meta property="og:title" content="에러처리 Decorator과 logging, write to csv">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/08/09/python/custom_module/error_handler/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="Error hanlder with logging  github repo  기초 사용법  Expected Error   2번째 요소를 지정하면서 특정상황에 일으키는 예견된 에러  123456raise ValueError(&quot;some message&quot;, &quot;info&quot;)raise PermissionError(&quot;some message&quot;, &quot;warning&quot;)raise">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.079Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="에러처리 Decorator과 logging, write to csv">
+<meta name="twitter:description" content="Error hanlder with logging  github repo  기초 사용법  Expected Error   2번째 요소를 지정하면서 특정상황에 일으키는 예견된 에러  123456raise ValueError(&quot;some message&quot;, &quot;info&quot;)raise PermissionError(&quot;some message&quot;, &quot;warning&quot;)raise">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/custom_module/error_handler" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/09/python/custom_module/error_handler/" class="article-date">
+  <time datetime="2019-08-09T08:22:43.000Z" itemprop="datePublished">2019-08-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      에러처리 Decorator과 logging, write to csv
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="error-hanlder-with-logging"><a class="markdownIt-Anchor" href="#error-hanlder-with-logging"></a> Error hanlder with logging</h2>
+<h3 id="github-repo"><a class="markdownIt-Anchor" href="#github-repo"></a> <a href="https://github.com/codenamenadja/python_cutsom-error_handler" target="_blank" rel="noopener">github repo</a></h3>
+<h3 id="기초-사용법"><a class="markdownIt-Anchor" href="#기초-사용법"></a> 기초 사용법</h3>
+<ul>
+<li>Expected Error</li>
+</ul>
+<blockquote>
+<p>2번째 요소를 지정하면서 특정상황에 일으키는 예견된 에러</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> ValueError(<span class="string">"some message"</span>, <span class="string">"info"</span>)</span><br><span class="line"><span class="keyword">raise</span> PermissionError(<span class="string">"some message"</span>, <span class="string">"warning"</span>)</span><br><span class="line"><span class="keyword">raise</span> FileNotFoundError(<span class="string">"some message"</span>, <span class="string">"errror"</span>)</span><br><span class="line"><span class="keyword">raise</span> AttributeError(<span class="string">"some message"</span>, <span class="string">"debug"</span>)</span><br><span class="line"><span class="keyword">raise</span> ConnectionRefusedError(<span class="string">"some message"</span>, <span class="string">"critical"</span>)</span><br><span class="line"><span class="keyword">raise</span> ConnectionAbortedError(<span class="string">"some message"</span>, <span class="string">"fatal"</span>)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>logs into curdir filename debug_expected.log</li>
+<li>writes as, <code>asctime - name - levelname - {message}</code>
+<ol>
+<li>{message}: <code>filename - lineno - message</code></li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>UnExpected Error</li>
+</ul>
+<blockquote>
+<p>2번째 요소가 지정 되지 않는 실제 에러</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> ValueError(<span class="string">"message"</span>)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>logs into curdir filename debug_unexpected.log</li>
+<li>writes same as upper,</li>
+<li>run logger.log_to_csv()</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log_to_csv</span><span class="params">(logger_name: Optional[str] = <span class="string">"unexpected"</span>)</span> -&gt; bool</span></span><br><span class="line"><span class="function">    """</span></span><br><span class="line"><span class="function">    read &#123;logger_name&#125;_debug.log file</span></span><br><span class="line"><span class="function">    write into csv as thread reads line.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    if file exists, write over ends of the line</span></span><br><span class="line"><span class="function">    """</span></span><br></pre></td></tr></table></figure>
+<h2 id="custominzing-to-do"><a class="markdownIt-Anchor" href="#custominzing-to-do"></a> custominzing to do</h2>
+<ul>
+<li>예상 외 에러를 발생하면 CSV파일이 모두 씌여지고, 해당 CSV파일을 S3저장소에 업로드</li>
+<li>마지막줄 기준으로 날짜가 달라졌다면, 오늘 이전 로그를 이메일로 전송(그렇다면 1일 최대 1회 이메일로 파일전송)</li>
+</ul>
+<h2 id="more-to-do"><a class="markdownIt-Anchor" href="#more-to-do"></a> more to do</h2>
+<ul>
+<li>순수한 에러핸들러 데커레이터와 로깅이 연동된 데커레이터를 분리</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/08/09/python/custom_module/error_handler/" data-id="ckkdb52gt001g1pqk76bvno8x" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/11/linux/understanding_kernel/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          커널의 이해와 시스템 콜 이해
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/03/python/module/collections/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">python collections 모듈</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

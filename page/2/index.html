@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="with python and javascript, could be some descriptions or workflow writtens for project">
+<meta name="keywords" content="python django">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Junehan&#39;s workbook">
+<meta property="og:url" content="https://codenamenadja.github.io/page/2/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="with python and javascript, could be some descriptions or workflow writtens for project">
+<meta property="og:locale" content="ko">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Junehan&#39;s workbook">
+<meta name="twitter:description" content="with python and javascript, could be some descriptions or workflow writtens for project">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-linux/basic_concept_procss_2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/12/linux/basic_concept_procss_2/" class="article-date">
+  <time datetime="2019-08-12T04:07:34.000Z" itemprop="datePublished">2019-08-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/12/linux/basic_concept_procss_2/">basic concept of linux / process and Thread</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<ol>
+<li><a href="#process"><strong>Process</strong></a></li>
+<li><a href="#thread"><strong>Thread</strong></a></li>
+<li><a href="#%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%EC%9D%98_%EA%B3%84%EC%B8%B5_%EA%B5%AC%EC%A1%B0"><strong>프로세스의 계층 구조</strong></a></li>
+<li><a href="#%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%EC%9D%98_%EC%83%9D%EC%84%B1"><strong>프로세스의 생성</strong></a></li>
+</ol>
+<h2 id="process"><a class="markdownIt-Anchor" href="#process"></a> Process</h2>
+<ul>
+<li>
+<p>정의</p>
+<p>활성화 상태로 실행중인, 코드 세그먼트로 코드(실행 컨텍스트)가 이동한 프로그램.<br>
+데이터, 리소스, 상태, 가상화된 컴퓨터를 포함</p>
+</li>
+</ul>
+<ol>
+<li>커널이 이해하는 실행파일 포멧으로 만들어져 실행가능한 오브젝트 코드로 형태</li>
+<li>리눅스에서 가장 일반적인 실행파일 포멧은 <code>ELF(Executable and Linkable Format)</code></li>
+<li>실행 파일은 여러 섹션으로 구성</li>
+</ol>
+<ul>
+<li>메타 데이터</li>
+<li>코드</li>
+<li>데이터</li>
+</ul>
+<ol start="4">
+<li>위 섹션은 오브젝트 코드가 담긴 바이트 배열(FILE), 선형 메모리 공간에 적재됨</li>
+<li>섹션에 담긴 바이트들은 접근 권한이 같고 사용목적이 비슷하며, 동일하게 취급.</li>
+</ol>
+<p>가장 중요한 공통 섹션</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">섹션</th>
+<th style="text-align:left">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">텍스트 섹션</td>
+<td style="text-align:left">실행가능 코드, 상수, 변수와 같은 읽기전용 데이터. (읽기전용과 실행가능으로 표시</td>
+</tr>
+<tr>
+<td style="text-align:left">데이터 섹션</td>
+<td style="text-align:left">정의된 값을 할당한 변수와 같은 초기화된 자료. 일반적으로 읽고 쓰기가 가능한 동적 데이터</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>BSS</code>(block storage segment)</td>
+<td style="text-align:left">초기화되지 않은 전역 데이터. 함수 콜스텍처럼 곧 해제될 것으로 기대되는 것이 아닌, 프로그램의 실행과 종료에 생성되면 적지 않게 유지될 전역에 할당되고 사용될 데이터</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>프로세스는 커널이 중재하고 관리하는 다양한 시스템 리소스와 관련이 있다.</li>
+<li>프로세스는 일반적으로 시스템 콜을 이용하여 리소스를 요청하고 조작한다.
+<ul>
+<li>리소스들(타이머, 대기중인 시그널, 열린 파일, 네트워크 연결, 하드웨어, IPC매커니즘)</li>
+</ul>
+</li>
+<li>프로세스 리소스는 자신과 관련한 데이터의 통계정보를 포함하고 있으며, 해당 프로세스의 프로세스 디스크립터 형태로 커널 내부에 저장된다.</li>
+</ul>
+<blockquote>
+<p>프로세스는 가상화를 위한 추상 개념이다.<br>
+선점형 멀티테스킹과 가상메모리를 지원하는 리눅스 커널은 가상화된 프로세서와 가상화된 메모리를 프로세스에 제공한다.</p>
+</blockquote>
+<ul>
+<li>
+<p>프로세스와 커널의 입장에서 본 가상화에 대하여</p>
+<p>커널은 프로세스에 단일 선형 주소공간(Single linear Address space)를 제공하므로, 프로세스 홀로 시스템에 존재하는 모든 메모리를 제어하는 것처럼 보인다.</p>
+<p>커널은 가상 메모리와 페이징 기법(swapping)을 사용해서 프로세스마다 다른 주소공간에서 동작하도록 만들기 때문에, 여러 프로세스가 시스템 상에서 공존.</p>
+<p>최신 프로세서는 운영체제가 독립적인 여러 프로세스 상태를 동시에 관리할 수 있도록 하며, 커널은 이런 하드웨어의 도움을 받아 가상화를 관리한다.</p>
+</li>
+</ul>
+<h2 id="thread"><a class="markdownIt-Anchor" href="#thread"></a> Thread</h2>
+<ul>
+<li>정의</li>
+</ul>
+<p>각 프로세스는 실행 스레드를 하나 이상 포함한다.<br>
+스레드는 프로세스 내부에서 실행하는 활동 단위.<br>
+코드를 실행하고 프로세스 동작 상태를 유지하는 추상개념이다.</p>
+<blockquote>
+<p>유닉스의 간결함을 중시하는 철학과 빠른 프로세스 생성시간, 견고한 IPC매커니즘 떄문에,<br>
+전통적으로 유닉스 프로그램은 싱글 스레드였고, 스레드 기반으로 옮겨 가려는 요구사항이 적었다.</p>
+</blockquote>
+<p>스레드의 구성요소</p>
+<ul>
+<li>독자적 지역 변수를 저장하는 스텍</li>
+<li>프로세서 상태</li>
+<li>오브젝트 코드의 현재 위치(instruction Pointer)</li>
+</ul>
+<p>스케쥴링을 통해 선점한 프로세스의 스레드의 IP를 CPU의 IR로 가져와서 실행됨.</p>
+<p>기타 프로세스에 남아있는 대부분의 리소스는 모든 스레드의 공유자원이다.</p>
+<hr>
+<h3 id="리눅스-커널의-스레드-구현"><a class="markdownIt-Anchor" href="#리눅스-커널의-스레드-구현"></a> 리눅스 커널의 스레드 구현</h3>
+<p>스레드는 단순히 주소공간을 비롯 일부 리소스를 공유하는 일반적인 프로세스일 뿐이다.<br>
+사용자 영역에서 리눅스는 <code>Pthread</code>라 하는 POSIX 1003.1c에 따라 쓰레드를 구현한다.<br>
+<code>glibc</code>의 일부인 현재 리눅스 쓰레드의 구현체 명은 NPTL(<code>Nativa POSIX Threading Library</code>).</p>
+<hr>
+<h2 id="프로세스의_계층_구조"><a class="markdownIt-Anchor" href="#프로세스의_계층_구조"></a> 프로세스의_계층_구조</h2>
+<p>프로세스는 <code>PID</code>라는 고유 양수값으로 구분된다. - (첫번쨰 프로세스의 pid는 1)</p>
+<p>리눅스에서 프로세스는 프로세스 트리라는 계층 구조를 형성한다.<br>
+일반적으로 프로세스 트리는 <code>init</code>프로그램으로 알려진 첫 프로세스가 루트가 된다.</p>
+<p>새로운 프로세스는 <code>fork()</code> 시스템 콜로 만들어진다.<br>
+이 시스템 콜을 호출하는 기준 프로세스를 복사해서 다른 프로세스를 만든다.</p>
+<p>첫번째 프로세스를 제외한 나머지 프로세스는 모두 부모-프로세스가 있고,<br>
+부모-프로세스가 자식-프로세스 보다 먼저 종료 되면, 자식-프로세스를 부모-프로세스로 승격 시킨다.</p>
+<p>프로세스가 종료되면 시스템에서 바로 제거하지 않고, 프로세스 일부를 메모리에 유지한다.<br>
+자식-프로세스가 종료될 때 부모-프로세스가 상태를 검사 할 수 있도록 한다.</p>
+<p>이를 <code>&quot;종료된 프로세스를 기다린다.&quot;</code>고 표현한다.</p>
+<p>만약 자식-프로세스가 종료되었는데 기다리는 부모-프로세스가 없다면, 이때 좀비-프로세스가 탄생한다.<br>
+일상적으로 첫 init프로세스는 자신이 fork한 모든 프로세스를 기다려서 새로 생성된 프로세스가 종료될 때 좀비가 되는 것을 막는다.</p>
+<h2 id="프로세스의_생성"><a class="markdownIt-Anchor" href="#프로세스의_생성"></a> 프로세스의_생성</h2>
+<p>프로세스의 생성목적</p>
+<ol>
+<li>같은 프로그램의 처리를 여러 프로세스가 나눠서 처리, (웹서버 리퀘스트 분산처리)</li>
+<li>전혀 다른 프로그램을 생성, (Bash로 부터 새로운 프로그램 init으로서 생성)</li>
+</ol>
+<blockquote>
+<p>1: <code>fork()</code> 2: <code>execve()</code></p>
+</blockquote>
+<ul>
+<li><code>fork()</code>의 양상</li>
+</ul>
+<ol>
+<li>자식 프로세스의 메모리 영역을 미리 할당(init에서 부터 발행하는 시점에 메모리)</li>
+<li><code>fork()</code>함수의 리턴값이 각기 다른 것을 이용하여, 부모와 자식을 다른 코드를 실행하도록 분기. (1개의 스크립트 -&gt; 2개의 실행)</li>
+<li>부모 프로세스는 <code>fork()</code>로 부터 복귀, 자식 프로세스는 <code>fork()</code>로부터 리턴되는 것</li>
+</ol>
+<figure class="highlight c"><figcaption><span>fork.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;err.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">child</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"I'm child process, pid is %d"</span>, getpid());</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_SUCCESS)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">parent</span><span class="params">(<span class="keyword">pid_t</span> pid_c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"I'm parent process, pid is %d, child pid is %d"</span>, getpid(), pid_c);</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_SUCCESS);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">pid_t</span> ret;</span><br><span class="line">    ret = fork();</span><br><span class="line">    <span class="keyword">if</span> (ret == <span class="number">-1</span>)</span><br><span class="line">        err(EXIT_FAILURE, <span class="string">"fork() failed"</span>);</span><br><span class="line">    <span class="keyword">if</span> (ret == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// child process come here</span></span><br><span class="line">        child();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// parent process come here returns if created child process (&gt; 1)</span></span><br><span class="line">        parent(ret)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// shouldnt come here</span></span><br><span class="line">    err(EXIT_FAILURE, <span class="string">"shouldn't reach here"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cc -o fork fork.c</span><br><span class="line">$ ./fork</span><br><span class="line"><span class="string">"i'm parent process, pid is 4193 child pid is 4194"</span></span><br><span class="line"><span class="string">"i'm child process, pid is 4194"</span></span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>execve()</code>의 양상</li>
+</ul>
+<p>실행 순서</p>
+<ol>
+<li>실행파일을 읽은 다음 프로세스의 메모리 맵에 필요한 정보를 읽어 들입니다.</li>
+<li>현재 프로세스의 메모리를 새로운 프로세스의 데이터로 덮어 씁니다.</li>
+<li>새로운 프로세스의 첫 번째 명령부터 실행합니다.</li>
+</ol>
+<p>기존의 프로세스를 별도의 프로세스로 덮어씌우면서 전환하는 방식.</p>
+<p>프로세스를 실행하는데 필요한 디테일</p>
+<ul>
+<li>실행파일의 inode를 통해 코드를 포함한 HDD영역의 메모리맵 시작주소, 오프셋, 사이즈</li>
+<li>코드 외의 변수등에서의 데이터 영역에 대한 같은 정보(오프셋, 사이즈, 메모리맵 시작주소),초기 실행필요한 메모리</li>
+<li>최초 실행할 명력의 메모리 주소(entry point)</li>
+</ul>
+<p>프로그램의 실행파일 구조</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">이름</th>
+<th style="text-align:center">값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">코드영역 파일상 오프셋</td>
+<td style="text-align:center">100</td>
+</tr>
+<tr>
+<td style="text-align:left">코드 영역 사이즈</td>
+<td style="text-align:center">100</td>
+</tr>
+<tr>
+<td style="text-align:left">코드영역 메모리 시작 주소</td>
+<td style="text-align:center">300</td>
+</tr>
+<tr>
+<td style="text-align:left">데이터 영역 파일상 오프셋</td>
+<td style="text-align:center">200</td>
+</tr>
+<tr>
+<td style="text-align:left">데이터 영역 사이즈</td>
+<td style="text-align:center">200</td>
+</tr>
+<tr>
+<td style="text-align:left">데이터 영역 메모리맵 시작 주소</td>
+<td style="text-align:center">400</td>
+</tr>
+<tr>
+<td style="text-align:left">엔트리 포인트</td>
+<td style="text-align:center">400</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// add.c</span></span><br><span class="line">c = a + b</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># compile to assembly</span><br><span class="line">load m100 r0   # 읽어들여라 / m100 메모리 주소(name a)의 값을 / r0 레지스터에</span><br><span class="line">load m200 r1   # 읽어들여라 / m200 메모리 주소(name b)의 값을 / r1 레지스터에</span><br><span class="line">add r0 r1 r2   # 더해라 / r0 과 r1을 / r2 레지스터에 </span><br><span class="line">store r2 m300  # 저장하라 / r2를 / m300 메모리 주소(name c)에</span><br></pre></td></tr></table></figure>
+<h2 id="실행_포멧_elf_분석"><a class="markdownIt-Anchor" href="#실행_포멧_elf_분석"></a> 실행_포멧_ELF_분석</h2>
+<p>리눅스 대표 실행파일인 ELF포멧의 정보는 <code>readelf</code>명령어로 해석 가능.<br>
+<code>/bin/sleep</code>을 예제로 정보를 가져오면,</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">readelf -h /bin/sleep</span><br><span class="line">ELF Header:</span><br><span class="line"><span class="comment">#   Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00</span></span><br><span class="line"><span class="comment">#   Class:                             ELF64</span></span><br><span class="line"><span class="comment">#   Data:                              2's complement, little endian</span></span><br><span class="line"><span class="comment">#   Version:                           1 (current)</span></span><br><span class="line"><span class="comment">#   OS/ABI:                            UNIX - System V</span></span><br><span class="line"><span class="comment">#   ABI Version:                       0</span></span><br><span class="line"><span class="comment">#   Type:                              DYN (Shared object file)</span></span><br><span class="line"><span class="comment">#   Machine:                           Advanced Micro Devices X86-64</span></span><br><span class="line"><span class="comment">#   Version:                           0x1</span></span><br><span class="line"><span class="comment">#   Entry point address:               0x1b70</span></span><br><span class="line"><span class="comment">#   Start of program headers:          64 (bytes into file)</span></span><br><span class="line"><span class="comment">#   Start of section headers:          33208 (bytes into file)</span></span><br><span class="line"><span class="comment">#   Flags:                             0x0</span></span><br><span class="line"><span class="comment">#   Size of this header:               64 (bytes)</span></span><br><span class="line"><span class="comment">#   Size of program headers:           56 (bytes)</span></span><br><span class="line"><span class="comment">#   Number of program headers:         9</span></span><br><span class="line"><span class="comment">#   Size of section headers:           64 (bytes)</span></span><br><span class="line"><span class="comment">#   Number of section headers:         28</span></span><br><span class="line"><span class="comment">#   Section header string table index: 27</span></span><br></pre></td></tr></table></figure>
+<p><code>Entry point address: 0x1b70</code></p>
+<ol>
+<li>실행해야 하는 코드 주소 위치는 <code>0x1b70</code></li>
+<li>여기서 코드영역과 데이터 영역의 파일상의 오프셋, 사이즈, 메모리맵 시작주소를 얻으려면</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">readelf -S /bin/sleep</span><br><span class="line">There are 28 section headers, starting at offset 0x81b8:</span><br><span class="line"></span><br><span class="line">Section Headers:</span><br><span class="line">  [Nr] Name              Type             Address           Offset</span><br><span class="line">       Size              EntSize          Flags  Link  Info  Align</span><br><span class="line">    <span class="comment">#    중략</span></span><br><span class="line">  [14] .text             PROGBITS         00000000000018d0  000018d0</span><br><span class="line">       0000000000003989  0000000000000000  AX       0     0     16</span><br><span class="line">  [24] .data             PROGBITS         0000000000208000  00008000</span><br><span class="line">       0000000000000080  0000000000000000  WA       0     0     32</span><br><span class="line">  [25] .bss              NOBITS           0000000000208080  00008080</span><br><span class="line">       00000000000001c0  0000000000000000  WA       0     0     32</span><br><span class="line">  <span class="comment"># 중략</span></span><br><span class="line">Key to Flags:</span><br><span class="line">  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),</span><br><span class="line">  L (link order), O (extra OS processing required), G (group), T (TLS),</span><br><span class="line">  C (compressed), x (unknown), o (OS specific), E (exclude),</span><br><span class="line">  l (large), p (processor specific)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/08/12/linux/basic_concept_procss_2/" data-id="ckkdb52fd00071pqkiihy6kr7" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux/basic_concept" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/12/linux/basic_concept/" class="article-date">
+  <time datetime="2019-08-12T01:09:52.000Z" itemprop="datePublished">2019-08-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/12/linux/basic_concept/">basic concept of linux / about file</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<blockquote>
+<p>파일과 프로세스, 파이프와 소켓을 다루기 위한 추상적 인터페이스 등이 유닉스의 핵심.</p>
+</blockquote>
+<hr>
+<ol>
+<li><a href="#%ED%8C%8C%EC%9D%BC"><strong>file</strong></a>
+<ol>
+<li><a href="#c%EC%9D%98_select%ED%95%A8%EC%88%98"><strong>select 시스템 콜</strong></a></li>
+</ol>
+</li>
+<li><a href="#%EC%9D%BC%EB%B0%98%ED%8C%8C%EC%9D%BC"><strong>일반 파일</strong></a></li>
+<li><a href="#%EB%94%94%EB%A0%89%ED%84%B0%EB%A6%AC%EC%99%80_%EB%A7%81%ED%81%AC"><strong>디렉터리와 링크</strong></a>
+<ol>
+<li><a href="#%ED%95%98%EB%93%9C_%EB%A7%81%ED%81%AC"><strong>하드 링크</strong></a></li>
+<li><a href="#%EC%8B%AC%EB%B3%BC%EB%A6%AD_%EB%A7%81%ED%81%AC"><strong>심볼릭 링크</strong></a></li>
+</ol>
+</li>
+<li><a href="#%ED%8A%B9%EC%88%98_%ED%8C%8C%EC%9D%BC"><strong>특수 파일</strong></a></li>
+</ol>
+<h2 id="파일"><a class="markdownIt-Anchor" href="#파일"></a> 파일</h2>
+<p>파일은 리눅스에서 가장 기본적이고 핵심이 되는 추상화 개념</p>
+<blockquote>
+<h3 id="리눅스에서는-모든-것이-파일이다"><a class="markdownIt-Anchor" href="#리눅스에서는-모든-것이-파일이다"></a> 리눅스에서는 모든 것이 파일이다</h3>
+</blockquote>
+<ol>
+<li>파일에 접근하려면 먼저 파일을 열어야 한다.<br>
+파일은 읽기, 쓰기 모드 등으로 열 수 있고, 이렇게 열린 파일은,<br>
+해당 파일에 대한 메타데이터와 연결된 고유한 기술자(<strong>descriptor</strong>)를 통해 참조될 수 있다.</li>
+<li>파일 디스크립터는 사용자 영역에서 공유되며, 응용프로갬이 파일에 접근할 떄 직접 사용.</li>
+</ol>
+<p>따라서,</p>
+<ul>
+<li>리눅스 프로그래밍의 대부분은 바로 이 파일 디스트립터(fd)를 열고 조작하고 닫는 작업이다.</li>
+<li>파일 디스크립터는 정수로 표현된다.</li>
+</ul>
+<h3 id="c의_select함수"><a class="markdownIt-Anchor" href="#c의_select함수"></a> C의_select함수</h3>
+<ul>
+<li>동기적 통신</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sock = socket.socket()</span><br><span class="line">request = <span class="string">"GET &#123;&#125; HTTP/1.0\r\nHOST: xkcd.com\r\n\r\n"</span>.format(url)</span><br><span class="line">encoded = request.encode(<span class="string">"ascii"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        sock.send(encoded) <span class="comment"># blocking 발생</span></span><br><span class="line">        <span class="keyword">break</span> <span class="comment"># Done</span></span><br><span class="line">    <span class="keyword">except</span> OSError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">print(<span class="string">"sent"</span>)</span><br></pre></td></tr></table></figure>
+<p>이 메서드는 <code>IO wait</code>에 의해 단순히 전력을 낭비할 뿐만 아니라해 효과적으로 다수의 소켓에서 이벤트를 대기하는 것도 할 수 없다.<br>
+고전적인 방법으로 <strong>BSD Unix</strong>의 해결책은 <code>select</code>였다.<br>
+C함수이고, 그것은 Nonblocking소켓 또는 small array를 그들에게서 부터 기다릴 수 있다.</p>
+<p>요즘에는 인터넷 어플리케이션이 무지막지한 연결수를 초래하여서 <code>poll</code>보다는,<br>
+BSD의 <code>kqueue</code>, Linux의 <code>epoll</code>로 대체하게 되었다.<br>
+이들은 <code>select</code>와 비슷한 동작을 가지고 있지만 다수의 연결을 잘 해결해 낸다.</p>
+<p>파이썬 3.4의 <code>DefaultSelector</code>이 당신의 OS중에 가능한 최고의 <code>select</code>같은 함수를 사용한다.</p>
+<p><code>network I/O</code>에 대한 인터럽션에 대응하는 알림을 등록하기 위해서</p>
+<ol>
+<li>우리는 논블로킹 소켓을 생성하고,</li>
+<li>이것을 DefaultSelector에 등록한다.</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selectors <span class="keyword">import</span> DefaultSelector, EVENT_WRITE</span><br><span class="line"></span><br><span class="line">selector = DefaultSelector()</span><br><span class="line"></span><br><span class="line">sock = socket.socket()</span><br><span class="line">sock.setblocking(<span class="literal">False</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    sock.connect((<span class="string">"xkcd.com"</span>, <span class="number">80</span>))</span><br><span class="line"><span class="keyword">except</span> BlockingIOError:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">connected</span><span class="params">()</span>:</span></span><br><span class="line">    seletor.unregister(sock.fileno())</span><br><span class="line">    print(<span class="string">"connected!"</span>)</span><br><span class="line"></span><br><span class="line">selector.register(sock.fileno(), EVENT_WRITE, connected)</span><br><span class="line"><span class="comment"># sock.fileno()가 네트워크 소켓에 대한 파일 디스크립터(정수)로 자동 생성되고 할당된다.</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>DefaultSelector() : select함수와 같은 역할
+<ul>
+<li>소켓을 생성하면 파일 디스트립터(IO wait, Read, write)가 1:1관계로 자동 생성된다.</li>
+<li>소켓과 매핑된 <strong>파일디스트립터</strong>를 등록하고, 해당 파일에 대해 이벤트를 감지하면 약속된 행동을 개시한다.</li>
+<li><code>select</code>함수는 비동기 소켓에 대해 또 다른 파일을 등록해 해당 파일 디스크립터에 대해 특정 이벤트를 감시하는(해당 인터럽션이 중요하다고 여기는 것) 약속을 등록하고 해제해준다.(이 또한 파일)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="일반파일"><a class="markdownIt-Anchor" href="#일반파일"></a> 일반파일</h2>
+<p>일반 파일은 바이트 스트림이라 불리는 연속적으로 나열된 바이트 배열에 저장된 데이터를 의미한다.</p>
+<ul>
+<li><strong>파일 디스크립터</strong>
+<ul>
+<li>정수로 특정 파일에 대한 METADATA가 담긴 프로세스의 특수 메모리주소를 가리킨다.</li>
+</ul>
+</li>
+<li><strong>파일 읽기</strong>
+<ul>
+<li>해당 파일 디스트립터가 가르키는 메타데이터의 inode의 오프셋(bytes)만큼 나열된 연속적 데이터(byte-array)를 가져온다.</li>
+</ul>
+</li>
+</ul>
+<p>리눅스에는 파일을 위한 특별한 자료구조가 없다. 따라서 어떠한 값이가도 들어갈 수 있다.<br>
+시스템수준에서 살펴보면 리눅스는 <strong>바이트 스트림</strong>외어 어떤 자료구조도 강제하지 않는다.</p>
+<p>파일이 처음 열리면 file-offset은 0이다.</p>
+<p>직접 파일 오프셋을 지정할 수 도 있는데, 파일 끝을 넘길 수도 있다.<br>
+파일 크기를 넘어 바이트를 기록하면 파일 끝에서 지정한 위치가 시작하는 부분까지 내용은 모두 0이 된다.</p>
+<blockquote>
+<p>파일을 쓰는 작업은 대부분 파일 끝에서 일어난다.<br>
+파일 오프셋의 최댓값은 오프셋을 저장하기 위해 사용하는 C타입의 크기로 결정된다.<br>
+최신리눅스에서는 64비트 값이다.</p>
+</blockquote>
+<p>하나의 파일은 다른 프로세스나 동일한 프로세스에서 한 번이상, 혹은 동시에 열려질 수 있다.<br>
+그들은 열릴때마다 고유한 파일 디스크립터를 반환한다.<br>
+프로세스에서는 따라서 파일 디스트립터를 공유할 수 있다.</p>
+<p><strong>커널은 파일에 대한 동시 접근을 막지 않는다.</strong></p>
+<p>일반적으로 파일 이름을 통해 파일에 접근하지만,<br>
+실제로 파일은 <code>inode(information node)</code>라 하는 파일시스템의 고유한 정수값으로 참조 된다.</p>
+<blockquote>
+<p><code>Inode</code> 의 구성</p>
+<ol>
+<li>변경된 날짜</li>
+<li>소유자</li>
+<li>타입</li>
+<li>길이</li>
+<li>물리 데이터 저장 위치</li>
+</ol>
+</blockquote>
+<p>파일이름은 저장하지 않는다.<br>
+<code>inode</code>는 유닉스 파일 시스템에서 디스크에 저장된 물리적 객체임과 동시에,<br>
+리눅스 커널에서 자료구조로 표현되는 논리적인 개념이기도 하다.</p>
+<hr>
+<h2 id="디렉터리와_링크"><a class="markdownIt-Anchor" href="#디렉터리와_링크"></a> 디렉터리와_링크</h2>
+<p>inode번호로 파일에 접근하면 보안위협이 있어서, 파일 이름을 사용한다.<br>
+디렉터리는 파일에 접근하기 위한 이름을 제공하는데, 이 이름과 inode의 Pair를 <code>Link</code>라고 한다.</p>
+<p>개념적으로 디렉터리는 일반파일과 유사한 모습이지만 데이터가 존재하지 않는다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">type</th>
+<th style="text-align:left">name</th>
+<th style="text-align:left">data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">directory</td>
+<td style="text-align:left">in directory</td>
+<td style="text-align:left">file’s namespaces</td>
+</tr>
+<tr>
+<td style="text-align:left">file</td>
+<td style="text-align:left">in directory</td>
+<td style="text-align:left">as inode</td>
+</tr>
+<tr>
+<td style="text-align:left">inode</td>
+<td style="text-align:left">no</td>
+<td style="text-align:left">file location, offset, elses</td>
+</tr>
+</tbody>
+</table>
+<p>실제 디렉터리도 inode가 있다. 따라서 디렉터리 내부의 링크 역시 다른 inode를 가질 수 있다.<br>
+즉, 디렉터리는 계층적인 구조를 형성할 수 있게 된다.</p>
+<p>이를 이용하여 <code>/home/sample/data.png</code>처럼 파일 경로를 사용할 수 있는 것이다.</p>
+<p><code>/home/sample/data.png</code>같은 경로로 파일을 열겠다고 요청하면,</p>
+<ol>
+<li>해당 파일 경로에 속한 각 디렉터리 엔트리 (called as <code>dentry</code> by kernel)를 탐색하여 다음 항목의 inode를 찾음.</li>
+<li><code>/</code>로 시작, <code>sample</code>디렉터리의 inode를 찾는다.</li>
+<li><code>sample.png</code>의 inode를 얻는다.</li>
+</ol>
+<p>리눅스 커널은 <code>dentry</code> 캐시를 활용하여 찾기 결과를 저장하고 나중에 <strong>일시적인 지역성</strong>을 이용해 탐색속도를 높인다.</p>
+<blockquote>
+<p>지역성(locality) : 한번 접근한 데이터의 근처의 데이터에 또 접근하는 경우가 많다.</p>
+</blockquote>
+<p>비록 디렉터리도 inode가 있고 네임이 있으니, 일반 파일처럼 취급하지만,<br>
+커널은 사용자 영역에서 디렉터리를 일반 파일처럼 열고 조작하지 못하도록 제한한다.<br>
+따라서 디렉터리는 특수한 시스템 콜을 통해 조작해야하는데, 이를 위한 시스템 콜은 아래와 같다.</p>
+<ol>
+<li>링크 추가</li>
+<li>링크 삭제</li>
+</ol>
+<p>사용자 영역에서 커널의 중제없이 디렉터리를 조작할 수 있게 하면, 조그만 오류가 발생해도 파일시스템 전체를 망가뜨릴 수 있다.</p>
+<hr>
+<h3 id="하드_링크"><a class="markdownIt-Anchor" href="#하드_링크"></a> 하드_링크</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">type</th>
+<th style="text-align:left">origin</th>
+<th style="text-align:left">name</th>
+<th style="text-align:left">linkto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">hard link</td>
+<td style="text-align:left">A</td>
+<td style="text-align:left">h_link_A</td>
+<td style="text-align:left">A’s inode</td>
+</tr>
+<tr>
+<td style="text-align:left">hard link</td>
+<td style="text-align:left">A</td>
+<td style="text-align:left">h_link_B</td>
+<td style="text-align:left">A’s inode</td>
+</tr>
+<tr>
+<td style="text-align:left">symbolic link</td>
+<td style="text-align:left">B</td>
+<td style="text-align:left">B_link_A</td>
+<td style="text-align:left">B’s inode</td>
+</tr>
+<tr>
+<td style="text-align:left">symbolic link</td>
+<td style="text-align:left">B</td>
+<td style="text-align:left">B_link_B</td>
+<td style="text-align:left">B_link_A’s inode</td>
+</tr>
+</tbody>
+</table>
+<p>다른 이름으로 동일한 inode를 가르키지 못하게 하는 방법은 없다.<br>
+다중 링크는 동일한 inode를 여러가지 이름으로 맵핑한다. 이를 <strong>하드링크</strong>라 한다.</p>
+<p>동일한 inode에 대한 다수의 하드링크에 대해서 커널은 1회의 실행을 통해 원본의 inode를 알아낸다.</p>
+<p>따라서 해당 원본에 대한 하드링크가 늘어난다면? 그만큼 <code>Referencing counter</code>이 늘어난다.<br>
+원본을 지워도 원본의 inode를 가지고 있는 Referencing이 살아 있기 때문에, 해당 inode의 데이터는 삭제되지 않는다.</p>
+<blockquote>
+<p>링크 카운터가 0이 되는 순간 비로소 해당 inode가 포함하는 자료가 실제로 삭제된다.</p>
+</blockquote>
+<hr>
+<h3 id="심볼릭_링크"><a class="markdownIt-Anchor" href="#심볼릭_링크"></a> 심볼릭_링크</h3>
+<p>심벌릭 링크는 최종 엔드포인트가 origin의 inode를 가르키고 있지만, 독자적인 inode값을 가지게 된다.<br>
+그래서 일반 디렉터리처럼 달리 독자성을 가지고 있기 때문에, 파일처럼 생겼다.</p>
+<ol>
+<li>
+<p>하드 링크보다 심볼릭 링크가 결론적으로 오버헤드를 많이 가져오는 이유는,<br>
+심벌릭 링크를 효과적으로 탐색하기 위해,<br>
+해당 링크와 그 링크로 연결된 파일 둘다 다뤄야 하기 때문이다.</p>
+</li>
+<li>
+<p>하드링크에서 추가적인 오버헤드가 발생하지 않는 이유는,<br>
+파일 시스템에서는 링크가 둘 이상 걸린 파일에 접근하거나,<br>
+하나만 걸린파일에 접근하거나 구현상 차이가 없기 때문이다.</p>
+</li>
+<li>
+<p>심벌릭 링크가 단일로서는 오버헤드가 매우 작지만,(원본 레퍼런스의 couter을 늘리지 않는 점등에서,)  그래도 부정적인 것으로 취급받고 있다.</p>
+</li>
+<li>
+<p>하드링크는 사용자 입장에서 봤을떄 원본 주소 그 자체이기 때문에, 완전히 투명하다.</p>
+</li>
+<li>
+<p>그러나 실제로 2번 이상 링크된 파일을 찾아내는 작업이 더 어렵다.</p>
+</li>
+<li>
+<p>반면 심볼릭 링크를 조작하려면 특수 시스템 콜이 필요하다.<br>
+이런 투명성 결여는 심벌릭 링크가 명료하게 생성되며, 파일시스템내부 링크가 아닌,<br>
+일종의 바로가기 처럼 사용되기 떄문에,<br>
+종종 장점으로 작용하기도 한다.</p>
+</li>
+</ol>
+<hr>
+<h2 id="특수_파일"><a class="markdownIt-Anchor" href="#특수_파일"></a> 특수_파일</h2>
+<p>정의</p>
+<ul>
+<li>파일로 표현되는 커널 객체</li>
+</ul>
+<p>종류</p>
+<ol>
+<li>캐릭터 디바이스 파일</li>
+<li>블록 디바이스 파일</li>
+<li>네임드 파이프</li>
+<li>유닉스 도메인 소켓</li>
+</ol>
+<p>특수 파일은 모든 것이 파일이라는 유닉스 철학에 맞게,<br>
+파일 시스템 위에 구현된 추상화 개념이며 리눅스는 특수파일을 생성하는 시스템 콜을 제공한다.</p>
+<h3 id="하드웨어-장치를-추상화하는-디바이스-파일"><a class="markdownIt-Anchor" href="#하드웨어-장치를-추상화하는-디바이스-파일"></a> 하드웨어 장치를 추상화하는 디바이스 파일</h3>
+<blockquote>
+<p>하드웨어 장치마다 특수 디바이스파일이 존재한다.<br>
+장치의 종류가 같다면 같은 인터페이스의 드라이버를 사용한다.<br>
+특수 파일은 개별적이나 종류가 같다면 같은 인터페이스를 사용.</p>
+</blockquote>
+<ol>
+<li>
+<p><strong>캐릭터 디바이스 파일</strong></p>
+<p>디바이스 드라이버는 큐에 바이트를 하나씩 집어 넣고, 사용자 영역에서는 큐에 쌓인 순서대로 바이트를 읽어낸다.</p>
+<p>대표적인 예: 키보드</p>
+<ol>
+<li>사용자가 'peg’라고 입력</li>
+<li>애플리케이션은 키보드 드라이버 인터페이스를 통해 디바이스 파일에서 p, e, g 를 순서대로 읽음.</li>
+<li>읽을 문자 없을 시 <code>EOF(End of Line)</code>을 반환.</li>
+</ol>
+</li>
+<li>
+<p><strong>블록 디바이스 파일</strong></p>
+<p>반면 블록 디바이스는 바이트 배열로 접근한다. 보통 저장장치를 말하는데,<br>
+위치 지정이 가능한 장치에 여러 바이트를 맵핑해,<br>
+사용자 영역에서는 이 배열이 포함하고 있는 유효한 바이트에 임의 접근할 수 있다.<br>
+(하드 디스크 드라이브, 플로피 드라이브, CD-ROM드라이브, 플래시 메모리)</p>
+<p>대표적인 예: HDD</p>
+<ol>
+<li>12바이트를 읽음</li>
+<li>7바이트 읽음</li>
+<li>12바이트 읽음</li>
+</ol>
+<p>블록 디바이스의 최소 접근 단위는 <code>섹터</code>이다.<br>
+섹터는 디바이스의 물리적인 속성며 2의 승수로 나타내며 512가 가장 일반적이다.<br>
+블록 디바이스는 섹터보다 더 작은 데이터 단위를 전송하거나 접근하지 못한다.<br>
+따라서 모든 입출력은 섹터 하나를 가져오는 것 혹은 보내는 것을 기준으로 일어난다.</p>
+</li>
+<li>
+<p><strong>네임드 파이프</strong></p>
+<p>FIFO로 부르기도 한다.<br>
+<code>IPC(Inter Process Communication)</code>메커니즘으로 특수파일을 읽고 쓰는 파일 디스크립터 형태로 통신 채널을 제공한다.</p>
+<p>일반 파이프는 특정 프로그램 출력을 자신의 입력으로 잇는 것처럼, 다른 프로그램 입력으로 연결하기 위한 방법이다.</p>
+<blockquote>
+<p>시스템 콜로 만들어지는 일반 파이프는 파일 시스템이 아니라 메모리에 존재한다.</p>
+</blockquote>
+<p>네임드 파이프는 일반 파이프와 동일하게 동작하지만, <code>FIFO</code>라는 특수 파일을 거쳐 접근한다.<br>
+서로 무관한 프로세스도 이 파일에 접근하는 방식으로 프로세스 사이에 통신이 가능해진다.</p>
+</li>
+<li>
+<p><strong>소켓</strong></p>
+<p>소켓은 다른 프로세스끼리 통신할 수 있는 고급 <code>IPC</code>의 한 종류이며, 다른머신과의 통신도 가능하다는 점이 다르다.</p>
+<blockquote>
+<p>소켓은 네트워크와 인터넷 프로그래밍의 근간.</p>
+</blockquote>
+<p>로컬 머신 내부에서 통신을 위해 사용하는 소켓형태인 유닉스 도메인 소켓을 포함하여, 많은 변종이 있다.</p>
+<ol>
+<li>인터넷에서 통신하는 소켓은 IP를 파악하기위해 <code>host name</code>, <code>port</code>를 사용.</li>
+<li>유닉스 도메인 소켓은 파일 시스템에 만들어진 소켓파일(특수 파일)을 사용한다.</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h3 id="파일-시스템"><a class="markdownIt-Anchor" href="#파일-시스템"></a> 파일 시스템</h3>
+<ul>
+<li>
+<p>접근단위</p>
+<p>블록에서 최소 접근 단위가 <code>섹터</code>라면 파일 시스템에서의 논리적 최소 접근단위는 <code>블록</code>이다.</p>
+</li>
+<li>
+<p>블록</p>
+<p>블록은 파일시스템을 추상화한 개념으로 파일시스템이 존재하는 물리매체와 무관하다.<br>
+블록은 보통 섹터크기의 2의 승수이다.</p>
+<blockquote>
+<p>따라서 일반적으로 섹터보다 더 크지만, 페이지 크기 보다는 작다.<br>
+페이지 크기: 하드웨어 메모리 관리 유닛에서 지정 가능한 최소 단위</p>
+</blockquote>
+<p>보통 블록 크기는 512, 1024, 4096 바이트다.</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/08/12/linux/basic_concept/" data-id="ckkdb52ff00081pqky8ql2ffd" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux/understanding_kernel" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/11/linux/understanding_kernel/" class="article-date">
+  <time datetime="2019-08-11T08:35:49.000Z" itemprop="datePublished">2019-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/11/linux/understanding_kernel/">커널의 이해와 시스템 콜 이해</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<hr>
+<ol>
+<li><a href="#%EA%B0%9C%EC%9A%94"><strong>개요</strong></a></li>
+<li><a href="#%EC%82%AC%EC%9A%A9%EC%9E%90_%EB%AA%A8%EB%93%9C%EB%A1%9C_%EA%B5%AC%ED%98%84%EB%90%98%EB%8A%94_%EA%B8%B0%EB%8A%A5"><strong>사용자 모드로 구현되는 기능</strong></a></li>
+</ol>
+<hr>
+<h2 id="개요"><a class="markdownIt-Anchor" href="#개요"></a> 개요</h2>
+<h3 id="os의-구성-커널사용자-모드"><a class="markdownIt-Anchor" href="#os의-구성-커널사용자-모드"></a> OS의 구성, 커널,사용자 모드</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">타입</th>
+<th style="text-align:center">정의</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">커널모드</td>
+<td style="text-align:center">OS의 인터페이스로 내부 장치에 대한 Wrapper manager</td>
+</tr>
+<tr>
+<td style="text-align:left">사용자모드</td>
+<td style="text-align:center">OS의 인터페이스를 사용하는 외부 프로세스</td>
+</tr>
+</tbody>
+</table>
+<h3 id="커널프로세스의-고유한-역할"><a class="markdownIt-Anchor" href="#커널프로세스의-고유한-역할"></a> 커널프로세스의 고유한 역할</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">title</th>
+<th style="text-align:center">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">디바이스 드라이버 관리</td>
+<td style="text-align:center">외부 프로세스가 디바이스에 대한 동시접근을 제한, 종류가 같은 디바이스는 동일 인터페이스로 조작</td>
+</tr>
+<tr>
+<td style="text-align:left">프로세스 관리 시스템</td>
+<td style="text-align:center">프로세스의 상태를 관리하고, 그에 따른 상태를 조정 및 관리 (OnProcessing, , kill)</td>
+</tr>
+<tr>
+<td style="text-align:left">프로세스 스케줄링</td>
+<td style="text-align:center">프로세스당 CPU 리소스 사용 시간 부여</td>
+</tr>
+<tr>
+<td style="text-align:left">메모리 관리 시스템</td>
+<td style="text-align:center">프로세스당 메모리(물리메모리, 가상메모리) 부여</td>
+</tr>
+</tbody>
+</table>
+<p>프로세스의 동작과 OS의 역할이라 함은, 다양한 데이터가 메모리를 중심으로</p>
+<pre><code>1. CPU의 레지스터
+2. L1,L2 Cache
+3. 메모리
+4. 저장장치
+</code></pre>
+<p>와 같은 저장장치의 계층 구조를 통해 프로세스를 빠르고 안정적으로 동작시킨다.<br>
+저장장치에 보관된 데이터는 디바이스 드라이버에 요청하여 접근 할 수 있지만,<br>
+좀 더 간단히 접근하기 위해, <strong>파일 시스템</strong>이라하는 프로그램을 통해 접근한다.</p>
+<pre><code>1. 프로세스(사용자 모드)
+2. 파일시스템(커널모드)
+3. 저장장치 드라이버
+4. 저장장치
+</code></pre>
+<p><strong>시스템 또한 최우선의 관리자로서 작동하려면 저장장치로 부터 OS를 읽어야 한다.</strong></p>
+<blockquote>
+<p>정확하게는 OS를 읽어들이기 전에 <strong>BIOS</strong>, <strong>UEFI</strong>라 하는 하드웨어 임베디드 소프트웨어가 작동하여</p>
+<ol>
+<li>하드웨어의 초기와 처리</li>
+<li>동작할 OS를 선택하는 부트로더</li>
+</ol>
+<p>가 동작합니다.</p>
+</blockquote>
+<hr>
+<h2 id="사용자_모드로_구현되는_기능"><a class="markdownIt-Anchor" href="#사용자_모드로_구현되는_기능"></a> 사용자_모드로_구현되는_기능</h2>
+<ul>
+<li>다룰 내용
+<ol>
+<li>시스템 콜</li>
+<li>OS가 제공하는 라이브러리</li>
+<li>OS가 제공하는 프로그램</li>
+</ol>
+</li>
+</ul>
+<h3 id="시스템-콜의-종류"><a class="markdownIt-Anchor" href="#시스템-콜의-종류"></a> 시스템 콜의 종류</h3>
+<pre><code>1. 프로세스 생성, 삭제
+2. 메모리 확보, 해제
+3. 프로세스간 통신(IPC)
+4. 네트워크
+5. 파일시스템 다루기
+6. 파일 다루기(디바이스 접근)
+</code></pre>
+<h3 id="cpu의-모드-변경"><a class="markdownIt-Anchor" href="#cpu의-모드-변경"></a> CPU의 모드 변경</h3>
+<ol>
+<li>프로세스가 사용자 모드로 사용되는 와중에 커널에 처리를 요청하고자 시스템 콜을<br>
+호출하면 <strong>CPU인터럽트 발생</strong></li>
+<li>CPU가 사용자 모드에서 커널모드로 변경</li>
+<li>요청내용 처리</li>
+<li>시스템 콜 처리 종료</li>
+<li>저장해놨던 CODE segment에 대한 정보를 이어가, IR에 담음</li>
+<li>사용자 모드로 전환 프로세스 동작 <strong>이어감</strong></li>
+</ol>
+<h3 id="시스템-콜-호출의-동작-순서"><a class="markdownIt-Anchor" href="#시스템-콜-호출의-동작-순서"></a> 시스템 콜 호출의 동작 순서</h3>
+<pre><code><figure class="highlight c"><figcaption><span>hello.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"hello world"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">strace -o hello.log ./hello</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat hello.log</span><br><span class="line">execve(<span class="string">"/hello"</span>, [<span class="string">"./hello"</span>], [/* 77 vars */]) = 0</span><br><span class="line">brk(NULL)                               = 0x5619fe7aa000</span><br><span class="line">access(<span class="string">"/etc/ld.so.nohwcap"</span>, F_OK)      = -1 ENOENT (No such file or directory)</span><br><span class="line">access(<span class="string">"/etc/ld.so.preload"</span>, R_OK)      = -1 ENOENT (No such file or </span><br><span class="line">directory)</span><br><span class="line">...</span><br><span class="line">close(3)                                = 0</span><br><span class="line">write(1, <span class="string">"hello world\n"</span>, 12)           = 12</span><br><span class="line">exit_group(0)                           = ?</span><br></pre></td></tr></table></figure>
+</code></pre>
+<hr>
+<pre><code><figure class="highlight python"><figcaption><span>hello.py</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"hello world"</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strace -o hello.py.log python3 ./hello.py</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><figcaption><span>bash</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">cat hello.py.log</span><br><span class="line">execve(<span class="string">"/home/junehan/miniconda3/bin/python3"</span>, [<span class="string">"python3"</span>, <span class="string">"hello.py"</span>], 0x7fff882f0768 /* 77 vars */) = 0</span><br><span class="line">brk(NULL)                               = 0x5619fe7aa000</span><br><span class="line">access(<span class="string">"/etc/ld.so.nohwcap"</span>, F_OK)      = -1 ENOENT (No such file or directory)</span><br><span class="line">readlink(<span class="string">"/proc/self/exe"</span>, <span class="string">"/home/junehan/miniconda3/bin/pyt"</span>..., 4096) = 38</span><br><span class="line">access(<span class="string">"/etc/ld.so.preload"</span>, R_OK)      = -1 ENOENT (No such file or </span><br><span class="line">directory)</span><br><span class="line">...</span><br><span class="line">close(3)                                = 0</span><br><span class="line">write(1, <span class="string">"hello world\n"</span>, 12)           = 12 <span class="comment"># write system call</span></span><br><span class="line">rt_sigaction(SIGINT, &#123;sa_handler=SIG_DFL, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f8b453db890&#125;, &#123;sa_handler=0x5619fd4904d0, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7f8b453db890&#125;, 8) = 0</span><br><span class="line">sigaltstack(NULL, &#123;ss_sp=0x5619fe7ca720, ss_flags=0, ss_size=8192&#125;) = 0</span><br><span class="line">sigaltstack(&#123;ss_sp=NULL, ss_flags=SS_DISABLE, ss_size=0&#125;, NULL) = 0</span><br><span class="line">munmap(0x7f8b4564c000, 262144)          = 0</span><br><span class="line">brk(0x5619fe842000)                     = 0x5619fe842000</span><br><span class="line">exit_group(0)                           = ?</span><br><span class="line"><span class="comment"># 705개의 시스템 콜 호출</span></span><br></pre></td></tr></table></figure>
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/08/11/linux/understanding_kernel/" data-id="ckkdb52fh000a1pqkefbi5zmi" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/custom_module/error_handler" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/09/python/custom_module/error_handler/" class="article-date">
+  <time datetime="2019-08-09T08:22:43.000Z" itemprop="datePublished">2019-08-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/09/python/custom_module/error_handler/">에러처리 Decorator과 logging, write to csv</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="error-hanlder-with-logging"><a class="markdownIt-Anchor" href="#error-hanlder-with-logging"></a> Error hanlder with logging</h2>
+<h3 id="github-repo"><a class="markdownIt-Anchor" href="#github-repo"></a> <a href="https://github.com/codenamenadja/python_cutsom-error_handler" target="_blank" rel="noopener">github repo</a></h3>
+<h3 id="기초-사용법"><a class="markdownIt-Anchor" href="#기초-사용법"></a> 기초 사용법</h3>
+<ul>
+<li>Expected Error</li>
+</ul>
+<blockquote>
+<p>2번째 요소를 지정하면서 특정상황에 일으키는 예견된 에러</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> ValueError(<span class="string">"some message"</span>, <span class="string">"info"</span>)</span><br><span class="line"><span class="keyword">raise</span> PermissionError(<span class="string">"some message"</span>, <span class="string">"warning"</span>)</span><br><span class="line"><span class="keyword">raise</span> FileNotFoundError(<span class="string">"some message"</span>, <span class="string">"errror"</span>)</span><br><span class="line"><span class="keyword">raise</span> AttributeError(<span class="string">"some message"</span>, <span class="string">"debug"</span>)</span><br><span class="line"><span class="keyword">raise</span> ConnectionRefusedError(<span class="string">"some message"</span>, <span class="string">"critical"</span>)</span><br><span class="line"><span class="keyword">raise</span> ConnectionAbortedError(<span class="string">"some message"</span>, <span class="string">"fatal"</span>)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>logs into curdir filename debug_expected.log</li>
+<li>writes as, <code>asctime - name - levelname - {message}</code>
+<ol>
+<li>{message}: <code>filename - lineno - message</code></li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>UnExpected Error</li>
+</ul>
+<blockquote>
+<p>2번째 요소가 지정 되지 않는 실제 에러</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> ValueError(<span class="string">"message"</span>)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>logs into curdir filename debug_unexpected.log</li>
+<li>writes same as upper,</li>
+<li>run logger.log_to_csv()</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log_to_csv</span><span class="params">(logger_name: Optional[str] = <span class="string">"unexpected"</span>)</span> -&gt; bool</span></span><br><span class="line"><span class="function">    """</span></span><br><span class="line"><span class="function">    read &#123;logger_name&#125;_debug.log file</span></span><br><span class="line"><span class="function">    write into csv as thread reads line.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    if file exists, write over ends of the line</span></span><br><span class="line"><span class="function">    """</span></span><br></pre></td></tr></table></figure>
+<h2 id="custominzing-to-do"><a class="markdownIt-Anchor" href="#custominzing-to-do"></a> custominzing to do</h2>
+<ul>
+<li>예상 외 에러를 발생하면 CSV파일이 모두 씌여지고, 해당 CSV파일을 S3저장소에 업로드</li>
+<li>마지막줄 기준으로 날짜가 달라졌다면, 오늘 이전 로그를 이메일로 전송(그렇다면 1일 최대 1회 이메일로 파일전송)</li>
+</ul>
+<h2 id="more-to-do"><a class="markdownIt-Anchor" href="#more-to-do"></a> more to do</h2>
+<ul>
+<li>순수한 에러핸들러 데커레이터와 로깅이 연동된 데커레이터를 분리</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/08/09/python/custom_module/error_handler/" data-id="ckkdb52gt001g1pqk76bvno8x" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/module/collections" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/03/python/module/collections/" class="article-date">
+  <time datetime="2019-08-03T06:55:54.000Z" itemprop="datePublished">2019-08-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/03/python/module/collections/">python collections 모듈</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<hr>
+<ol>
+<li><a href="#%EA%B0%9C%EC%9A%94"><strong>개요</strong></a></li>
+<li><a href="#chainmap"><strong>ChainMap</strong></a></li>
+<li><a href="#nametuple"><strong>namedtuple</strong></a></li>
+<li><a href="#counter"><strong>Counter</strong></a></li>
+<li><a href="#userdict"><strong>UserDict</strong></a></li>
+</ol>
+<hr>
+<h2 id="개요"><a class="markdownIt-Anchor" href="#개요"></a> 개요</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">타입</th>
+<th style="text-align:left">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>namedtuple()</code></td>
+<td style="text-align:left"><strong>팩토리 함수,</strong> tuple형태의 명명된 필드를 가진 서브클래스를 생성하는것에 고성능</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>deque</code></td>
+<td style="text-align:left"><strong>list같은 컨테이너,</strong> 양쪽 끝에서 더하고 빼는게 빠르다</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ChainMap</code></td>
+<td style="text-align:left"><strong>dict같은 클래스,</strong> 복수의 매핑들로 구성된 하나의 뷰를 생성하는데 사용.</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Counter</code></td>
+<td style="text-align:left"><strong>dict의 서브클래스,</strong> hashable객체의 키값을 세기 위한 용도</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>OrderedDict</code></td>
+<td style="text-align:left"><strong>dict의 서브클래스,</strong> 순서가 있는, 엔트리가 추가됐다는 것을 기억한다.</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>defaultdict</code></td>
+<td style="text-align:left"><strong>dict의 서브클래스,</strong> 빠진 값을 처리하기위한 팩토리 함수</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>UserDict</code></td>
+<td style="text-align:left"><strong>dict객체의 래퍼,</strong> dict의 서브클래싱을 쉽게 해준다.</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>UserList</code></td>
+<td style="text-align:left"><strong>list객체의 래퍼,</strong> list의 서브클래싱을 쉽게 해준다.</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>UserString</code></td>
+<td style="text-align:left"><strong>string객체의 래퍼,</strong> string의 서브클래싱을 쉽게 해준다.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>deque는 의도가 명확하고, namedtuple또한 의도와 사용법이 한정적이기 떄문에, 그 외의 것들을 다룬다.</li>
+<li>서브클래싱은 팩토리, 인스턴스를 의미한다.</li>
+</ul>
+<hr>
+<h2 id="chainmap"><a class="markdownIt-Anchor" href="#chainmap"></a> ChainMap</h2>
+<h3 id="chainmap_introduction"><a class="markdownIt-Anchor" href="#chainmap_introduction"></a> ChainMap_introduction</h3>
+<p>ChainMap클래스는 빠르게 다수의 <code>mappings</code>를 연결하기 위해 구성되었다.<br>
+따라서 그들은 하나의 유닛으로 다뤄질 수 있다. 때로 새로운 딕셔너리를 생성해서, 여러번 <code>update()</code>를 실행하는 것보다 더 빠를 수 있다.</p>
+<ul>
+<li>기본적으로 리스트 컴프리헨션으로 해당 mapped자료구조들을 풀면 keys를 푼다.</li>
+<li>매개변수의 args에서 0번째부터의 데이터 유지를 최우선으로 한다.</li>
+<li>ChainMap에서 Values에 대한 접근이 nametuple에서 제한된다. keys로 접근하면 key가 아닌 value를 리턴한다.</li>
+<li>리턴하는 값들의 순서는 역방향이다. 마지막 매개변수의 키값 등을 먼저 출력.</li>
+<li>매개변수 후자의 객체(읽히는 순서)에 앞에있는 것을 계속 Update해나가는 식(덮어 씌워짐)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>baseline = &#123;'music': 'bach', 'art': 'rembrandt'&#125;</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>adjustments = &#123;'art': 'van gogh', 'opera': 'carmen'&#125;</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>list(ChainMap(adjustments, baseline))</span></span><br><span class="line"><span class="string">['music', 'art', 'opera']</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 위 아래는 행동이 동일하다. 코드를 간결하게 유지하고, 속도도 때로 더 빠르다.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>combined = baseline.copy()</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>combined.update(adjustments)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>list(combined)</span></span><br><span class="line"><span class="string">['music', 'art', 'opera']</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="namedtuple"><a class="markdownIt-Anchor" href="#namedtuple"></a> namedtuple</h2>
+<h3 id="namedtuple_고찰키값으로-매핑되는-데이터들-기준"><a class="markdownIt-Anchor" href="#namedtuple_고찰키값으로-매핑되는-데이터들-기준"></a> namedtuple_고찰(키값으로 매핑되는 데이터들 기준)</h3>
+<p>namedtuple인스턴스의 크기는 class인스턴스보다 크다.(아래표는 byte크기 기준 비교)</p>
+<blockquote>
+<p>key=[“username”,“id”] values=[“asd”, “dvd”]로 생성</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">type</th>
+<th style="text-align:center">nametuple</th>
+<th style="text-align:center">class</th>
+<th style="text-align:center">class with <code>__slot__</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">class</td>
+<td style="text-align:center">888</td>
+<td style="text-align:center">1056</td>
+<td style="text-align:center">888</td>
+</tr>
+<tr>
+<td style="text-align:left">instance</td>
+<td style="text-align:center">56</td>
+<td style="text-align:center">64</td>
+<td style="text-align:center">56</td>
+</tr>
+<tr>
+<td style="text-align:left">ChainMap적용 .keys()</td>
+<td style="text-align:center"><code>['sadf', 'sad', 'sad']</code></td>
+<td style="text-align:center"><code>['id', 'username', 'password']</code></td>
+<td style="text-align:center"><code>TypeError:Not Iterable</code> cant not make chainMap</td>
+</tr>
+<tr>
+<td style="text-align:left">ChainMap적용 .values()</td>
+<td style="text-align:center"><code>TypeError:Tuple indices must be integer or slices, not str</code></td>
+<td style="text-align:center"><code>['sadf', 'sad', 'sad']</code></td>
+<td style="text-align:center">pass</td>
+</tr>
+<tr>
+<td style="text-align:left">ChainMap적용 list()</td>
+<td style="text-align:center"><code>['sadf',' sad', 'sad']</code></td>
+<td style="text-align:center"><code>['id','username','password']</code></td>
+<td style="text-align:center">pass</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>가장 간결하게 쓰고 싶다면, 그냥 리스트나 튜플로 키값없이 약속된 값 순서대로 타입을 체크해서 처리하는게, 메모리 효율적이다.</li>
+<li>그러나 인스턴스에 대해 동일한 기능이 필요하거나, 값의 타입 분리가 쉽지 않다면, 키값은 필요하다.</li>
+<li>함수형 프로그래밍을 통해 해당 객체의 타입만 재정의하고, 기능을 별도함수로 처리하면, 동일함수로직을 여러 객체가 사용하기 위해, 함수가 커지는 부작용이 있다.</li>
+<li>일단 클래스로 정의하고, <code>__slots__</code>를 통해서 사용할 메서드만 정의하고,</li>
+<li>개별적인 validate메서드를 사용하고, 클래스 오버라이딩을 통해서 메모리를 줄이는 방법이 있다.</li>
+<li>namedtuple의 장점은, 코드 양이 적으니, 파일 크기가 적고, 개발자들 사이에서 더 간결한 표현일 수 있다는 점이다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Slot_dict.__dict__</span></span><br><span class="line"><span class="string">mappingproxy(&#123;'__module__': '__main__',</span></span><br><span class="line"><span class="string">              '__slots__': ['username', 'id'],</span></span><br><span class="line"><span class="string">              '__init__': &lt;function __main__.Sample.__init__(self, s1, s2)&gt;,</span></span><br><span class="line"><span class="string">              'id': &lt;member 'id' of 'Sample' objects&gt;,</span></span><br><span class="line"><span class="string">              'username': &lt;member 'username' of 'Sample' objects&gt;,</span></span><br><span class="line"><span class="string">              '__doc__': None&#125;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>n_tuple.__dict__</span></span><br><span class="line"><span class="string">mappingproxy(&#123;'__module__': '__main__',</span></span><br><span class="line"><span class="string">              '__doc__': 'first(username, id)',</span></span><br><span class="line"><span class="string">              '__slots__': (),</span></span><br><span class="line"><span class="string">              '_fields': ('username', 'id'),</span></span><br><span class="line"><span class="string">              '__new__': &lt;staticmethod at 0x7f6aec52b7b8&gt;,</span></span><br><span class="line"><span class="string">              '_make': &lt;classmethod at 0x7f6aec52bcf8&gt;,</span></span><br><span class="line"><span class="string">              '_replace': &lt;function namedtuple_first.first._replace(_self, **kwds)&gt;,</span></span><br><span class="line"><span class="string">              '__repr__': &lt;function namedtuple_first.first.__repr__(self)&gt;,</span></span><br><span class="line"><span class="string">              '_asdict': &lt;function namedtuple_first.first._asdict(self)&gt;,</span></span><br><span class="line"><span class="string">              '__getnewargs__': &lt;function namedtuple_first.first.__getnewargs__(self)&gt;,</span></span><br><span class="line"><span class="string">              'username': &lt;property at 0x7f6aec4cc1d8&gt;,</span></span><br><span class="line"><span class="string">              'id': &lt;property at 0x7f6aec4cc2c8&gt;,</span></span><br><span class="line"><span class="string">              '_source': "namedtuple 원본의 __doc__"</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>slot_dict_instance["username"]</span></span><br><span class="line"><span class="string">'asd'</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>nt.username</span></span><br><span class="line"><span class="string">'asd'</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>csv와 sqlite를 활용</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">EmployeeRecord = namedtuple(<span class="string">'EmployeeRecord'</span>, <span class="string">'name, age, title, department, paygrade'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">for</span> emp <span class="keyword">in</span> map(EmployeeRecord._make, csv.reader(open(<span class="string">"employees.csv"</span>, <span class="string">"rb"</span>))):</span><br><span class="line">    print(emp.name, emp.title)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sqlite3</span><br><span class="line">conn = sqlite3.connect(<span class="string">'/companydata'</span>)</span><br><span class="line">cursor = conn.cursor()</span><br><span class="line">cursor.execute(<span class="string">'SELECT name, age, title, department, paygrade FROM employees'</span>)</span><br><span class="line"><span class="keyword">for</span> emp <span class="keyword">in</span> map(EmployeeRecord._make, cursor.fetchall()):</span><br><span class="line">    print(emp.name, emp.title)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>3.7버전 이후부터 <code>_source</code>속성이 사라지고, <code>namedtuple(NAME:str, FieldNames:iterable, defaults:iterable = None)</code> 초기값을 <code>kwargs['defaults']</code>로 설정 할 수 있다.</li>
+<li>namedtuple을 상속받고 <code>__slots__</code>를 구현한 클래스</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span><span class="params">(namedtuple<span class="params">(<span class="string">'Point'</span>, [<span class="string">'x'</span>, <span class="string">'y'</span>])</span>)</span>:</span></span><br><span class="line">    __slots__ = ()</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hypot</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> (self.x ** <span class="number">2</span> + self.y ** <span class="number">2</span>) ** <span class="number">0.5</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Point: x=%6.3f  y=%6.3f  hypot=%6.3f'</span> % (self.x, self.y, self.hypot)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>for p in Point(3, 4), Point(14, 5/7):</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    print(p)</span></span><br><span class="line"><span class="string">Point: x= 3.000  y= 4.000  hypot= 5.000</span></span><br><span class="line"><span class="string">Point: x=14.000  y= 0.714  hypot=14.018</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>위의 서브클래스는 <code>__slots__</code>를 빈 튜플로 정의한다. 이것은 <strong>Instacne dictionarie를 생성하는 것을 막도록 하여</strong> 메모리 요구사항을 낮게 돕는다.</p>
+</blockquote>
+<h3 id="namedtuples_hidden_methods"><a class="markdownIt-Anchor" href="#namedtuples_hidden_methods"></a> namedtuple’s_hidden_methods</h3>
+<ul>
+<li><code>somenamedtuple._()</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>t = [11,22]</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Point._make(t)</span></span><br><span class="line"><span class="string">OrderedDict([('x', 11), ('y', 22)])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>somenamedtuple._asdict()</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>p = Point(x=11, y=22)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>p._asdict()</span></span><br><span class="line"><span class="string">OrderedDict([('x', 11), ('y', 22)])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>somenamedtuple._replace(**kwargs)</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>p = Point(x=11, y=22)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>p._replace(x=33)</span></span><br><span class="line"><span class="string">Point(x=33, y=22)</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<h3 id="namedtuples_hidden_attributes"><a class="markdownIt-Anchor" href="#namedtuples_hidden_attributes"></a> namedtuples’_hidden_attributes</h3>
+<ul>
+<li><code>somenamedtuple._fields</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>p._fields</span></span><br><span class="line"><span class="string">('x', 'y')</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Color = namedtuple('Color', 'red green blue')</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Pixel = namedtuple('Pixel', Point._fields + Color._fields)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Pixel(11, 22, 128, 255, 0)</span></span><br><span class="line"><span class="string">Pixel(x=11, y=22, red=128, green=255, blue=0)</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>somenamedtuple._fields_defaults</code></li>
+</ul>
+<blockquote>
+<p>defaults가 뒤에서 부터 length에 맞춰서 처리</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Account = namedtuple('Account', ['type', 'balance'], defaults=[0])</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Account._field_defaults</span></span><br><span class="line"><span class="string">&#123;'balance': 0&#125;</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Account('premium')</span></span><br><span class="line"><span class="string">Account(type='premium', balance=0)</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<h2 id="counter"><a class="markdownIt-Anchor" href="#counter"></a> Counter</h2>
+<h3 id="counter_개요"><a class="markdownIt-Anchor" href="#counter_개요"></a> Counter_개요</h3>
+<p>카운터툴은 빠르고 편리한 합계를 위해 제공된다.</p>
+<ul>
+<li>Iterable한 객체의 값들의 개수를 세기위해서 사용한다.</li>
+<li>dict까지는 불필요 한데, Set이 중복의 수를 처리할 수 없어서 문제라면, Counter객체를 고려할만하다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span># Tally occurrences of words in a list</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>cnt = Counter()</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>for word in ['red', 'blue', 'red', 'green', 'blue', 'blue']:</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    cnt[word] += 1</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>cnt</span></span><br><span class="line"><span class="string">Counter(&#123;'blue': 3, 'red': 2, 'green': 1&#125;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span># Find the ten most common words in Hamlet</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>import re</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>words = re.findall(r'\w+', open('hamlet.txt').read().lower())</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Counter(words).most_common(10)</span></span><br><span class="line"><span class="string">[('the', 1143), ('and', 966), ('to', 762), ('of', 669), ('i', 631),</span></span><br><span class="line"><span class="string"> ('you', 554),  ('a', 546), ('my', 514), ('hamlet', 471), ('in', 451)]</span></span><br><span class="line"><span class="string"> """</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>기존 객체나, ChainMap등에서는 update메서드가 키값에 값을 새롭게 초기화 하지만, Counter에서 update는 중복 시 기존값에 int값을 더한다.</p>
+</blockquote>
+<blockquote>
+<p>관련 메서드로는 기존값에서 가장 많은 것을 추출하거나, 요소를 그 수만큼 list로 나열하거나, 중복될 경우 수 만큼 빼거나 하는 기존 컨텍스트를 유지하는 기능들이 즐비하다.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># .most_common(i:int)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Counter('abracadabra').most_common(3)  # doctest: +SKIP</span></span><br><span class="line"><span class="string">[('a', 5), ('r', 2), ('b', 2)]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># .subtract(c:Counter) # 없던 키값은 갱신(정수는 값을 줄이고 음수는 값을 늘린다.)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>c = Counter(a=4, b=2, c=0, d=-2)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>d = Counter(a=1, b=2, c=-3, d=4 ,e=3)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>c.subtract(d)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>c</span></span><br><span class="line"><span class="string">Counter(&#123;'a': 3, 'b': 0, 'c': 3, 'd': -6, 'e': 3&#125;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># .elements()</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>c = Counter(a=4, b=2, c=0, d=-2)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>sorted(c.elements())</span></span><br><span class="line"><span class="string">['a', 'a', 'a', 'a', 'b', 'b']</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<h2 id="userdict"><a class="markdownIt-Anchor" href="#userdict"></a> UserDict</h2>
+<h3 id="userdict_양상"><a class="markdownIt-Anchor" href="#userdict_양상"></a> UserDict_양상</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># UserDict([initialdata]:dict)</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>apples:UserDict = UserDict(&#123;'r': 1, 'g':2, 'y':3&#125;)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>apples.data:dict</span></span><br><span class="line"><span class="string">&#123;'r':1, 'g':2, 'y':3&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<p>이것은 단순히 dict객체를 래핑하고 있는 객체이고, 기본 dict 클래스를 상속받는다.<br>
+2.1버전까지는 직접 dict를 서브클래싱 하는 게 불가능했기 때문에, 현재로서는 moot print같은 존재이다.(고려 대상이 아니다.)</p>
+<h3 id="userlist_user_string"><a class="markdownIt-Anchor" href="#userlist_user_string"></a> UserList_User_String</h3>
+<p>동일하게 data를 통해 원본 객체에 접근이 가능하고, 기본적으로 래핑하고 있어서<br>
+서브클래싱을 도와주고 다른 타입으로 만들어주는? 것이라고 만 생각하면 좋다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/08/03/python/module/collections/" data-id="ckkdb52h2001r1pqky2likhwo" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-module/">python module</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/custom_module/file_getter" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/03/python/custom_module/file_getter/" class="article-date">
+  <time datetime="2019-07-03T08:39:54.000Z" itemprop="datePublished">2019-07-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/03/python/custom_module/file_getter/">file path getter</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="프로젝트-아래-특정하는-폴더-아래의-폴더-파일-리스트를-검색하고-완전한-path로-돌려받을-수-있는-모듈"><a class="markdownIt-Anchor" href="#프로젝트-아래-특정하는-폴더-아래의-폴더-파일-리스트를-검색하고-완전한-path로-돌려받을-수-있는-모듈"></a> 프로젝트 아래 특정하는 폴더 아래의 폴더, 파일 리스트를 검색하고, 완전한 path로 돌려받을 수 있는 모듈</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> typing</span><br><span class="line"></span><br><span class="line">ROOT_DIR: typing.Text</span><br><span class="line">ROOT_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_get_all_children_path</span><span class="params">(folder_name: typing.Text)</span> -&gt; typing.Iterator[str]:</span></span><br><span class="line">    abs_path: typing.Text</span><br><span class="line">    abs_path = ROOT_DIR + <span class="string">"/"</span> + folder_name</span><br><span class="line">    <span class="keyword">return</span> _map_path(_filter_avails(os.listdir(abs_path)), folder_name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_filter_avails</span><span class="params">(files: typing.List[str])</span> -&gt; typing.Iterator[str]:</span></span><br><span class="line">    condition: typing.Callable</span><br><span class="line">    condition = <span class="keyword">lambda</span> el: el[<span class="number">0</span>] <span class="keyword">not</span> <span class="keyword">in</span> <span class="string">"._"</span></span><br><span class="line">    <span class="keyword">return</span> filter(condition, files)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_filter_files</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    files: typing.Iterator[str], extension: typing.Text</span></span></span><br><span class="line"><span class="function"><span class="params">)</span> -&gt; typing.Iterator[str]:</span></span><br><span class="line">    condition: typing.Callable</span><br><span class="line">    condition = <span class="keyword">lambda</span> el: os.path.isfile(el) <span class="keyword">and</span> extension <span class="keyword">in</span> el</span><br><span class="line">    <span class="keyword">return</span> filter(condition, files)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_filter_folders</span><span class="params">(files: typing.Iterator[str])</span> -&gt; typing.Iterator[str]:</span></span><br><span class="line">    condition: typing.Callable</span><br><span class="line">    condition = <span class="keyword">lambda</span> el: os.path.isdir(el)</span><br><span class="line">    <span class="keyword">return</span> filter(condition, files)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_map_path</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    files: typing.Iterator[str], folder_name: typing.Text</span></span></span><br><span class="line"><span class="function"><span class="params">)</span> -&gt; typing.Iterator[str]:</span></span><br><span class="line">    condition: typing.Callable</span><br><span class="line">    condition = (</span><br><span class="line">        <span class="keyword">lambda</span> el: <span class="string">f"<span class="subst">&#123;ROOT_DIR&#125;</span>/<span class="subst">&#123;el&#125;</span>"</span></span><br><span class="line">        <span class="keyword">if</span> folder_name <span class="keyword">is</span> <span class="string">"."</span></span><br><span class="line">        <span class="keyword">else</span> <span class="string">f"<span class="subst">&#123;ROOT_DIR&#125;</span>/<span class="subst">&#123;folder_name&#125;</span>/<span class="subst">&#123;el&#125;</span>"</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> map(condition, files)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_things</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    folder_name: typing.Text = <span class="string">"."</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    folder: bool = False,</span></span></span><br><span class="line"><span class="function"><span class="params">    extension: typing.Optional[str] = None,</span></span></span><br><span class="line"><span class="function"><span class="params">)</span> -&gt; typing.List[str]:</span></span><br><span class="line">    <span class="string">"""Get files and folder under single folder which you specified.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Keyword Arguments:</span></span><br><span class="line"><span class="string">    folder_name &#123;typing.Text&#125; -- target folder name from ROOT (default: &#123;"."&#125;)</span></span><br><span class="line"><span class="string">    folder &#123;bool&#125; -- enable finding folders (default: &#123;False&#125;)</span></span><br><span class="line"><span class="string">    extension &#123;typing.Optional[str]&#125; -- enable finding files with extension string, if all insert as '' (default: &#123;None&#125;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Raises:</span></span><br><span class="line"><span class="string">    FileNotFoundError: foldername not specified</span></span><br><span class="line"><span class="string">    ValueError: specific file extension with folder not enable</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Returns:</span></span><br><span class="line"><span class="string">    typing.List[str] -- list out as full path</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>helper_pys = get_things(folder_name="helper", extension=".py")</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>any(['python_base/helper/path.py' in el for el in helper_pys])</span></span><br><span class="line"><span class="string">True</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>root_folders = get_things(folder=True, extension="")</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>any(['python_base/helper' in el for el in root_folders])</span></span><br><span class="line"><span class="string">True</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    avail_paths: typing.Iterator</span><br><span class="line">    filterd: typing.Iterator[str]</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> folder_name:</span><br><span class="line">        <span class="keyword">raise</span> FileNotFoundError(<span class="string">"folder_name not specified"</span>)</span><br><span class="line"></span><br><span class="line">    avail_paths = _get_all_children_path(folder_name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">not</span> folder) <span class="keyword">and</span> (extension <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>):</span><br><span class="line">        filterd = _filter_files(avail_paths, extension=extension)</span><br><span class="line">    <span class="keyword">elif</span> (extension <span class="keyword">is</span> <span class="literal">None</span>) <span class="keyword">and</span> folder:</span><br><span class="line">        filterd = _filter_folders(avail_paths)</span><br><span class="line">    <span class="keyword">elif</span> (extension <span class="keyword">is</span> <span class="string">""</span>) <span class="keyword">and</span> folder:</span><br><span class="line">        filterd = avail_paths</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">"extenstion with folder not available"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [_ <span class="keyword">for</span> _ <span class="keyword">in</span> filterd]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> doctest</span><br><span class="line">    doctest.testmod()</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/07/03/python/custom_module/file_getter/" data-id="ckkdb52gw001k1pqkupta4xip" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/module/doctest" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/26/python/module/doctest/" class="article-date">
+  <time datetime="2019-06-26T06:36:31.000Z" itemprop="datePublished">2019-06-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/26/python/module/doctest/">python module doctest</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<blockquote>
+<ol>
+<li><a href="#%EA%B0%9C%EC%9A%94">개요</a></li>
+<li><a href="#textfile%EC%9D%98_docstring_%EC%B2%B4%ED%81%AC">doctest.testfile method</a></li>
+</ol>
+</blockquote>
+<h2 id="개요"><a class="markdownIt-Anchor" href="#개요"></a> 개요</h2>
+<p>doctest모듈은 파이썬 인터프리터 세션과 비슷하게 생긴 텍스트 조각을 찾는다.<br>
+그리고 그 세션들을 실행하여, 그들이 보여지는데로 실행되는지 확인한다.<br>
+doctest를 사용하기 위한 몇가지 일반적인 방식이 있다.</p>
+<ul>
+<li>해당 모듈의 docstring들이 잘 업데이트 되어, 모든 상호적인 예시가 적혀진대로 잘 작동하는지 확인하기 위해서.</li>
+<li>선형회기 테스팅을 실행하여, 테스트파일 혹은 테스트 객체에 적혀있는 상호적인 예시가 예상한대로 잘 작동하는지 실행하기 위해서.</li>
+<li>인풋과 아웃풋을 통해 패키지의 튜토리얼 문서를 작성하기 위해서.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">this is "example" module.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">example module supplies 1 functions, factorial().</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>factorial(5)</span></span><br><span class="line"><span class="string">120</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factorial</span><span class="params">(n:int)</span> -&gt; int:</span></span><br><span class="line">    <span class="string">"""Returns the factorial of n, an exact integer &gt;= 0.</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; [factoral(n) for n in range(6)]</span></span><br><span class="line"><span class="string">    [1, 1, 2, 6, 24, 120]</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; factorial(30)</span></span><br><span class="line"><span class="string">    265252859812191058636308480000000</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; factorial(-1)</span></span><br><span class="line"><span class="string">    Traceback (most recent call lst):</span></span><br><span class="line"><span class="string">        ...</span></span><br><span class="line"><span class="string">    ValueError: n must be &gt;= 0</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; factorial(30.1)</span></span><br><span class="line"><span class="string">    Traceback (most rescent call last):</span></span><br><span class="line"><span class="string">        ...</span></span><br><span class="line"><span class="string">    ValueError: n must be exat integer</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">import</span> math</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> n &gt;= <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">"n must be &gt;= 0"</span>)</span><br><span class="line">    <span class="keyword">if</span> math.floor(n) != n:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">"n must be exact integer"</span>)</span><br><span class="line">    <span class="keyword">if</span> n+<span class="number">1</span> == n:  <span class="comment"># catch a value like 1e300</span></span><br><span class="line">        <span class="keyword">raise</span> OverflowError(<span class="string">"n too large"</span>)</span><br><span class="line">    result = <span class="number">1</span></span><br><span class="line">    factor = <span class="number">2</span></span><br><span class="line">    <span class="keyword">while</span> factor &lt;= n:</span><br><span class="line">        result *= factor</span><br><span class="line">        factor += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> doctest</span><br><span class="line">    doctest.testmod()</span><br></pre></td></tr></table></figure>
+<p>이것이 생산적으로 <strong>doctest</strong>모듈을 사용하는데 필요한 모든 정보이다.<br>
+이후 섹션은 모든 디테일을 포함한다.<br>
+특히 표준 테스트 파일의 <code>Lib/test/test_doctest.py</code>에서는 유용한 예제를 포함한다.</p>
+<h2 id="textfile의_docstring_체크"><a class="markdownIt-Anchor" href="#textfile의_docstring_체크"></a> TextFile의_docstring_체크</h2>
+<p>다른 간단한 doctest의 어플리케이션은 텍스트파일의 상호적인 예제를 테스트하는 것이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> doctest doctest</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>doctest.testfile(<span class="string">'example.txt'</span>)</span><br><span class="line">File <span class="string">"./example.txt"</span>, line <span class="number">14</span>, <span class="keyword">in</span> example.txt</span><br><span class="line">Failed example:</span><br><span class="line">    factorial(<span class="number">6</span>)</span><br><span class="line">Expected:</span><br><span class="line">    <span class="number">120</span></span><br><span class="line">Got:</span><br><span class="line">    <span class="number">720</span></span><br></pre></td></tr></table></figure>
+<p>이 짧은 스크립트는 <code>example.txt</code>안에 상호적인 파이썬 예제를 실행하고 확인한다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">The ``example`` module</span><br><span class="line">======================</span><br><span class="line"></span><br><span class="line">Using ``factorial``</span><br><span class="line">-------------------</span><br><span class="line"></span><br><span class="line">This is an example text file in reStructuredText format.  First import</span><br><span class="line">``factorial`` from the ``example`` module:</span><br><span class="line"></span><br><span class="line">    &gt;&gt;&gt; from example import factorial</span><br><span class="line"></span><br><span class="line">Now use it:</span><br><span class="line"></span><br><span class="line">    &gt;&gt;&gt; factorial(6)</span><br><span class="line">    120</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/26/python/module/doctest/" data-id="ckkdb52h4001t1pqklcjv7jfr" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-module/">python module</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/module/typing" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/25/python/module/typing/" class="article-date">
+  <time datetime="2019-06-25T04:07:47.000Z" itemprop="datePublished">2019-06-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/25/python/module/typing/">typing</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<blockquote>
+<ol>
+<li><a href="#%EA%B0%9C%EC%9A%94">개요</a></li>
+<li><a href="#type_aliases">타입 알리아싱</a></li>
+<li><a href="#newtype">NewType</a></li>
+<li><a href="#callable">Callable</a></li>
+<li><a href="#generic">Generic</a></li>
+<li><a href="#generic">사용자 정의 generic types</a></li>
+</ol>
+</blockquote>
+<h2 id="개요"><a class="markdownIt-Anchor" href="#개요"></a> 개요</h2>
+<p>가장 주요한 구조적 지원은 Any, Union, Tuple, Callable, TypeVar, Generic의 타입들로 이루어진다.</p>
+<h2 id="type_aliases"><a class="markdownIt-Anchor" href="#type_aliases"></a> Type_aliases</h2>
+<p>타입-별칭은 타입을 <code>alias</code>로 치환함으로서 정의된다. 예를들어 <code>Vector</code>와 <code>List[float]</code>는 서로 교환가능한 동의어로써 사용될 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line">Vector = List[float]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">scale</span><span class="params">(scalar: float, vector:Vector)</span> -&gt; Vector:</span></span><br><span class="line">    <span class="keyword">return</span> [scalar * num <span class="keyword">for</span> num <span class="keyword">in</span> vector]</span><br><span class="line"></span><br><span class="line"><span class="comment"># typechecks: 실수의 리스트는 Vector로 정의되었다.</span></span><br><span class="line">new_vector = scale(<span class="number">2.0</span>, [<span class="number">1.0</span>, <span class="number">-4.2</span>, <span class="number">5.4</span>])</span><br></pre></td></tr></table></figure>
+<p><code>Type aliases</code>는 복잡한 타입을 간단히 정의하기에 좋다</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Dict, Tuple, Sequence</span><br><span class="line"></span><br><span class="line">ConnectionOptions = Dict[str, str]</span><br><span class="line">Address = Tuple[str, int]</span><br><span class="line">Server = Tuple[Address, ConnectionOptions]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 정적인 타입체커는 아래 타입을 위의 타입 별칭과 동일하게 취급할 것이다.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">boardcase_message</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    message: str,</span></span></span><br><span class="line"><span class="function"><span class="params">    servers: Sequence[Tuple[Tuple[str, int], Dict[str, str]]],</span></span></span><br><span class="line"><span class="function"><span class="params">)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h2 id="newtype"><a class="markdownIt-Anchor" href="#newtype"></a> NewType</h2>
+<p><code>NewType()</code>헬퍼 함수를 통해서 고유한 타입을 생성할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> NewType</span><br><span class="line"></span><br><span class="line">UserId = NewType(<span class="string">'UserId'</span>, int)</span><br><span class="line">some_id = UserId(<span class="number">524313</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(some_id)</span><br><span class="line">int</span><br></pre></td></tr></table></figure>
+<p>우리는 여전히 모든 <code>int</code>연산을 UserId타입에서 수행할 수 있다. 하지만 결과는 모두 <code>int</code>타입이 될 것이다.</p>
+<p>이러한 테크는 정적인 타입 체커에서만 유효할 것이다.<br>
+런타입 레벨에서 <code>sometype = NewType('sometype', Base)</code>는 <code>sometype</code>을 즉시 리턴하는 함수로 취급하여, 전달한 파라메터를 해당 <code>Base</code>-타입으로 돌려보낼 것이다.</p>
+<p>그 말인즉슨, <code>Derived(some_value)</code>라는 표현은 새로운 클래스나 어떤 오버해드도 일반적인 함수 호출에서 추가되는 것이 아니라는 것이다.</p>
+<p>더 깊히 얘기하자면, <code>some_value is Derived(some_value)</code>는 런타임에서는 항상 옳다는 것이다.</p>
+<blockquote>
+<p>이것은 런타임 소모없이 논리적 에러를 예방하고자 할때 도움이 된다.</p>
+</blockquote>
+<h2 id="callable"><a class="markdownIt-Anchor" href="#callable"></a> Callable</h2>
+<p>프레임워크들은 특별한 정의의 콜백함수가 <code>Callable[[ArgType, Arg2Type], ReturnType]</code><br>
+같은 형식을 이용해서 타입힌트 되는 것을 기대한다.</p>
+<p>에를 들어,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Callable</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">feeder</span><span class="params">(get_next_item: Callable[[], str])</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">async_query</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    on_success: Callable[[int], None],</span></span></span><br><span class="line"><span class="function"><span class="params">    on_error: Callable[[int, Exception], None]</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>Callable[..., ReturnType]</code><br>
+매개변수의 리스트 타입을 생략으로 대신하는 것으로서 callable의 타입을 정의하는 것도 가능하다.</p>
+</blockquote>
+<h2 id="generic"><a class="markdownIt-Anchor" href="#generic"></a> Generic</h2>
+<p>컨테이너 내부에 잡혀있는 객체들에 대한 타입의 정보가 정적으로 유추될 수 없기 때문에,<br>
+abstract base classes들은 에상되는 타입들을 컨테이너 요소들을 위해서 기록하기 위해 버전 업 되었다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span>  Mapping, Sequence</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">notify_by_email</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    employees: Sequence[Employee],</span></span></span><br><span class="line"><span class="function"><span class="params">    overrides: Mapping[str, str]</span></span></span><br><span class="line"><span class="function"><span class="params">)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>제네릭들은 <code>TypeVar</code>이라는 새로운 타이핑 팩토리를 통해서 파라메터화 될 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Sequence, TypeVar</span><br><span class="line"></span><br><span class="line">T = TypeVar(<span class="string">'T'</span>) <span class="comment"># Type변수 선언</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">first</span><span class="params">(l: Sequence[T])</span> -&gt; T:</span></span><br><span class="line">    <span class="keyword">return</span> l[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="user-defined_generic_types"><a class="markdownIt-Anchor" href="#user-defined_generic_types"></a> User-defined_generic_types</h2>
+<p>이 부분은 제네릭 타입을 통해서 클래스를 동적으로 변화시키는 것처럼 보여진다.<br>
+해당 제네릭 타입에 대한 동적인 상속이 이루어지기 때문에, 그렇게 권고하고 싶은 방식이 아니라고 생각한다.<br>
+제네릭은 매개변수로서만 쓰여지는 정도가 적당하다고 생각하기 때문에, 이 부분에 대해서는 필요한 경우 공식문서에서 별도로 참조하자.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/25/python/module/typing/" data-id="ckkdb52ha00211pqkswdmj3lt" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-module/">python module</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python/post/annotation_and_type" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/24/python/post/annotation_and_type/" class="article-date">
+  <time datetime="2019-06-24T10:41:31.000Z" itemprop="datePublished">2019-06-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/24/python/post/annotation_and_type/">type-annotation in python</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<blockquote>
+<ol>
+<li><a href="#annotation">Annotation의 정의와 필요성</a></li>
+<li><a href="#typing">typing module을 통한 annotation확장</a></li>
+<li><a href="#docstring_annotation">annotation이 docstring을 대체하는가?</a></li>
+<li><a href="#makefile_%EC%9E%90%EB%8F%99%EA%B2%80%EC%82%AC%EC%84%A4%EC%A0%95">포메팅 및 테스트 자동화</a></li>
+</ol>
+</blockquote>
+<h2 id="annotation"><a class="markdownIt-Anchor" href="#annotation"></a> Annotation</h2>
+<p>PEP-3107에서 annotation을 소개하고 있다. 기본 아이디어는 힌트를 주는 것이지만, 인터페이스가 구축된 코드를 다룰 수 있도록 함으로,<br>
+더욱 정교한 구현이 가능하다. 어노테이션은 타입 힌팅을 활성화 한다.</p>
+<p>타입 뿐 아니라 변수를 이해하는데 도움이 되는 어떤형태의 메타데이터라도 지정할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, lat, long)</span>:</span></span><br><span class="line">        self.lat = lat</span><br><span class="line">        self.long = long</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">locate</span><span class="params">(latitude:float, longitude:float)</span> -&gt; Point:</span></span><br><span class="line">    <span class="string">"""맵에서 좌표에 해당하는 객체를 탑색"""</span></span><br></pre></td></tr></table></figure>
+<p>이를 통해 함수 사용자는 예상되는 타입을 알 수 있다. 하지만, 파이썬이 타입을 검사하거나 강제하지는 않는다.<br>
+또 위처럼 함수 반환 값에 대한 예상 타입을 지정할 수 도 있다럼</p>
+<p>그러나 어노테이션으로 타입만 지정할 수 있는 것은 아니다. 파이썬 인터프리터에서 유효한 어떤 것도 사용할 수 있다.<br>
+예를 들어 변수의 의도를 설명하는 문자열, 콜백이나 유효성 검사 함수로 사용할 수 있는 callable등이 있다.</p>
+<p>어노테이션을 사용하면 <code>__annotations__</code>라는 특수 속성이 생긴다. 이 속성은 어노테이션의 이름과 값을 매핑한 사전 타입의 값이다. 앞의 예제에서는 다음과 같이 출력된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>locate.__annotations__</span><br><span class="line">&#123;<span class="string">'latitude'</span>:float, <span class="string">'longitude'</span>: float, <span class="string">'return'</span>: __main__.Point&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>PEP-484
+<blockquote>
+<p>“파이썬은 여전히 동적인 타입의 언어로 남을 것이다, 타입 힌트를 필수로 하자거나 심지어 관습으로 하자는 것은 전혀 아니다.”</p>
+</blockquote>
+</li>
+</ul>
+<p>코드 전체에 올바른 타입이 사용되었는지 확인하고, 호환되지 않는 타입이 발견되었을떄 사용자에게 힌트를 주는 것이다.<br>
+이러한 검사를 도와주는 Mypy에 대해서는 나중에 프로젝트에서 사용하는 방법에 대해 자세히 설명한다.</p>
+<p>타입 힌팅은 코드의 타입을 확인하기 위한 도구 이상의 것을 의미한다.<br>
+파이썬 3.5부터 새로운 typing모듈이 소개되었고 파이썬 코드에서 타입과 어노테이션을 정의하는 방법이 크게 향상되었다.</p>
+<p>기본 개념은 코드의 시멘틱이 보다 읜미있는 개념을 갖게 되면,<br>
+코드를 이해하기 쉽고 특적 시점에 어떻게 될지 예측할 수 있다는 것이다.</p>
+<h3 id="typing"><a class="markdownIt-Anchor" href="#typing"></a> typing</h3>
+<p><a href="/2019/06/25/python/module/typing/">python module typing</a> 에서 개괄적으로 다루고 있다.</p>
+<p>typing 모듈을 사용하면 파이썬에게 이터러블, 시퀸스가 필요하다고 알릴 수 있다.<br>
+심지어 타입이나 값을 식별할 수도 있다. 예를 들어 정수의 시퀸스가 필요하다고 정의하는 것이다.</p>
+<p><strong>PEP-526</strong> 파이썬 3.6부터는 함수 파라미터와 리턴타입 뿐만 아니라, 변수에 직접 주석을 달 수있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>:</span></span><br><span class="line">    lat: float</span><br><span class="line">    long: float</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Point.__annotations__</span><br><span class="line">&#123;<span class="string">'lat'</span>: &lt;<span class="class"><span class="keyword">class</span>:</span> <span class="string">'float'</span>&gt;, <span class="string">'long'</span>: &lt;<span class="class"><span class="keyword">class</span> '<span class="title">float</span>'&gt;&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="docstring_annotation"><a class="markdownIt-Anchor" href="#docstring_annotation"></a> docstring_annotation</h2>
+<p><a href="/2019/06/26/python/module/doctest">python module doctest</a>에서 doctest와 함께 다룬다.</p>
+<h3 id="어노테이션은-docstring을-대체하는-것일까"><a class="markdownIt-Anchor" href="#어노테이션은-docstring을-대체하는-것일까"></a> 어노테이션은 docstring을 대체하는 것일까?</h3>
+<p>어노테이션을 대체하기 위한 동적언어로서 초기 서브형태가 파이썬에 있어서는 docstring이라고 할 수 있다.</p>
+<p>기존에는 docstring을 통해 함수의 파라미터, 속성의 타입을 문서화 하였기 때문에,<br>
+docstring 대신 annotation을 사용해야 하는 것인지 궁금할 수 있다.<br>
+심지어 함수의 기본정보, 파라미터 의미와 타입, 반환값, 발생가능한 예외까지 docstring으로 작성하는 포매팅 컨벤션도 유행했었다.</p>
+<p>대답은 '예, 사용해야합니다.'이다.<br>
+왜냐하면 docstring과 annotation은 서로 보완적인 개념이기 때문이다.</p>
+<p>docstring에 포함된 정보를 일부 annotation으로 이동 시킬 수 있었던 덕에 docstring은 좀더 명확한 목적을 가질 수 있게 됐다.<br>
+docstring을 통해 친절한 설명과 <code>&gt;&gt;&gt; doit()</code>문을 통해 doctest와 연동하는 것이다.</p>
+<p>친절한 설명이라 함은, 동적 데이터 타입과, 중첩 데이터 타입의 경우 예상 데이터 예제를 제공하여 어떤 형태의 데이터를 다루는지 제공하는 것이 좋다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_from_response</span><span class="params">(responst:dict)</span> -&gt; dict:</span></span><br><span class="line">    <span class="keyword">if</span> response[<span class="string">"status"</span>] != <span class="number">200</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">"data"</span>: response[<span class="string">"payload"</span>]&#125;</span><br></pre></td></tr></table></figure>
+<p>이 함수는 사전 형태의 파라미터를 받아 사전 형태의 값을 반환한다. 그러나 상세한 내용은 알 수 없다.</p>
+<ol>
+<li>response객체의 올바른 인스턴스는 어떤 형태일까?</li>
+<li>결과의 인스턴스는 어떤 형태일까?</li>
+</ol>
+<p>이 두가지 질문에 모두 대답하려면 환수 반환값의 예상 형태를 docstring으로 문서화 하는 것이 좋다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">data_from_response</span><span class="params">(response:dict)</span> -&gt; dict:</span></span><br><span class="line">    <span class="string">"""if response has valid 'status' returns response["payload"]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - response sample</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        "status":200, # int</span></span><br><span class="line"><span class="string">        "timestamp: "....", # 현재시간 ISO포멧 문자열</span></span><br><span class="line"><span class="string">        "payload": &#123;...&#125; # 반환하려는 데이터</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - return sample</span></span><br><span class="line"><span class="string">    &#123;"data":&#123;...&#125;&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - exceptions</span></span><br><span class="line"><span class="string">    - if HTTP status != 200 raise ValueError</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>이 문서는 입출력 값을 더 잘 이해하기 위해서 뿐만 아니라, 단위테스트에서도 유용한 정보로 사용된다.</p>
+<p>하지만 docstring을 사용했을때 의 이슈는 코드가 좀 더 커지게 되고,<br>
+실제 효과적인 문서가 되려면 보다 상세한 정보가 필요하다는 것이다.</p>
+<h2 id="makefile_자동검사설정"><a class="markdownIt-Anchor" href="#makefile_자동검사설정"></a> Makefile_자동검사설정</h2>
+<p>리눅스 개발환경에서 빌드를 자동화 하는 가장 일반적인 방법은 Makefile을 사용하는 것이다.<br>
+<strong>Makefile</strong>은 프로젝트를 컴파일하고 실행하기 위한 설정을 도와주는 파워풀한 도구이다.<br>
+빌드 외에도 포메팅검사나 컨벤션 검사를 자동화하기 위해 사용할 수도 있다.</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">typehint:</span></span><br><span class="line">mypy src/ tests/</span><br><span class="line"></span><br><span class="line"><span class="section">test:</span></span><br><span class="line">pytest tests/</span><br><span class="line"></span><br><span class="line"><span class="section">lint:</span></span><br><span class="line">pylint src/ tests/</span><br><span class="line"></span><br><span class="line"><span class="section">code-format:</span></span><br><span class="line">black - 1** 79 *.py</span><br><span class="line"></span><br><span class="line"><span class="section">doc-list:</span></span><br><span class="line">pydocstyle src/ tests/</span><br><span class="line"></span><br><span class="line"><span class="section">checklist: lint typehint test</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: typehint test lint checklist</span></span><br></pre></td></tr></table></figure>
+<p><code>make checklist</code></p>
+<p>이 중 어떤 단계라도 실패하면 전체 프로세스가 실패한 것으로 간주한다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/24/python/post/annotation_and_type/" data-id="ckkdb52he00271pqkfxxqmiuv" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-post/">python post</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux/docker/basic" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/20/linux/docker/basic/" class="article-date">
+  <time datetime="2019-06-20T03:59:09.000Z" itemprop="datePublished">2019-06-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/20/linux/docker/basic/">docker basic</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<blockquote>
+<ol>
+<li><a href="#%EC%9D%B4%EB%AF%B8%EC%A7%80_%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0">DOCKER CE 설치 이후</a>
+<ol>
+<li><a href="#%ED%8C%8C%EC%9D%B4%EC%8D%AC_%ED%99%98%EA%B2%BD_%EA%B5%AC%EC%84%B1">DOCKER</a></li>
+</ol>
+</li>
+<li><a href="#%ED%8F%B4%EB%8D%94_%EB%A7%88%EC%9A%B4%ED%8C%85">sample</a>
+<ol>
+<li><a href="#another_%EC%B6%9C%EB%A0%A5%EA%B8%B0%EB%8A%A5">another 출력기능</a></li>
+</ol>
+</li>
+<li><a href="#%EA%B0%84%EB%8B%A8%ED%95%9C_%EA%B5%AC%ED%98%84">간단한 구현</a></li>
+<li><a href="#%EB%82%98%EC%95%84%EA%B0%80%EC%84%9C_%EA%B5%AC%ED%98%84">나아가서 구현</a></li>
+<li><a href="#%EB%A7%88%EC%B9%98%EB%A9%B0">마치며</a></li>
+</ol>
+</blockquote>
+<h2 id="이미지_생성하기"><a class="markdownIt-Anchor" href="#이미지_생성하기"></a> 이미지_생성하기</h2>
+<ol>
+<li>
+<p>우분투 이미지 다운로드</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run ubuntu:</span><br></pre></td></tr></table></figure>
+<ol>
+<li>sd
+<ol>
+<li>sds</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="파이썬_환경_구성"><a class="markdownIt-Anchor" href="#파이썬_환경_구성"></a> 파이썬_환경_구성</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADD ./conf/uwsgi/uwsgi.ini /var/www/django/ini/uwsgi.ini</span><br></pre></td></tr></table></figure>
+<p><a href="#index">index</a></p>
+<h2 id="폴더_마운팅"><a class="markdownIt-Anchor" href="#폴더_마운팅"></a> 폴더_마운팅</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container run --rm -it -p 8080:80 -v /Users/junehan/Desktop/docker_test/code:/var/www/django/code django:some_tag</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[uwsgi]</span><br><span class="line">chdir= $(BASE_DIR)/code</span><br></pre></td></tr></table></figure>
+<h3 id="another_출력기능"><a class="markdownIt-Anchor" href="#another_출력기능"></a> another_출력기능</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">another</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'another'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="백그라운드"><a class="markdownIt-Anchor" href="#백그라운드"></a> 백그라운드</h2>
+<h2 id="나아가서_구현"><a class="markdownIt-Anchor" href="#나아가서_구현"></a> 나아가서_구현</h2>
+<h2 id="마치며"><a class="markdownIt-Anchor" href="#마치며"></a> 마치며</h2>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/20/linux/docker/basic/" data-id="ckkdb52gv001j1pqkuo37j5el" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; 이전</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">다음 &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

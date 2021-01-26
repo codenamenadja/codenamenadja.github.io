@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>travel_note 서비스 고찰 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="index  main mvp model   MVP  여행후기를 공유한다 작성 시기 제주도 (지역, 인원, 필터링) 독자적인 SNS Follow. Follow한 유저가 구독  경험  로그인 지역선택(성향선택최초 1회) 관심사(후에 여행 태그 기반 추천 검색)  메인 페이지  (Favorite Places) 친구들 후기(New from friends) 예산에">
+<meta name="keywords" content="project,travel_note">
+<meta property="og:type" content="article">
+<meta property="og:title" content="travel_note 서비스 고찰">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/09/09/project/travel_note/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="index  main mvp model   MVP  여행후기를 공유한다 작성 시기 제주도 (지역, 인원, 필터링) 독자적인 SNS Follow. Follow한 유저가 구독  경험  로그인 지역선택(성향선택최초 1회) 관심사(후에 여행 태그 기반 추천 검색)  메인 페이지  (Favorite Places) 친구들 후기(New from friends) 예산에">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.079Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="travel_note 서비스 고찰">
+<meta name="twitter:description" content="index  main mvp model   MVP  여행후기를 공유한다 작성 시기 제주도 (지역, 인원, 필터링) 독자적인 SNS Follow. Follow한 유저가 구독  경험  로그인 지역선택(성향선택최초 1회) 관심사(후에 여행 태그 기반 추천 검색)  메인 페이지  (Favorite Places) 친구들 후기(New from friends) 예산에">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-project/travel_note" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/09/project/travel_note/" class="article-date">
+  <time datetime="2019-09-09T06:10:16.000Z" itemprop="datePublished">2019-09-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      travel_note 서비스 고찰
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> index</h2>
+<ol>
+<li><a href="#mvp"><strong>main mvp</strong></a></li>
+<li><a href="#model"><strong>model</strong></a></li>
+</ol>
+<h2 id="mvp"><a class="markdownIt-Anchor" href="#mvp"></a> MVP</h2>
+<ol>
+<li>여행후기를 공유한다</li>
+<li>작성 시기</li>
+<li>제주도 (지역, 인원, 필터링)</li>
+<li>독자적인 SNS Follow. Follow한 유저가 구독</li>
+</ol>
+<p>경험</p>
+<ol>
+<li>로그인</li>
+<li>지역선택(성향선택최초 1회)</li>
+<li>관심사(후에 여행 태그 기반 추천 검색)</li>
+</ol>
+<p>메인 페이지</p>
+<ol>
+<li>(Favorite Places)</li>
+<li>친구들 후기(New from friends)</li>
+<li>예산에 맞는 추천</li>
+<li>Popular</li>
+</ol>
+<p>검색 필터</p>
+<ol>
+<li>지역, 금액, 태그, 본문(키워드)&gt;타이틀(찰워드) 3:1</li>
+</ol>
+<h2 id="model"><a class="markdownIt-Anchor" href="#model"></a> model</h2>
+<h3 id="location"><a class="markdownIt-Anchor" href="#location"></a> location</h3>
+<ul>
+<li>location.country</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">id</th>
+<th style="text-align:center">name</th>
+<th style="text-align:center">travel_ids</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">USA</td>
+<td style="text-align:center">3,5,7[one to many(travels)]</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">France</td>
+<td style="text-align:center">1,2,4[one to many(travels)]</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>location.spot</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">id</th>
+<th style="text-align:center">name</th>
+<th style="text-align:center">country_id</th>
+<th style="text-align:center">day_ids</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">effel_tower</td>
+<td style="text-align:center">2[related name]</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>유저</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">id</th>
+<th style="text-align:center">email</th>
+<th style="text-align:center">gender</th>
+<th style="text-align:center">likes</th>
+<th style="text-align:center">interests</th>
+<th style="text-align:center">planings</th>
+<th style="text-align:center">travels</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center"><a href="mailto:sample@facebook.com" target="_blank" rel="noopener">sample@facebook.com</a></td>
+<td style="text-align:center">True</td>
+<td style="text-align:center">one to many(tags)</td>
+<td style="text-align:center">one to many(location.country)</td>
+<td style="text-align:center">one to many()</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>여행
+<ul>
+<li>태그</li>
+<li>스팟(여정에 대한 기념, 상징적인 장소 개념, 날짜별로 4개정도는 가능하다.) 스팟은 사실 검색용도로 사용되고, 다른 의미는 없다?</li>
+<li>금액
+<ul>
+<li>날짜, 분류, 디테일(숙박, 1일자, 무슨호텔/ 식음료, 1일자, 무슨음식)</li>
+</ul>
+</li>
+<li>총 교통수단에 대한 요금(Transportation)</li>
+<li>Accomodation(Hotel)</li>
+<li>Expenditure(일반 소비), 화폐에 대한 기준 달러화</li>
+<li>Post(사진과 글)</li>
+</ul>
+</li>
+<li>마이페이지
+<ul>
+<li>팔로잉, 팔로워수</li>
+<li>나의 여행들</li>
+</ul>
+</li>
+</ul>
+<h2 id="고찰"><a class="markdownIt-Anchor" href="#고찰"></a> 고찰</h2>
+<h3 id="190911"><a class="markdownIt-Anchor" href="#190911"></a> 190911</h3>
+<p>가입할때 interests로 등록하는 목록(activity, food, relax, tradition, shopping, festival)</p>
+<p>day.tags(어떤 날의 주요 액티비티 종류)<br>
+travel.tag(여행의 주 목표)</p>
+<p>지역에 대해서 검색할때, 기본적으로 travel이라는 패키지를 출력하지만, 유저의 취향에 맞춰서 키워드 기반으로 유저의 관심 안에 있는 활동을 한 날이 있다면?<br>
+특정 날만 별도 뷰로 전달해줄 필요가 있다.<br>
+애초에 매칭률이 높다면, 특정 키워드가 컨텐츠에 등장한다? 텍스트의 키워드 검색을 어플리케이션에 맞기고(정렬), tag가 어떤날에 부합하면서, 키워드가 등장하고,</p>
+<p>내가 등록한 정보로 어떤 의미있는 데이터를 가져올 수 있을 것인가?<br>
+내 취향과 유사한 사람들이 어떤 선택을 하는지 참고하고 싶어한다,<br>
+나와 같은 성향. (1~2명이라면 신경쓰지 않지만, 나와 같은 성향으로 그나라에 대한 여행 정보를 등록해준 동성 100명의 통계가 이러한데 이렇다. 그리고 거기서 만족도가 높았다.)</p>
+<p>왜 평가가 높았는지 정확한 디테일을 캐치하는 것은, 표본중에 랜덤하게 선택하여 유저가 직접 검토하는 것이 맞다.</p>
+<p>평가가 높았던 날에 키워드에서 장소에 대한 키워드를 수집해서, 처리하는 것.<br>
+어느 스팟이 들어간 곳이 통계적으로 평가가 높았다.<br>
+통계라고 하면 100명이서 통합 4점과, 30명이서 4.3점이라면, 100명이서 4점을 더 좋게</p>
+<p>하지만, 나와 같은 취향을 선별한다면, 좀 더 유저가 원하는 정보에 가까울 수…</p>
+<p>나와 같은 성향.</p>
+<p>만족도는 어떻게 체크 할 것인가?<br>
+사실 디테일하게 처리하기 위해선, 그 날짜에 대한 전반적인 점수가 높다라는 것으로?<br>
+만족도를 어떻게 체크해야 간편하면서, 구체적일 수 있을까?<br>
+1,2 평하<br>
+3 평중<br>
+4,5 평상</p>
+<p>사람들이 통계적으로 봤을때, 1~5점으로 매긴다고 하면은, 정말 너무 행복했던 기억만을 가졌던 날을 누군가 있었다면, 정말 흔치않지만, 5점일 것이고<br>
+대게 좋았거나, 비교적 순탄했다면 4점을 매길것이다<br>
+새롭지 않고, 문제 없었다면 3점이고<br>
+기분 안 좋은 일이 있었다면, 1~2점</p>
+<p>나와 같은 성향은 어떻게 진단 할 것인가?<br>
+interests와 budgets이 어떤 나라에대해서 맞는 사람들이 다녀온 여행.<br>
+budgets 항공료를 제외한, 남녀에 맞춰서.</p>
+<p>통계정보를 통해서, 사용자가 어떤 선택을 긍정적으로 검토 할 수 있도록 유도하는 것.</p>
+<h2 id="190914"><a class="markdownIt-Anchor" href="#190914"></a> 190914</h2>
+<p>첫번쨰 즐거움은 작성하는 즐거움을, 자신이 작성한 것이,</p>
+<ol>
+<li>한 눈에 보기 쉽고 작성하기 쉬우면서</li>
+<li>작성할때 너무 어렵지 않게,</li>
+<li>언제든 세부적으로 검토하는 것도 가능하지만,</li>
+<li>모드조정을 통해 간략한 글쓰기, 세부적으로 글쓰기</li>
+</ol>
+<ul>
+<li>간단한 여행일지 쓰기.(1장의 사진, 1~2줄의 글)</li>
+</ul>
+<ol>
+<li>사진 하나, 타임라인, 엽서에 사진과 쪽지가 붙어있는.</li>
+<li>그것을 다시 봤을떄, 누구나 이해할 수 있도록 돌려주려면?</li>
+<li>엽서들을 어떤식으로?</li>
+<li>여행 중에는 간단히 사진한장을 찍으면, 그곳의 위치와 지역시간을 기록하고. 간단한 메세지(노천카페에서 누구와)</li>
+<li>그것들을 모아서 스팟에 등록하면,</li>
+<li>시간 별로 스팟에 대한 시퀸스를 만들어준다.</li>
+<li>지역이 이전 사진지역과 500m근방이거나, 30분 이하의 기록이라면 자동으로 하나의 스팟으로 자동 처리해주고(예를 들어 길거리 여러 상점을 들린다거나?)</li>
+<li>그날 여행의 종료했을떄, 스팟의 최초 등록된 포스트의 위치(~거리 단위로)가제목을 붙여주고, 실제목은 따로 없으나,</li>
+<li>유저가 직접 수정해서 스팟내의(시퀸셜한 여정(여행중에는 20분에 한장정도는 자주 찍는 편이라고 한다면))</li>
+<li>그것을 파일로 처리해서 인쇄물로 받아볼 수 있도록.</li>
+<li>물리적인 기록물과 연결된 것으로 처리하고, 디지털정보도 같이 보관할 수 있도록</li>
+<li>그래도 3~5시간 내로는 보통 스팟을 벗어난다고 가정할 수 있다.</li>
+<li>최초 스팟에서 1km이상 벗어났다면, 혹은 스팟을 전환하고 싶을 때 메뉴얼하게 전환하면, 해당 포스트를 기점으로 스팟을 처리해준다.</li>
+</ol>
+<ul>
+<li>디테일한 여행일지 쓰기.(소설 형식)</li>
+</ul>
+<ol>
+<li>가끔 좀 더 디테일한 기록을 남기는 사람들이 있다.</li>
+<li>우리의 대화의 양상이라거나, 그날 분위기가 어땠지만, 난 기분이 좋지 않았다 라거나. 소설 쓰듯이 일지를 작성하는 스타일</li>
+</ol>
+<ul>
+<li>디테일한 여행일지 쓰기_v2(여러 사진과 4~5줄의 글이 더 많은경우.)</li>
+</ul>
+<ol>
+<li>앞의 사람들에 비하면, 사진에 대해서 중요시 생각하는 타입.</li>
+<li>디바이스를 조금 더 생각해보면, 사진기능이 좋아지고, 한장의 사진이 특정 부분만 클립으로 재생되고 나머지는 하나의 프레임으로 가진 GIF파일도 있다.</li>
+<li>하나의 포스트에 많은 사진을 저장하지 말고 시퀸스를 풍부하게 구성하세요.(이 정도 규칙은 유저들이 충분히 수용 할 수 있을 만한 범위)</li>
+<li>당신이 사진가라는 것을 우리가 존중하지 않는 것은 아니지만, 서버에 RAW파일을 저장할 순 없잖아요? 아직 21세기는 시작했을 뿐입니다.</li>
+</ol>
+<ul>
+<li>공통점</li>
+</ul>
+<ol>
+<li>하나의 사진에 긴 텍스트를 하는 경우도 있으나, 여정을 기록할 떄는 사진으로 더 설명을 하려고 하는 경향이 많다.</li>
+<li>한 스팟의 하나의 시퀸스에 여러장을 게시하는 것은 없앤다. 그 정도의 많은 사진은 직접 디바이스에 저장하고, 우리 서비스를 통해 등록하는 사진은</li>
+<li>하나의 스팟을 구성하는 시퀸스중 하나로, 5분간격 20m 간격으로 촬영하는 갭이 짧은 플롯이 될 수 있지만,</li>
+</ol>
+<ul>
+<li>여행포스팅을 어떻게 정리해야 많이 공유되고,</li>
+</ul>
+<ol>
+<li>네비게이션을 자동으로 생성해줘서, 시간-지역의 드래그가능한 선형 그래프</li>
+<li>스팟별로 색깔을 다르게 표시하고, 개별 시퀸스는 작은 글씨로 표시한다.</li>
+<li>시간대별로 정렬하지만, 가장 위쪽에 비용이나 빠르게 참고하고 읽은 후에 이 정보를 읽을 만 한지 판별할 수 있는 장치가 필요.</li>
+<li>10중 7은 마음에 안드는 것은 정상적인 것. 내가 이 글을 읽어봐야 할지 아닐지 판별 할 수 있는 정보를 빠르게 전달해야 한다.</li>
+</ol>
+<ul>
+<li>여행정보 공유하기 좋은 형태로 재가공하기</li>
+</ul>
+<ol>
+<li>스팟이동 경로와 시간 표시</li>
+<li>비용에 대한 정보는 애초에 신뢰성이 없다. 그것은 그냥 텍스트 데이터에 맞길것인가?</li>
+<li>총 비용 혹은 스팟에 대한 비용으로 처리하거나, 가계부처럼 여정을 진행중에 자신이 얼마나 썼는지 작성 할 수 있도록.</li>
+<li>작성하면서 시간을 따로 기록 하지 않는다면, 특정 시퀸스에서 일어난 일이 아니라, 하나의 스팟에서 몰아서 처리하도록</li>
+</ol>
+<ul>
+<li>자동으로 스팟을 전환해주는 기능</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">스팟</th>
+<th style="text-align:center">위치</th>
+<th style="text-align:center">시간</th>
+<th style="text-align:center">사진</th>
+<th style="text-align:center">텍스트</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">산호세거리 23-바르셀로나</td>
+<td style="text-align:center">NONE</td>
+<td style="text-align:center">NONE</td>
+<td style="text-align:center">NONE</td>
+<td style="text-align:center">아래 포스팅이 최초여서 스팟그룹이 묶여진다.</td>
+</tr>
+<tr>
+<td style="text-align:center">산호세거리 23-바르셀로나</td>
+<td style="text-align:center">산호세거리 23</td>
+<td style="text-align:center">13:00(esp)</td>
+<td style="text-align:center">pic</td>
+<td style="text-align:center">걷다가 너무 힘들었다</td>
+</tr>
+<tr>
+<td style="text-align:center">산호세거리 23-바르셀로나</td>
+<td style="text-align:center">산호세거리 15</td>
+<td style="text-align:center">13:21(esp)</td>
+<td style="text-align:center">pic</td>
+<td style="text-align:center">가게 조형물들이 너무 아름답다. 한국가면, 유리 세공공방이나 차려볼까… ㅎㅎ</td>
+</tr>
+<tr>
+<td style="text-align:center">산호세거리 23-바르셀로나</td>
+<td style="text-align:center">콜리뇨거리 33</td>
+<td style="text-align:center">13:45(esp)</td>
+<td style="text-align:center">pic</td>
+<td style="text-align:center">젤라또를 먹으러 왔다. 이것이 본토의 맛인가…</td>
+</tr>
+<tr>
+<td style="text-align:center">산호세거리 43-바르셀로나</td>
+<td style="text-align:center">NONE</td>
+<td style="text-align:center">NONE</td>
+<td style="text-align:center">NONE</td>
+<td style="text-align:center">거리는 비슷하나, 마지막 포스팅으로부터 3시간 이상 지났기 떄문에 스팟그룹이 전환된다.</td>
+</tr>
+<tr>
+<td style="text-align:center">산호세거리 43-바르셀로나</td>
+<td style="text-align:center">산호세거리 43</td>
+<td style="text-align:center">17:55(esp)</td>
+<td style="text-align:center">pic</td>
+<td style="text-align:center">호텔을 겨우 잡았다. 방이 솔직히 맘에 들지 않지만, 특히 주인장은 동양인을 무시한다.</td>
+</tr>
+</tbody>
+</table>
+<p>이렇게 되면 장점이, 비행기내에서 포스팅을 한번 하면, 10분내로 수십 KM를 이동하기 때문에, 스팟을 전환해서 처리해주고,<br>
+또 수십킬로 지나면 스팟이 전환된다. 이게 은근히 매력적인 구성.<br>
+중국해 영공에서(스팟)-&gt; 발트해 영공에서(스팟 10분경과)</p>
+<ul>
+<li>
+<p>소비를 기록 하는 기능,<br>
+그냥 기록하면 알아서 해당 스팟내에서 발생한 것으로 간주하고 시간 순으로 정렬해줘요.<br>
+직접 스팟을 지정하거나, 시간을 지정하면 어찌됐건 해당 스팟으로 처리되요.</p>
+</li>
+<li>
+<p>스팟 혹은, 포스트에 대한 태그<br>
+태그가 어떤 기능을 해결해 줄 수 있을까? 어떤 지역 여행을 한 사람들의 족적을 미리 체크해봄으로 간접체험하고, 내가 더 나은 경험을 하기 위함이 큰 목적이라면.<br>
+스팟마다 사용한 비용을 포스트:잠, 태그:라인에 맞춰서, 지도상이나 그래픽위에, 시간과 금액을 표시하고, 총액은 스팟별로.<br>
+여행을 마감하면, 종료된 여행으로 간주하고, 모든 금액을 산출해서 정확히 어디에 소비했고 이런게 아니라, 그냥 얼마나 썼는지, 하나의 스팟에서 시퀸스가<br>
+음식이나, 쇼핑, 여행 물품, 지역교통비, 관광료 등 여러요소가 존재 할 수 있으니 그것은 이름만 적어서 작성할 수 있도록.<br>
+어차피 가계부에서도, 종목을 정하지만 세부적인 상품명은 별도로 달아준다.<br>
+그리고 사실 한눈에 보면 간편해 보이는 듯 하지만, 식음료비용이 전달보다 2만원 늘었다는 사실이, 그렇게 큰 도움은 되지 않는다.<br>
+소비 패턴은 분석해 줄 수 있겠지.</p>
+</li>
+</ul>
+<p>검색할때, 태그가 부연설명으로 도움이 될 수 있을까?<br>
+우리는 기본적으로 지역에 대한 정리된 여정을 검색하고 보는 것에 의미를 두고 있다면, 어떤 검색을 통해서, 내가 원하는 정보를 얻을 수 있을까?</p>
+<p>유효한 지역을 검색하면, 스팟이 그 지역 부근 1km안에 포함된다면? 모두 출력하고, 1KM밖이라면, 제일 가까운 순위별로 주는 것도 괜찮다.<br>
+그러면 거리를 출력해줄 필요가 있다.<br>
+해당 스팟의 위도경도정보를 같이 저장해준다면, 구글에 분석을 요청하지 않고도, 바로 처리할 수 있다.<br>
+최초 포스트를 등록하거나를 통해서 스팟이 시작되면, 그 시작점을 기준으로 위도경도 정보를, 서버에서 요청하는 것이 아니라, 클라이언트에서 작성해서 넘긴다.</p>
+<p>물론 조작의 위험도는 있지만, 크리티컬한 이슈가 아니고, 단순히 정보가 잘못됐다는 것이기 때문에, 그것은 사용자가 이거 엉터리 글이네 하고 넘길 수 있다.</p>
+<p>위도경도의 수치계산 알고리즘을 통해서 인접 거리를 구해서?<br>
+일단 나라는 같아야 한다?</p>
+<p>그러면 스팟마다 위도경도를 해당 스팟 아래 속하는 모든 시퀸셜 포스트가 동일하다고 간주하고 처리하니, 어차피 거리가 일정 이상 벗어나면 스팟을 넘겨버릴 것이다.</p>
+<p>모든 스팟에 대해서 풀스캔?<br>
+아니다 최소한 나라라는 기준은 매치해야한다. 시와 시를 왔다 갔다 하는 것은 굉장히 애매한 기준이기 때문에, 물론 왠만하면 시의 중심지가 주요 관광지이겠지만,<br>
+그냥 나라를 기준을 나눈다면 가장 안전할 수도있다.<br>
+인접 지역이라도 같은 나라가 아니라면 여행자가 원하는 정보가 아닐 가능성이 매우 높다.</p>
+<p>지역적 키워드를 검색하면 그것의 해당하는 나라와, 위도경도정보를 서버로 전송한다.<br>
+나라에 등록된 스팟을 모두 검색한다.</p>
+<p>잠깐. 하나의 여정노트를 완성한다고 할떄, 여러 나라를 들릴 수 있다고하면, 하나로 묶어주는게 좋을까 별개로 나누는게 좋을까?<br>
+나누는게 백번 나은데, 도저히 나눌 수 없는 상황도 있지 않을까?<br>
+잠깐 미국에서 캐나다 하루 들렸다 오는 길이며, 미국에서 1주일 머무는 거라고 하면 얘기가 달라진다.<br>
+그렇다면 여정에서 나라는 제외하자.<br>
+스팟 기준으로 나라는 바뀔 수 있고. 만약 유저가 해당 여정노트를 마감하고 싶다고하면, 매뉴얼하게 할 수 있다.</p>
+<p>포스트를 등록할때. 어떤 나라로, 포스트를 등록하겠다고 하면</p>
+<h3 id="스팟과-시퀸셜-포스팅-기준-모델"><a class="markdownIt-Anchor" href="#스팟과-시퀸셜-포스팅-기준-모델"></a> 스팟과 시퀸셜 포스팅 기준 모델</h3>
+<ul>
+<li>유저</li>
+</ul>
+<p>|이름|여정|</p>
+<ul>
+<li>여정</li>
+</ul>
+<p>|유저|스팟|주요 테마|</p>
+<ul>
+<li>
+<p>스팟<br>
+|나라|위도,경도|시퀸셜 포스팅|지역적 테마(태그 1개)|</p>
+</li>
+<li>
+<p>시퀸셜 포스트</p>
+</li>
+</ul>
+<p>|시간|텍스트|멀티파트-이미지, 동영상(1<sub>5)|소비|태그(1</sub>3개)|</p>
+<p>지역적 테마를 통해서, 주 목적과 조금 다른 일시적인 여흥도 커버 할 수 있다.</p>
+<h2 id="190917"><a class="markdownIt-Anchor" href="#190917"></a> 190917</h2>
+<p>유저가 초기 입력값인, interests를 설정하면, 그것에 대해서 유효한 추천건을 어떻게 가져올 것인가.<br>
+유저가 음식에 관심이 있다고 처음 입력 했다면, 검색할때, 여정에 총 테마가 음식인 것 패스의 테마가 음식인 것.</p>
+<ul>
+<li>SPOT RENAMED TO PATH</li>
+</ul>
+<p>|country|pos_x|pos_y|post_ids|theme|</p>
+<ul>
+<li>POST(의미적으로 SPOT과 동일)</li>
+</ul>
+<p>|time|text|pos_x|pos_y|media(1~5) auto_layout기능, 업로드 순으로 보이도록 처리를 해야 한다.|payments|tags|</p>
+<p>TAG는 검색에 연동시키기 위한 장치라고하면 THEME은 순전이 키워드 기반 주제를 골라주도록 유도하는 것.<br>
+healing, nature, shopping, locality, experience등으로 THEME을 정하면, 그것을 기반으로 작은 조각으로 POST가 아닌 PATH를 검색하면,<br>
+POST가 여행을 이해하기에는 너무 내러티브가 존재하지 않는다고 하면, PATH는 앞뒤로 어느정도 과정이 있으니, 그것을 충족시켜줄 수 있다.</p>
+<ul>
+<li>사진을 로컬앱으로 업로드하는 과정에서, 레이아웃이 적용되서 처리되니까, 유저가 서버에 업로드 전(글 작성 완료)에 알아서 수정할 수 있다.</li>
+</ul>
+<p>여행중 유저의 시나리오.</p>
+<p>여행을 하고 있고, 시장으로 나가는 길에서부터 앱을 실행해서, 여행시작하기 를 하고 첫번 쨰 포스트를 등록하려 한다.<br>
+시장의 과일상들의 사진과 시장의 일부 오브젝트를 촬영하여 4장을 업로드 하겠다.<br>
+글은 간단한게 작성했다.(ㅇㅇㅇ시장의 풍경 #ㅇㅇㅇ시장 #푸드)<br>
+20미터 쯤 지났을까, 또 포스트작성하기를 하니, 이전촬영지역의 이름의 앨범에 이어서 작성하도록 되어있다.<br>
+… 마찬가지로 작성한것으로…</p>
+<p>그리고 20분쯤뒤에 새로운 포스트를 작성하려고 하는데, 앨범을 전환하도록 했다.(새로운 지역이름)<br>
+기존에 진행중이던 앨범이 마감되면서, 해당 앨범이 그래픽으로 뭔가 고정되었음을 알 수 있고,<br>
+해당 앨범을 클릭하니, 지도에 지역이 점으로 찍혀서 선으로 나와있고, 밑에 요약이 되어있으면서, 그 루트 안의 총 지출이 요약되어있다.<br>
+정확히 어느지점에서 썼는지는 모르겠으나, 어떤 소비가 있었는지는, 해당 앨범이 활성화 되어있을때, 포스트등록하기가 아닌, 지출입력하기 로 큰카테고리와 상품명, 가격을<br>
+해당 지역의 화폐단위에 맞춰서 처리했다.</p>
+<p>여행 후 유저의 시나리오</p>
+<p>앨범 에 사진이 몰려있고, 그것을 순차적으로 조금 나눠서 날짜별로 정리하려 한다.<br>
+사진 5개를 등록하고, 태그를 작성했고, 시간과 위치를 메뉴얼하게 입력해 주었다.</p>
+<p>다음에 이어서 하다가, 날짜를 전환하도록 한다.</p>
+<ul>
+<li>이경우 한날짜에 너무 많은 데이터가 몰려서 들어간다면, 검색할때 그 정보가 그렇게 유효하지 않기 떄문에, 1일차-ㅌㅌㅌ시장</li>
+</ul>
+<p>이런식으로 수정을 하도록 권고할 수 있으면 좋겠다.</p>
+<p>그러면, 어차피 유저가 정리할 떄는, 대부분 여행기록은 시간적으로 묶어서 처리하는 경우가 많기 때문에, 물론 그렇게 하지 않아도 되지만,<br>
+장소적으로는 인근지역을 몰아서 처리하거나, 하는 경우는 분명 대다수 라 할 수 있다.</p>
+<p>화폐단위 처리는, 저장할떄, 단위는 해외에서 USD를 안쓰는 곳에서도 USD를 처리하는 경우가<br>
+많기 떄문에, 서버에 저장할때는 USD든 뭐든 해당 국가의 화폐단위로 변환해서 저장해주면,<br>
+모든 소비가 해당국가의 화폐단위의 수치로 기록이 되고, 그것을 나중에 자국 화폐로 변환해서 볼떄는 매번 바뀌는 식으로.<br>
+소수점 2자리까지 허용해서, 300.12정도로 기록?</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/09/09/project/travel_note/" data-id="ckkdb52fq000h1pqkxl4a13sv" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/project/">project</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/travel-note/">travel_note</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/09/17/http/2_http_sementics/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          http_1.0_sementics
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">http/1.0의 신택스: 기본이 되는 네가지 요소</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

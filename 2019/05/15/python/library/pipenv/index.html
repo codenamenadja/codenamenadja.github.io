@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>how to use pipenv 100% | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Index   개요 목표 2 3 4 마치며    개요 Pipenv는 모든 최고의 패키징(bundler, composer, npm, cargo, yarn)을 파이썬으로 가져오기 위한 툴입니다. 이것은 가상환경을 자동으로 생성하고 관리합니다. 또한 Pipfile에서 패키지는 추가하고 삭제함으로써 자동으로 가상환경을 생성하고 관리합니다. Pipenv가 해결하는">
+<meta name="keywords" content="python,pipenv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="how to use pipenv 100%">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/05/15/python/library/pipenv/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="Index   개요 목표 2 3 4 마치며    개요 Pipenv는 모든 최고의 패키징(bundler, composer, npm, cargo, yarn)을 파이썬으로 가져오기 위한 툴입니다. 이것은 가상환경을 자동으로 생성하고 관리합니다. 또한 Pipfile에서 패키지는 추가하고 삭제함으로써 자동으로 가상환경을 생성하고 관리합니다. Pipenv가 해결하는">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.079Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="how to use pipenv 100%">
+<meta name="twitter:description" content="Index   개요 목표 2 3 4 마치며    개요 Pipenv는 모든 최고의 패키징(bundler, composer, npm, cargo, yarn)을 파이썬으로 가져오기 위한 툴입니다. 이것은 가상환경을 자동으로 생성하고 관리합니다. 또한 Pipfile에서 패키지는 추가하고 삭제함으로써 자동으로 가상환경을 생성하고 관리합니다. Pipenv가 해결하는">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/library/pipenv" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/15/python/library/pipenv/" class="article-date">
+  <time datetime="2019-05-14T17:19:43.000Z" itemprop="datePublished">2019-05-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      how to use pipenv 100%
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<blockquote>
+<ol>
+<li><a href="#%EA%B0%9C%EC%9A%94">개요</a></li>
+<li><a href="#%EB%AA%A9%ED%91%9C">목표</a></li>
+<li><a href="#pipfile">2</a></li>
+<li><a href="#%EA%B8%B0%EB%B3%B8_%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0">3</a></li>
+<li><a href="#%EA%B0%80%EC%83%81%ED%99%98%EA%B2%BD%EA%B4%80%EB%A6%AC">4</a></li>
+<li><a href="#advanced_usage">마치며</a></li>
+</ol>
+</blockquote>
+<h2 id="개요"><a class="markdownIt-Anchor" href="#개요"></a> 개요</h2>
+<p>Pipenv는 모든 최고의 패키징(bundler, composer, npm, cargo, yarn)을 파이썬으로 가져오기 위한 툴입니다.</p>
+<p>이것은 가상환경을 자동으로 생성하고 관리합니다. 또한 <code>Pipfile</code>에서 패키지는 추가하고 삭제함으로써 자동으로 가상환경을 생성하고 관리합니다.</p>
+<p>Pipenv가 해결하는 복합적인 면 문제는 이러합니다.</p>
+<ul>
+<li>당신은 더 이상 <code>pip</code>와 <code>virtualenv</code> 개별적으로 사용하지 않아도 된다.</li>
+<li>reqirements.txt를 관리하는 것은 문제를 발생시킬 여지가 있습니다.<br>
+그래서 우리는 <code>Pipfile</code>, <code>Pipfile.lock</code>을 사용하여 최근에 테스트된 조합에서부터 추상적인 의존성 선언을 분리합니다.</li>
+<li>해쉬들은 보안상 어디에든 쓰입니다. 자동적으로 취약접을 드러냅니다.</li>
+<li>업데이트가 된 요소에 대해서 강하게 최근 버전을 권유함으로써 위험성을 최소화합니다.</li>
+<li><code>pipenv graph</code>를 통해 의존성에 대한 통찰을 드립니다.</li>
+<li><code>.env</code>파일들을 불러옴으로써 개발의 워크플로우를 연결해줍니다.</li>
+</ul>
+<h3 id="basic_concepts"><a class="markdownIt-Anchor" href="#basic_concepts"></a> Basic_concepts</h3>
+<ul>
+<li>가상환경이 자동으로 생성됩니다.</li>
+<li>어떤 파라메터도 <code>install</code> 명령어에 전달되지 않아도, 명시된 <code>[packages]</code>는 설치될 것입니다.</li>
+<li>python3 가상환경을 초기화 하려면 <code>pipenv --three</code></li>
+</ul>
+<h3 id="목표"><a class="markdownIt-Anchor" href="#목표"></a> 목표</h3>
+<ol>
+<li>Pipfile과 Pipfile.lock을 이해한다.</li>
+<li>dev-dependancy와 그렇지 않은 것을 구분한다.</li>
+<li>자유롭게 다룬다.</li>
+</ol>
+<h2 id="pipfile"><a class="markdownIt-Anchor" href="#pipfile"></a> Pipfile</h2>
+<ul>
+<li>
+<p>Example Pipfile</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[[source]]</span><br><span class="line">url = &quot;https://pypi.python.org/simple&quot;</span><br><span class="line">verify_ssl = true</span><br><span class="line">name = &quot;pypi&quot;</span><br><span class="line"></span><br><span class="line">[packages]</span><br><span class="line">requests = &quot;*&quot;</span><br><span class="line"></span><br><span class="line">[dev-packages]</span><br><span class="line">pytest = &quot;*&quot;</span><br><span class="line"></span><br><span class="line">[requires]</span><br><span class="line">python_version = &apos;&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>일반적인 권유, 버전관리</p>
+<ul>
+<li>일반적으로 <code>Pipfile</code>, <code>Pipfile.lock</code>은 버전컨트롤에 포함하십시오.</li>
+<li>만약 복수의 파이썬 버전이 타겟이라면 <code>Pipfile.lock</code>은 포함하지 마십시오.</li>
+<li>당신이 요구하는 파이썬 버전을 Pipfile의 <code>[requires]</code> 섹션에 명시하십시오. 이상적으로라면 하나의 파이썬 버전만 가져야합니다.</li>
+<li><code>pipenv install</code>은 <code>pip install</code>과 완벽히 호환됩니다.</li>
+</ul>
+</li>
+</ul>
+<h2 id="기본_워크플로우"><a class="markdownIt-Anchor" href="#기본_워크플로우"></a> 기본_워크플로우</h2>
+<ol>
+<li>당신의 프로젝트 저장소를 생성하고 클론하십시오: <code>cd my project</code></li>
+<li>Pipfile로부터 설치한다면: <code>pipenv install</code></li>
+<li>새로운 패키지를 추가한다면: <code>pipenv install &lt;package&gt;</code></li>
+<li>Pipfile이 초기화 되었다면: <code>pipenv shell &amp;&amp; python --version</code>
+<ul>
+<li>이것은 새로운 shell subprocess를 생성합니다. <code>exit</code>를 통해 deactivate할 수 있습니다.</li>
+</ul>
+</li>
+</ol>
+<h3 id="업데이트_워크플로우"><a class="markdownIt-Anchor" href="#업데이트_워크플로우"></a> 업데이트_워크플로우</h3>
+<ul>
+<li>무엇이 변했는지 확인할 때: <code>pipenv update --outdated</code></li>
+<li>패키지를 업그레이드할 때 2가지 옵션:
+<ol>
+<li>모든 것을 업그레이드: <code>pipenv update</code></li>
+<li>하나씩 업그레이드: <code>pipenv update &lt;pkg&gt;</code>i</li>
+</ol>
+</li>
+</ul>
+<h3 id="requirementstxt를_통해"><a class="markdownIt-Anchor" href="#requirementstxt를_통해"></a> requirements.txt를_통해</h3>
+<p>requirements.txt파일이 존재할 때 <code>pipenv install</code>을 실행하면,   pipenv는 자동적으로 파일의 내용을 가져와 Pipfile을 생성해 줄 것입니다.</p>
+<p>아래처럼 명시적으로 처리하는 것도 가능합니다.<br>
+<code>pipenv install -r path/to/requirements.txt</code></p>
+<h2 id="가상환경관리"><a class="markdownIt-Anchor" href="#가상환경관리"></a> 가상환경관리</h2>
+<p>Pipenv환경을 관리하기 위한 3가지 주요 커맨드가 있습니다.<br>
+<code>pipenv install</code>, <code>pipenv uninstall</code>, <code>pipenv lock</code></p>
+<h3 id="pipenv_install"><a class="markdownIt-Anchor" href="#pipenv_install"></a> pipenv_install</h3>
+<p><code>pipenv install [package names]</code></p>
+<ul>
+<li>
+<p>options</p>
+<ul>
+<li><code>--two</code></li>
+<li><code>--three</code></li>
+<li><code>--python [version number]</code></li>
+<li><code>--dev</code>: <code>Pipfile</code>에 명시된 <code>develop</code>와 <code>default</code>모두 설치합니다.</li>
+<li><code>--system</code>: 가상환경이 아닌 글로벌 <code>pip</code>커맨드를 사용합니다.</li>
+<li><code>--ignore-pipfile</code>: <code>Pipfile</code>을 무시하고 <code>Pipfile.lock</code>으로 설치합니다.</li>
+<li><code>--skip-lock</code>: <code>Pipfile.lock</code>을 무시하고 <code>Pipfile</code>로 설치합니다.<br>
+<code>Pipfile</code>에 생기는 변화가 <code>Pipfile.lock</code>에 반영되지 않습니다.</li>
+</ul>
+</li>
+<li>
+<p>install via vcs</p>
+<ul>
+<li><code>pipenv install -e git+https://github.com/requests/requests.git@v2.20.1#egg=requests</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="pipenv_uninstall"><a class="markdownIt-Anchor" href="#pipenv_uninstall"></a> pipenv_uninstall</h3>
+<p><code>pipenv uninstall</code>은 <code>pipenv install</code>의 모든 커맨드를 지원합니다.</p>
+<ul>
+<li>addtional options
+<ul>
+<li><code>--all</code>: 가상환경의 모든 것을 지우지만 <code>Pipfile</code>을 남깁니다.</li>
+<li><code>--all-dev</code>: <code>Pipfile</code>까지 삭제합니다.</li>
+</ul>
+</li>
+</ul>
+<h2 id="advanced_usage"><a class="markdownIt-Anchor" href="#advanced_usage"></a> Advanced_usage</h2>
+<ol>
+<li>
+<p>패키지 유효성 이슈 검사</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$pipenv</span> check</span><br><span class="line">&lt;!-- vulnerable issue로 버전업데이트가 필요하면 Pipfile에 버전명을 수정 --&gt;</span><br><span class="line"><span class="variable">$pipenv</span> install</span><br><span class="line"><span class="variable">$pipenv</span> check</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>lock이 잘 안된다?</p>
+<ul>
+<li>black을 설치할때, lock파일 해시 생성하는 곳에서 문제가 생기는데 해결법은 2가지가 있다.
+<ol>
+<li><code>pipenv lock --pre</code>: Pre release버전에 대해서 lock을 처리해준다</li>
+<li><code>pipenv install --dev --skip-lock</code>: 만약</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="마치며"><a class="markdownIt-Anchor" href="#마치며"></a> 마치며</h2>
+<p>간단한 시행착오를 통해 최종적으로 이렇게 다루면 Dev depency와 분리해서 사용하기 좋다.</p>
+<ol>
+<li>일반 의존모듈은 pre release가 아니어야한다.</li>
+<li>dev모듈은 lock을 하지 말자</li>
+<li>배포 환경에서는,  pipfile을 가지고 설치하되 dev는 제외하고 설치한다.</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pipenv --three</span><br><span class="line"><span class="comment"># 초기화</span></span><br><span class="line">pipenv install --dev --skip-lock pylint selenium black fabric mypy pytest</span><br><span class="line">pipenv install</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/05/15/python/library/pipenv/" data-id="ckkdb52h1001q1pqk8r3s4w2q" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/05/15/python/library/django/s3_in_django/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          connect s3, RDS in django
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/05/14/sql/postgresql_basic/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">postgresql 접속하기</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

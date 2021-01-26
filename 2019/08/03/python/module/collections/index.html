@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>python collections 모듈 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Index   개요 ChainMap namedtuple Counter UserDict    개요    타입 설명     namedtuple() 팩토리 함수, tuple형태의 명명된 필드를 가진 서브클래스를 생성하는것에 고성능   deque list같은 컨테이너, 양쪽 끝에서 더하고 빼는게 빠르다   ChainMap dict같은 클래스, 복수의 매핑들로 구">
+<meta name="keywords" content="python,python module">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python collections 모듈">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/08/03/python/module/collections/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="Index   개요 ChainMap namedtuple Counter UserDict    개요    타입 설명     namedtuple() 팩토리 함수, tuple형태의 명명된 필드를 가진 서브클래스를 생성하는것에 고성능   deque list같은 컨테이너, 양쪽 끝에서 더하고 빼는게 빠르다   ChainMap dict같은 클래스, 복수의 매핑들로 구">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.079Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python collections 모듈">
+<meta name="twitter:description" content="Index   개요 ChainMap namedtuple Counter UserDict    개요    타입 설명     namedtuple() 팩토리 함수, tuple형태의 명명된 필드를 가진 서브클래스를 생성하는것에 고성능   deque list같은 컨테이너, 양쪽 끝에서 더하고 빼는게 빠르다   ChainMap dict같은 클래스, 복수의 매핑들로 구">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/module/collections" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/03/python/module/collections/" class="article-date">
+  <time datetime="2019-08-03T06:55:54.000Z" itemprop="datePublished">2019-08-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python collections 모듈
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> Index</h2>
+<hr>
+<ol>
+<li><a href="#%EA%B0%9C%EC%9A%94"><strong>개요</strong></a></li>
+<li><a href="#chainmap"><strong>ChainMap</strong></a></li>
+<li><a href="#nametuple"><strong>namedtuple</strong></a></li>
+<li><a href="#counter"><strong>Counter</strong></a></li>
+<li><a href="#userdict"><strong>UserDict</strong></a></li>
+</ol>
+<hr>
+<h2 id="개요"><a class="markdownIt-Anchor" href="#개요"></a> 개요</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">타입</th>
+<th style="text-align:left">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>namedtuple()</code></td>
+<td style="text-align:left"><strong>팩토리 함수,</strong> tuple형태의 명명된 필드를 가진 서브클래스를 생성하는것에 고성능</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>deque</code></td>
+<td style="text-align:left"><strong>list같은 컨테이너,</strong> 양쪽 끝에서 더하고 빼는게 빠르다</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>ChainMap</code></td>
+<td style="text-align:left"><strong>dict같은 클래스,</strong> 복수의 매핑들로 구성된 하나의 뷰를 생성하는데 사용.</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>Counter</code></td>
+<td style="text-align:left"><strong>dict의 서브클래스,</strong> hashable객체의 키값을 세기 위한 용도</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>OrderedDict</code></td>
+<td style="text-align:left"><strong>dict의 서브클래스,</strong> 순서가 있는, 엔트리가 추가됐다는 것을 기억한다.</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>defaultdict</code></td>
+<td style="text-align:left"><strong>dict의 서브클래스,</strong> 빠진 값을 처리하기위한 팩토리 함수</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>UserDict</code></td>
+<td style="text-align:left"><strong>dict객체의 래퍼,</strong> dict의 서브클래싱을 쉽게 해준다.</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>UserList</code></td>
+<td style="text-align:left"><strong>list객체의 래퍼,</strong> list의 서브클래싱을 쉽게 해준다.</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>UserString</code></td>
+<td style="text-align:left"><strong>string객체의 래퍼,</strong> string의 서브클래싱을 쉽게 해준다.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>deque는 의도가 명확하고, namedtuple또한 의도와 사용법이 한정적이기 떄문에, 그 외의 것들을 다룬다.</li>
+<li>서브클래싱은 팩토리, 인스턴스를 의미한다.</li>
+</ul>
+<hr>
+<h2 id="chainmap"><a class="markdownIt-Anchor" href="#chainmap"></a> ChainMap</h2>
+<h3 id="chainmap_introduction"><a class="markdownIt-Anchor" href="#chainmap_introduction"></a> ChainMap_introduction</h3>
+<p>ChainMap클래스는 빠르게 다수의 <code>mappings</code>를 연결하기 위해 구성되었다.<br>
+따라서 그들은 하나의 유닛으로 다뤄질 수 있다. 때로 새로운 딕셔너리를 생성해서, 여러번 <code>update()</code>를 실행하는 것보다 더 빠를 수 있다.</p>
+<ul>
+<li>기본적으로 리스트 컴프리헨션으로 해당 mapped자료구조들을 풀면 keys를 푼다.</li>
+<li>매개변수의 args에서 0번째부터의 데이터 유지를 최우선으로 한다.</li>
+<li>ChainMap에서 Values에 대한 접근이 nametuple에서 제한된다. keys로 접근하면 key가 아닌 value를 리턴한다.</li>
+<li>리턴하는 값들의 순서는 역방향이다. 마지막 매개변수의 키값 등을 먼저 출력.</li>
+<li>매개변수 후자의 객체(읽히는 순서)에 앞에있는 것을 계속 Update해나가는 식(덮어 씌워짐)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>baseline = &#123;'music': 'bach', 'art': 'rembrandt'&#125;</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>adjustments = &#123;'art': 'van gogh', 'opera': 'carmen'&#125;</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>list(ChainMap(adjustments, baseline))</span></span><br><span class="line"><span class="string">['music', 'art', 'opera']</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 위 아래는 행동이 동일하다. 코드를 간결하게 유지하고, 속도도 때로 더 빠르다.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>combined = baseline.copy()</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>combined.update(adjustments)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>list(combined)</span></span><br><span class="line"><span class="string">['music', 'art', 'opera']</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="namedtuple"><a class="markdownIt-Anchor" href="#namedtuple"></a> namedtuple</h2>
+<h3 id="namedtuple_고찰키값으로-매핑되는-데이터들-기준"><a class="markdownIt-Anchor" href="#namedtuple_고찰키값으로-매핑되는-데이터들-기준"></a> namedtuple_고찰(키값으로 매핑되는 데이터들 기준)</h3>
+<p>namedtuple인스턴스의 크기는 class인스턴스보다 크다.(아래표는 byte크기 기준 비교)</p>
+<blockquote>
+<p>key=[“username”,“id”] values=[“asd”, “dvd”]로 생성</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">type</th>
+<th style="text-align:center">nametuple</th>
+<th style="text-align:center">class</th>
+<th style="text-align:center">class with <code>__slot__</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">class</td>
+<td style="text-align:center">888</td>
+<td style="text-align:center">1056</td>
+<td style="text-align:center">888</td>
+</tr>
+<tr>
+<td style="text-align:left">instance</td>
+<td style="text-align:center">56</td>
+<td style="text-align:center">64</td>
+<td style="text-align:center">56</td>
+</tr>
+<tr>
+<td style="text-align:left">ChainMap적용 .keys()</td>
+<td style="text-align:center"><code>['sadf', 'sad', 'sad']</code></td>
+<td style="text-align:center"><code>['id', 'username', 'password']</code></td>
+<td style="text-align:center"><code>TypeError:Not Iterable</code> cant not make chainMap</td>
+</tr>
+<tr>
+<td style="text-align:left">ChainMap적용 .values()</td>
+<td style="text-align:center"><code>TypeError:Tuple indices must be integer or slices, not str</code></td>
+<td style="text-align:center"><code>['sadf', 'sad', 'sad']</code></td>
+<td style="text-align:center">pass</td>
+</tr>
+<tr>
+<td style="text-align:left">ChainMap적용 list()</td>
+<td style="text-align:center"><code>['sadf',' sad', 'sad']</code></td>
+<td style="text-align:center"><code>['id','username','password']</code></td>
+<td style="text-align:center">pass</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>가장 간결하게 쓰고 싶다면, 그냥 리스트나 튜플로 키값없이 약속된 값 순서대로 타입을 체크해서 처리하는게, 메모리 효율적이다.</li>
+<li>그러나 인스턴스에 대해 동일한 기능이 필요하거나, 값의 타입 분리가 쉽지 않다면, 키값은 필요하다.</li>
+<li>함수형 프로그래밍을 통해 해당 객체의 타입만 재정의하고, 기능을 별도함수로 처리하면, 동일함수로직을 여러 객체가 사용하기 위해, 함수가 커지는 부작용이 있다.</li>
+<li>일단 클래스로 정의하고, <code>__slots__</code>를 통해서 사용할 메서드만 정의하고,</li>
+<li>개별적인 validate메서드를 사용하고, 클래스 오버라이딩을 통해서 메모리를 줄이는 방법이 있다.</li>
+<li>namedtuple의 장점은, 코드 양이 적으니, 파일 크기가 적고, 개발자들 사이에서 더 간결한 표현일 수 있다는 점이다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Slot_dict.__dict__</span></span><br><span class="line"><span class="string">mappingproxy(&#123;'__module__': '__main__',</span></span><br><span class="line"><span class="string">              '__slots__': ['username', 'id'],</span></span><br><span class="line"><span class="string">              '__init__': &lt;function __main__.Sample.__init__(self, s1, s2)&gt;,</span></span><br><span class="line"><span class="string">              'id': &lt;member 'id' of 'Sample' objects&gt;,</span></span><br><span class="line"><span class="string">              'username': &lt;member 'username' of 'Sample' objects&gt;,</span></span><br><span class="line"><span class="string">              '__doc__': None&#125;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>n_tuple.__dict__</span></span><br><span class="line"><span class="string">mappingproxy(&#123;'__module__': '__main__',</span></span><br><span class="line"><span class="string">              '__doc__': 'first(username, id)',</span></span><br><span class="line"><span class="string">              '__slots__': (),</span></span><br><span class="line"><span class="string">              '_fields': ('username', 'id'),</span></span><br><span class="line"><span class="string">              '__new__': &lt;staticmethod at 0x7f6aec52b7b8&gt;,</span></span><br><span class="line"><span class="string">              '_make': &lt;classmethod at 0x7f6aec52bcf8&gt;,</span></span><br><span class="line"><span class="string">              '_replace': &lt;function namedtuple_first.first._replace(_self, **kwds)&gt;,</span></span><br><span class="line"><span class="string">              '__repr__': &lt;function namedtuple_first.first.__repr__(self)&gt;,</span></span><br><span class="line"><span class="string">              '_asdict': &lt;function namedtuple_first.first._asdict(self)&gt;,</span></span><br><span class="line"><span class="string">              '__getnewargs__': &lt;function namedtuple_first.first.__getnewargs__(self)&gt;,</span></span><br><span class="line"><span class="string">              'username': &lt;property at 0x7f6aec4cc1d8&gt;,</span></span><br><span class="line"><span class="string">              'id': &lt;property at 0x7f6aec4cc2c8&gt;,</span></span><br><span class="line"><span class="string">              '_source': "namedtuple 원본의 __doc__"</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>slot_dict_instance["username"]</span></span><br><span class="line"><span class="string">'asd'</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>nt.username</span></span><br><span class="line"><span class="string">'asd'</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>csv와 sqlite를 활용</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">EmployeeRecord = namedtuple(<span class="string">'EmployeeRecord'</span>, <span class="string">'name, age, title, department, paygrade'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">for</span> emp <span class="keyword">in</span> map(EmployeeRecord._make, csv.reader(open(<span class="string">"employees.csv"</span>, <span class="string">"rb"</span>))):</span><br><span class="line">    print(emp.name, emp.title)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sqlite3</span><br><span class="line">conn = sqlite3.connect(<span class="string">'/companydata'</span>)</span><br><span class="line">cursor = conn.cursor()</span><br><span class="line">cursor.execute(<span class="string">'SELECT name, age, title, department, paygrade FROM employees'</span>)</span><br><span class="line"><span class="keyword">for</span> emp <span class="keyword">in</span> map(EmployeeRecord._make, cursor.fetchall()):</span><br><span class="line">    print(emp.name, emp.title)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>3.7버전 이후부터 <code>_source</code>속성이 사라지고, <code>namedtuple(NAME:str, FieldNames:iterable, defaults:iterable = None)</code> 초기값을 <code>kwargs['defaults']</code>로 설정 할 수 있다.</li>
+<li>namedtuple을 상속받고 <code>__slots__</code>를 구현한 클래스</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span><span class="params">(namedtuple<span class="params">(<span class="string">'Point'</span>, [<span class="string">'x'</span>, <span class="string">'y'</span>])</span>)</span>:</span></span><br><span class="line">    __slots__ = ()</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hypot</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> (self.x ** <span class="number">2</span> + self.y ** <span class="number">2</span>) ** <span class="number">0.5</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Point: x=%6.3f  y=%6.3f  hypot=%6.3f'</span> % (self.x, self.y, self.hypot)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>for p in Point(3, 4), Point(14, 5/7):</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    print(p)</span></span><br><span class="line"><span class="string">Point: x= 3.000  y= 4.000  hypot= 5.000</span></span><br><span class="line"><span class="string">Point: x=14.000  y= 0.714  hypot=14.018</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>위의 서브클래스는 <code>__slots__</code>를 빈 튜플로 정의한다. 이것은 <strong>Instacne dictionarie를 생성하는 것을 막도록 하여</strong> 메모리 요구사항을 낮게 돕는다.</p>
+</blockquote>
+<h3 id="namedtuples_hidden_methods"><a class="markdownIt-Anchor" href="#namedtuples_hidden_methods"></a> namedtuple’s_hidden_methods</h3>
+<ul>
+<li><code>somenamedtuple._()</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>t = [11,22]</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Point._make(t)</span></span><br><span class="line"><span class="string">OrderedDict([('x', 11), ('y', 22)])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>somenamedtuple._asdict()</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>p = Point(x=11, y=22)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>p._asdict()</span></span><br><span class="line"><span class="string">OrderedDict([('x', 11), ('y', 22)])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>somenamedtuple._replace(**kwargs)</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>p = Point(x=11, y=22)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>p._replace(x=33)</span></span><br><span class="line"><span class="string">Point(x=33, y=22)</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<h3 id="namedtuples_hidden_attributes"><a class="markdownIt-Anchor" href="#namedtuples_hidden_attributes"></a> namedtuples’_hidden_attributes</h3>
+<ul>
+<li><code>somenamedtuple._fields</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>p._fields</span></span><br><span class="line"><span class="string">('x', 'y')</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Color = namedtuple('Color', 'red green blue')</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Pixel = namedtuple('Pixel', Point._fields + Color._fields)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Pixel(11, 22, 128, 255, 0)</span></span><br><span class="line"><span class="string">Pixel(x=11, y=22, red=128, green=255, blue=0)</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>somenamedtuple._fields_defaults</code></li>
+</ul>
+<blockquote>
+<p>defaults가 뒤에서 부터 length에 맞춰서 처리</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Account = namedtuple('Account', ['type', 'balance'], defaults=[0])</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Account._field_defaults</span></span><br><span class="line"><span class="string">&#123;'balance': 0&#125;</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Account('premium')</span></span><br><span class="line"><span class="string">Account(type='premium', balance=0)</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<h2 id="counter"><a class="markdownIt-Anchor" href="#counter"></a> Counter</h2>
+<h3 id="counter_개요"><a class="markdownIt-Anchor" href="#counter_개요"></a> Counter_개요</h3>
+<p>카운터툴은 빠르고 편리한 합계를 위해 제공된다.</p>
+<ul>
+<li>Iterable한 객체의 값들의 개수를 세기위해서 사용한다.</li>
+<li>dict까지는 불필요 한데, Set이 중복의 수를 처리할 수 없어서 문제라면, Counter객체를 고려할만하다.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span># Tally occurrences of words in a list</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>cnt = Counter()</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>for word in ['red', 'blue', 'red', 'green', 'blue', 'blue']:</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    cnt[word] += 1</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>cnt</span></span><br><span class="line"><span class="string">Counter(&#123;'blue': 3, 'red': 2, 'green': 1&#125;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span># Find the ten most common words in Hamlet</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>import re</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>words = re.findall(r'\w+', open('hamlet.txt').read().lower())</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Counter(words).most_common(10)</span></span><br><span class="line"><span class="string">[('the', 1143), ('and', 966), ('to', 762), ('of', 669), ('i', 631),</span></span><br><span class="line"><span class="string"> ('you', 554),  ('a', 546), ('my', 514), ('hamlet', 471), ('in', 451)]</span></span><br><span class="line"><span class="string"> """</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>기존 객체나, ChainMap등에서는 update메서드가 키값에 값을 새롭게 초기화 하지만, Counter에서 update는 중복 시 기존값에 int값을 더한다.</p>
+</blockquote>
+<blockquote>
+<p>관련 메서드로는 기존값에서 가장 많은 것을 추출하거나, 요소를 그 수만큼 list로 나열하거나, 중복될 경우 수 만큼 빼거나 하는 기존 컨텍스트를 유지하는 기능들이 즐비하다.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># .most_common(i:int)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>Counter('abracadabra').most_common(3)  # doctest: +SKIP</span></span><br><span class="line"><span class="string">[('a', 5), ('r', 2), ('b', 2)]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># .subtract(c:Counter) # 없던 키값은 갱신(정수는 값을 줄이고 음수는 값을 늘린다.)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>c = Counter(a=4, b=2, c=0, d=-2)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>d = Counter(a=1, b=2, c=-3, d=4 ,e=3)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>c.subtract(d)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>c</span></span><br><span class="line"><span class="string">Counter(&#123;'a': 3, 'b': 0, 'c': 3, 'd': -6, 'e': 3&#125;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># .elements()</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>c = Counter(a=4, b=2, c=0, d=-2)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>sorted(c.elements())</span></span><br><span class="line"><span class="string">['a', 'a', 'a', 'a', 'b', 'b']</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<h2 id="userdict"><a class="markdownIt-Anchor" href="#userdict"></a> UserDict</h2>
+<h3 id="userdict_양상"><a class="markdownIt-Anchor" href="#userdict_양상"></a> UserDict_양상</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># UserDict([initialdata]:dict)</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>apples:UserDict = UserDict(&#123;'r': 1, 'g':2, 'y':3&#125;)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>apples.data:dict</span></span><br><span class="line"><span class="string">&#123;'r':1, 'g':2, 'y':3&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<p>이것은 단순히 dict객체를 래핑하고 있는 객체이고, 기본 dict 클래스를 상속받는다.<br>
+2.1버전까지는 직접 dict를 서브클래싱 하는 게 불가능했기 때문에, 현재로서는 moot print같은 존재이다.(고려 대상이 아니다.)</p>
+<h3 id="userlist_user_string"><a class="markdownIt-Anchor" href="#userlist_user_string"></a> UserList_User_String</h3>
+<p>동일하게 data를 통해 원본 객체에 접근이 가능하고, 기본적으로 래핑하고 있어서<br>
+서브클래싱을 도와주고 다른 타입으로 만들어주는? 것이라고 만 생각하면 좋다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/08/03/python/module/collections/" data-id="ckkdb52h2001r1pqky2likhwo" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-module/">python module</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/09/python/custom_module/error_handler/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          에러처리 Decorator과 logging, write to csv
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/07/03/python/custom_module/file_getter/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">file path getter</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

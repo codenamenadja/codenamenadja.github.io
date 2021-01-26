@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>TCP분석과 이해 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="TCP의 중요한 성질  Connected Oriented: 연결지향 Bidirectional Byte stream: 양방향성 바이트스트림(octet-stream) In-order delivery: 순차적인 전송 Reliability through ACK: ACK를 통한 안정성 Flow Control: 수신자의 receive window에 맞는 바이트 수 안">
+<meta name="keywords" content="network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP분석과 이해">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/06/19/computing/network/tcp_all_in_one/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="TCP의 중요한 성질  Connected Oriented: 연결지향 Bidirectional Byte stream: 양방향성 바이트스트림(octet-stream) In-order delivery: 순차적인 전송 Reliability through ACK: ACK를 통한 안정성 Flow Control: 수신자의 receive window에 맞는 바이트 수 안">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.071Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TCP분석과 이해">
+<meta name="twitter:description" content="TCP의 중요한 성질  Connected Oriented: 연결지향 Bidirectional Byte stream: 양방향성 바이트스트림(octet-stream) In-order delivery: 순차적인 전송 Reliability through ACK: ACK를 통한 안정성 Flow Control: 수신자의 receive window에 맞는 바이트 수 안">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-computing/network/tcp_all_in_one" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/19/computing/network/tcp_all_in_one/" class="article-date">
+  <time datetime="2019-06-19T09:34:26.000Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TCP분석과 이해
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TCP의 중요한 성질</p>
+<ol>
+<li>Connected Oriented: 연결지향</li>
+<li>Bidirectional Byte stream: 양방향성 바이트스트림(octet-stream)</li>
+<li>In-order delivery: 순차적인 전송</li>
+<li>Reliability through ACK: ACK를 통한 안정성</li>
+<li>Flow Control: 수신자의 receive window에 맞는 바이트 수 안쪽으로 데이터를 전송</li>
+<li><strong>Congestion control</strong> : 일방적으로 일대 다 통신을 강요받는 서버가 네트워크 정체를 방지하기 위해 congest해on window를 사용. 데이터양을 제한. TCP vegas등 알고리즘이 있다. Flow Control과 달리 송신자가 단독으로 구현.</li>
+</ol>
+<hr>
+<h2 id="1-데이터-전송"><a class="markdownIt-Anchor" href="#1-데이터-전송"></a> 1. 데이터 전송</h2>
+<p>스텍에는 여러 레이어가 있다.<br>
+그렇지만 크게, user영역, device영역으로 나눌 수 있다. 유저 영역과 커널영역의 작업은 CPU가 수행한다.</p>
+<ul>
+<li>유저영역+커널영역 = HOST</li>
+<li>Device영역 = NIC</li>
+</ul>
+<blockquote>
+<p>NIC로 인해 IO바운드한 소켓버퍼를 설계할 수 있고 싱글쓰레드의 비동기 처리는 이 장치에 기인한다.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Boundary</th>
+<th style="text-align:left">layer</th>
+<th style="text-align:left">description</th>
+<th style="text-align:right">packet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">User</td>
+<td style="text-align:left">App(process)</td>
+<td style="text-align:left">write(fd,buf,len)</td>
+<td style="text-align:right">data</td>
+</tr>
+<tr>
+<td style="text-align:left">Kernel</td>
+<td style="text-align:left">File</td>
+<td style="text-align:left">파일descritor을 갱신</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td style="text-align:left">Kernel</td>
+<td style="text-align:left">Sockets</td>
+<td style="text-align:left">버퍼객체를 소켓버퍼로 copy</td>
+<td style="text-align:right">sendsocketbuffer:[BYTE_DATA] (송수신용 버퍼에 맞게 저장된 바이트데이터)</td>
+</tr>
+<tr>
+<td style="text-align:left">Kernel</td>
+<td style="text-align:left">TCP</td>
+<td style="text-align:left">TCP상태와 checksum에 따라 TCP 계층을 구성</td>
+<td style="text-align:right">[TCP,B_data]:buffer</td>
+</tr>
+<tr>
+<td style="text-align:left">Kernel</td>
+<td style="text-align:left">IP</td>
+<td style="text-align:left">IP헤더추가, IP라우팅추가, 체크섬진행</td>
+<td style="text-align:right">[IP,TCP,B_data]</td>
+</tr>
+<tr>
+<td style="text-align:left">Kernel</td>
+<td style="text-align:left">Ethernet</td>
+<td style="text-align:left">ethernet 헤더를 붙이고, ARP실행(주소변환)</td>
+<td style="text-align:right">[Eth,IP,TCP,B_data]</td>
+</tr>
+<tr>
+<td style="text-align:left">Kernel</td>
+<td style="text-align:left">Driver</td>
+<td style="text-align:left">NIC에게 소켓을 보내라고 전달하는OS의 마지막 레벨</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td style="text-align:left">Device</td>
+<td style="text-align:left">NIC</td>
+<td style="text-align:left">호스트메모리에서 패킷을 받아 fetch한다. <strong><em>Interrupt the host when send is done</em></strong></td>
+<td style="text-align:right">[IFG,Pre,Eth,IP,TCP,payload]</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>CheckSum: 중복검사의 한 형태로, 오류정정을 통해, 전자통신이나 기억장치 속에서<br>
+송신된 자료의 무결성을 보호하는 단순한 방법이다.</p>
+</blockquote>
+<blockquote>
+<p>Linux나 UNIX를 비롯한 POSIX계열 운영체제는 소켓을 FD로 애플리케이션에 그 고유성을 노출한다.</p>
+</blockquote>
+<blockquote>
+<p>파일레이어가 단순한 검사후에, 커널소켓에 연결된 소켓구조체(프로그램레벨 소켓객체)를 사용하여, 소켓함수를 제공한다.</p>
+</blockquote>
+<blockquote>
+<p>커널 소켓은 두개의 버퍼를 가지고 있다. (send Socket Buffer, receice socket buffer) write시스템 콜을 호출하면 유저영역의 데이터가 커널 메모리로 복사된다. 이 다음으로 TCP를 호출한다.</p>
+</blockquote>
+<blockquote>
+<p>소켓과 연결된 TCP Control Block(TCB)가 있다. TCB를 다룬다.</p>
+</blockquote>
+<hr>
+<p>TCB에 있는 데이터,</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">TCB: [</span><br><span class="line">connection state(LISTEN, ESTABLISHED, TIME_WAIT등),  </span><br><span class="line">receive <span class="built_in">window</span>,  </span><br><span class="line">congestion <span class="built_in">window</span>,  </span><br><span class="line">sequence넘버,  </span><br><span class="line">재전송 타이머 등  </span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<hr>
+<ol>
+<li>
+<p>TCP상태가, 전송을 허용하면, TCPsegment. 즉, 패킷을 생성한다.</p>
+</li>
+<li>
+<p>이후 IP레이어를 거쳐 다음 HOP등에 대한 라우팅이나 헤더추가가 끝나면, NIC로 결국 내려가게 되는데,</p>
+</li>
+<li>
+<p>NIC는 패킷전송 요청을 OS레벨 드라이버에게서 받고, 메인 메모리에 있는 패킷을 <strong>자신의 메모리로 복사하고</strong> 네트워크 선으로 전송한다.</p>
+</li>
+<li>
+<p>놀라운 일이다. NIC는 독립적인 메모리를 가진 디바이스이다.</p>
+</li>
+</ol>
+<hr>
+<h2 id="2-nic"><a class="markdownIt-Anchor" href="#2-nic"></a> 2. NIC</h2>
+<blockquote>
+<p>매우 중요하다, 비동기 싱글쓰레드가 가능한건 순전히 이 부분의 힘이다.</p>
+</blockquote>
+<ul>
+<li>NIC가 패킷을 전송할 때 NIC는 호스트CPU에 interrupt를 발생시킨다. 모든 인터럽트에는 인터럽트 번호가 있으며,</li>
+<li>운영체제는 이 번호를 이용하여 이 인터럽트를 처리할 수 있는 적합한 드라이버를 찾는다.</li>
+<li>드라이버는 인터럽트 핸들러를 드라이버가 가동되었을 때 <strong>운영체제에</strong> 등록해둔다.</li>
+<li>운영체제가 핸들러를 호출하고, 핸들러는 전송된 패킷을 운영체제에 반환한다.</li>
+</ul>
+<hr>
+<h2 id="3-패킷-수신"><a class="markdownIt-Anchor" href="#3-패킷-수신"></a> 3. 패킷 수신</h2>
+<ul>
+<li>
+<p>NIC</p>
+<ol>
+<li>드라이버가 미리 할당해 놓은 메모리버퍼가 없으면 NIC가 패킷을 버릴 수 있다!</li>
+<li>패킷을 호스트 메모리로 전송한 후, NIC가 호스트 운영체제에 인터럽트를 보낸다.</li>
+</ol>
+</li>
+<li>
+<p>드라이버</p>
+<ol>
+<li>드라이버가 상위 레이어로 패킷을 전달하려면 운영체제가 이해할 수 있도록 운영체제 구조체를 포장해야한다.</li>
+</ol>
+<ul>
+<li>LINUX:sk_buff</li>
+<li>BSC:mbuf</li>
+<li>MS:NET_BUFFER_LIST</li>
+</ul>
+</li>
+<li>
+<p>Ethernet</p>
+<ol>
+<li>상위프로토콜인 네트워크 프로토콜을 찾는다. 이때 Ethernet헤더의 ethertype을 검사한다.</li>
+<li>IPv4의 ethertype은 0x0800이다. 헤더를 제거하고, IP레이어로 패킷을 전달한다.</li>
+</ol>
+</li>
+<li>
+<p>IP레이어</p>
+<ol>
+<li>IP헤더 체크섬을 확인한다. : 논리적으로 여기서 IP 라우팅을 해서 패킷을 로컬장비가 처리해야하는지 아니면 다른장비로 전달해야 하는지 판단한다.</li>
+<li>IP헤더의 proto값을 보고 찾는다. TCP proto값은 6이다. 헤더를 제거하고, TCP레이어로 패킷을 전달한다.</li>
+</ol>
+</li>
+<li>
+<p>TCP</p>
+<ol>
+<li>TCP체크섬을 확인하는데, 요즘 네트워크 스텍에는 checksum offload기술이 적용되어 있기 떄문에, 커널이 아니라 드라이버 NIC가 이 과정을 처리해준다.</li>
+<li>TCPcontrol block을 찾는다. 이때 패킷의 &lt;소스 IP, 소스 port, 타킷 IP, 타깃 port&gt;를 식별자로 사용한다.</li>
+<li>연결을 찾으면, 페이로드를 receive socket buffer에 추가한다.</li>
+<li>TCP상태에 따라 새로운 TCP패킷(ACK등)을 전송할 수 있다.</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>TCP가 Receivesocketbuffer로 잔달할때, 이 크기가 결국 receive window이다. 최신 네트워크 스텍은 윈도우 크기를 자동 조절하는 기능을 가지고 있다.</p>
+</blockquote>
+<ol>
+<li>마지막으로 애플리케이션이 read시스템 콜을 사용하면 버퍼에 있는 메모리를 유저공간의 메모리로 복사하고, 복사한 메모리는 제거한다.</li>
+<li>제거된 공간덕에 버퍼에 공간이 늘었기 때문에 윈도우 크기를 증가시킨다.</li>
+</ol>
+<p>소켓레이어에 sendbuffer[snd.UNA:아직 ACK를 받지 못한 데이터시퀸스 시작 넘버, snd.NXT:다음에 보낼 시퀸스 시작 넘버]</p>
+<ul>
+<li>상대방의 ACK와 합의된 window크기에 따라 맞춰서 보내준다.</li>
+</ul>
+<p>소켓레이어에 receivebuffer:[nxt:다음번에 받을 상대방의 시퀸스 넘버]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/19/computing/network/tcp_all_in_one/" data-id="ckkdb52gn001c1pqkcz5n8c1a" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">network</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/19/functional_programming/python/python_functional_programming/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          파이썬의 함수형 프로그래밍에 대한 서론 번역
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/19/computing/network/3_step_in_tcp/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">TCP의 3단계 절차</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

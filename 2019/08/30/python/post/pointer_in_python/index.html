@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>pointer in python 번역 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Pointer in python: What’s the point  번역, 정리글입니다.   index  Why Doesn’t Python have Pointers? Objects in Python Immutables vs Mutable objects Understading Variables  Variables in C Names in Python A No">
+<meta name="keywords" content="python,python post">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pointer in python 번역">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/08/30/python/post/pointer_in_python/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="Pointer in python: What’s the point  번역, 정리글입니다.   index  Why Doesn’t Python have Pointers? Objects in Python Immutables vs Mutable objects Understading Variables  Variables in C Names in Python A No">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pointer in python 번역">
+<meta name="twitter:description" content="Pointer in python: What’s the point  번역, 정리글입니다.   index  Why Doesn’t Python have Pointers? Objects in Python Immutables vs Mutable objects Understading Variables  Variables in C Names in Python A No">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/post/pointer_in_python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/30/python/post/pointer_in_python/" class="article-date">
+  <time datetime="2019-08-30T11:21:27.000Z" itemprop="datePublished">2019-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pointer in python 번역
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="pointer-in-python-whats-the-point"><a class="markdownIt-Anchor" href="#pointer-in-python-whats-the-point"></a> <a href="https://realpython.com/pointers-in-python/" target="_blank" rel="noopener">Pointer in python: What’s the point</a></h2>
+<blockquote>
+<p>번역, 정리글입니다.</p>
+</blockquote>
+<h2 id="index"><a class="markdownIt-Anchor" href="#index"></a> index</h2>
+<ol>
+<li><a href="#%EC%99%9C_%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%97%90%EB%8A%94_%ED%8F%AC%EC%9D%B8%ED%84%B0%EA%B0%80_%EC%97%86%EB%8A%94%EA%B0%80"><strong>Why Doesn’t Python have Pointers?</strong></a></li>
+<li><a href="#object_in_python"><strong>Objects in Python</strong></a></li>
+<li><a href="#mutable_vs_immutable"><strong>Immutables vs Mutable objects</strong></a></li>
+<li><a href="#understanding_variables"><strong>Understading Variables</strong></a>
+<ol>
+<li><strong>Variables in C</strong></li>
+<li><strong>Names in Python</strong></li>
+<li><strong>A Note on Intern Objects in Python</strong></li>
+</ol>
+</li>
+<li><a href="#simulating_pointers_in_python"><strong>Simulating Pointers in Python</strong></a>
+<ol>
+<li>[<strong>Using Mutable Types as Pointers</strong>]</li>
+<li>[<strong>Using Python Objects</strong>]</li>
+</ol>
+</li>
+<li><a href="#real_pointers_with_ctypes"><strong>Real Pointers With ctypes</strong></a></li>
+</ol>
+<h2 id="왜_파이썬에는_포인터가_없는가"><a class="markdownIt-Anchor" href="#왜_파이썬에는_포인터가_없는가"></a> 왜_파이썬에는_포인터가_없는가</h2>
+<p>포인터가 파이썬에서 네이티브하게 존재할 수 는 없을까? 잘은 모르지만 아마 가능할 것이다.<br>
+그러나 파이썬의 포인터는 <strong>Zen of Python</strong>에 위배되는 것처럼 보인다.</p>
+<blockquote>
+<p><strong>Zen of python</strong> / Cpython의 구현의 주요 기여자인 Tim peters의 20개 명언</p>
+<p>Beautiful is better than ugly.<br>
+Explicit is better than implicit.<br>
+Simple is better than complex.<br>
+Complex is better than complicated.<br>
+Flat is better than nested.<br>
+Sparse is better than dense.<br>
+Readability counts.<br>
+Special cases aren’t special enough to break the rules.<br>
+Although practicality beats purity.<br>
+Errors should never pass silently.<br>
+Unless explicitly silenced.<br>
+In the face of ambiguity, refuse the temptation to guess.<br>
+There should be one-- and preferably only one --obvious way to do it.<br>
+Although that way may not be obvious at first unless you’re Dutch.<br>
+Now is better than never.<br>
+Although never is often better than <em>right</em> now.<br>
+If the implementation is hard to explain, it’s a bad idea.<br>
+If the implementation is easy to explain, it may be a good idea.<br>
+Namespaces are one honking great idea – let’s do more of those!</p>
+</blockquote>
+<p>포인터는 명시적인 변화보다 내재적인 변화를 촉구한다.<br>
+때로, 그들은 단순하기보다 복잡하고(특히 초보자들에게,) 더욱 나쁜것은,<br>
+그들은 당신이 직접 하기를 원하고, 또는 메모리에 접근하기 때문에 매우 위험할 수 있다.</p>
+<p>파이썬은 메모리 주소 같은 디테일의 구현을 추상화하려한다.<br>
+파이썬은 때로 속도보다 사용감에 집중한다.<br>
+결과적으로 파이썬에서 포인터는 말이 되지 않는다.<br>
+그러나 파이썬은 결과적으로 포인터를 사용하는데 있어서의 이점을 준다.</p>
+<p>파이썬의 포인터를 이해하는 것은 파이썬 구현부의 디테일을 돌아볼 필요가 있다.</p>
+<ol>
+<li>Immutable vs Mutable objects</li>
+<li>Python variables/names<br>
+를 이해할 필요가 있다.</li>
+</ol>
+<h2 id="object_in_python"><a class="markdownIt-Anchor" href="#object_in_python"></a> Object_in_Python</h2>
+<p>파이썬의 모든 자료구조는 기본 object를 상속받는 인스턴스 클래스들이다.<br>
+각 객체는 3개의 데이터를 최소한 포함한다.</p>
+<ul>
+<li>Reference count</li>
+<li>Type</li>
+<li>Value<br>
+레퍼런스 카운트는 메모리 관리를 위한 것이고, 파이썬의 메모리 관리를 이해하고 싶다면,<br>
+<a href="https://realpython.com/python-memory-management/" target="_blank" rel="noopener">Memory Management in Python</a>를 읽어보면 좋다.</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>Python object</strong></p>
+<p><code>PyObject</code>라고 불리는 구조체가 있다. 모든 Cpython의 객체가 사용하는 것이다.<br>
+<code>PyObject</code>는 모든 객체의 부모이며, 아래의 2요소를 포함한다.</p>
+<ul>
+<li><code>ob_refcnt</code>: 레퍼런스 카운트</li>
+<li><code>ob_type</code>: 어떤 타입에 관한 포인터</li>
+</ul>
+<p>각 객체는 그들 각자의 object-specific memory allocator을 가지고 있다.<br>
+그것은 그들 객체를 위한 메모리를 가져온다.<br>
+각 객체는 또한 object-specific memory deallocator을 가지고 있다.<br>
+그것은 그들의 객체들이 refcount에 따라 메모리를 <code>free</code>한다.</p>
+<p>그러나 메모리를 할당하고 해제하는 것에 있어서, 중요한 요소가 있다.<br>
+메모리는 컴퓨터의 공유자원이며, 두 개의 프로세스가 동시 접근하려고 하면 문제가 생긴다는 것이다.</p>
+<p>GIL은 공유자원 Race Condition에 대한 해결책중 하나이다.</p>
+<hr>
+<blockquote>
+<p><a href="https://realpython.com/python-gil/" target="_blank" rel="noopener"><strong>GIL</strong></a></p>
+<p>GIL은 짧게 말해서 mutex이며, 하나의 쓰래드 만이 파이썬 인터프리터를 제어할 수 있도록 한다.</p>
+<p>이 말은, 하나의 쓰레드만이 실행부의 상태에 있을 수 있다는 것이다.<br>
+GIL의 부하는 싱글쓰레드 프로그램을 하는 사람들에게는 나타나지 않는다.<br>
+이것은 CPU-bound한 문제, 멀티쓰레딩 코드 에서 bottleneck이 될 수 있는 것이다.</p>
+<p><strong>GIL이 파이썬의 어떤 문제를 해결해 주는가?</strong></p>
+<p>파이썬은 메모리 관리를 위해 refcount를 사용한다. 그것은 파이썬에서 생성된 objects 구조체가 refcount변수를 가지고 있고 추적되고 있다는 것을 의미한다.<br>
+이것이 0이 되었을 때, 해당 객체가 점유하는 메모리는 해제된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; &gt; <span class="keyword">import</span> sys</span><br><span class="line">&gt; &gt; a = []</span><br><span class="line">&gt; &gt; b = a</span><br><span class="line">&gt; &gt; sys.getrefcount(a)</span><br><span class="line">&gt; &gt; <span class="comment">#3</span></span><br><span class="line">&gt; &gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>a에 처음 할당된 메모리 주소에 대해서 a,b가 참조하고, sys.getrefcount에 전달된 argument가 순간적으로 참조하고 해제된다. 그래서 3이 나온다.<br>
+GIL로 돌아가서,</p>
+<p>문제는 Refcount변수가 race-condition에서 보호받아야 한다는 것이다.<br>
+만약 2개의 쓰레드가 동시에 그 수치를 늘리거나 줄이면,<br>
+메모리 누수를 초래해서, 절때 해제되지 않거나, 원치 않게 해제된다는 것이다.</p>
+<p>이 refcount변수는 locks를 더함으로 안전하게 보관되어,<br>
+쓰레드에 의해 공유되는 모든 자료구조가 일관적이지 않게 수정되는 것을 막는다.<br>
+하지만 각 객체에 lock을 더하는 것은 너무 많은 lock이 존재하여 다른 문제를 발생 시킬 수 있다는 것을 의미한다.</p>
+<p><code>Deadlocks</code> (데드락은 하나이상의 락이 있을 때 생길 수 있다.)<br>
+특정 자원에 2쓰레드 혹은 프로세스가 순차적으로 접근하려고 하면, 두번째 쓰레드는 첫번째 쓰레드가 락을 해제할 때까지 끝없이 기다리게 된다.</p>
+<p>다른 문제로는 락을 반복적으로 생성하고 해제하는 것으로 인한 퍼포먼스 저하가 있다.<br>
+GIL은 인터프리터에 대한 단일 lock을 의미하며,<br>
+GIL은 바이트코드를 실행하려면 인터프리터 잠금을 획득해야 한다는 규칙을 추가한다.<br>
+이것이 deadlocks를 방지하고, 그렇게 많은 퍼포먼스를 요구하지 않도록 한다.(성능적 오버헤드를 방지)<br>
+하지만 Cpu-bound한 파이썬 프로그램을 싱글쓰레드로 효과적으로 만들어 버린다.</p>
+<p>하지만 Refcount와 GC를 이용한 GIL을 사용하지 않는 경우도 있다<br>
+반면에 그것을 그러한 언어들이 때로 GIL이 효과적으로 싱글 쓰레드에 대해서 퍼포먼스 이점을 주는 것을<br>
+다른 보상으로 채워야 한다는 것을 의마한다, 예를 들면 JIT컴파일러 같은 것을 통해서.</p>
+<hr>
+<p><strong>왜 GIL이 해결책으로 선택 되었는가?</strong></p>
+<p><a href="https://www.youtube.com/watch?v=KVKufdTphKs&amp;feature=youtu.be&amp;t=12m11s" target="_blank" rel="noopener"><strong>Larry Hastings</strong></a>의 말에 따르면, GIL을 선택한 것은 파이썬을 오늘날 만큼 유명하게 만든 하나의 이유라고 한다.<br>
+파이썬은 OS가 쓰레드의 개념이 없을때 생겨 났다.<br>
+파이썬은 쉽게 사용될 수 있고 빠르게 개발할 수 있도록 만들어 졌다.</p>
+<p>이후 파이썬의 일관적이지 않은 변화를 예방하기 위해서, 이 파이썬을 지탱하는 C라이브러리는,<br>
+Thread-safe 메모리 관리를 필요로 했고, 그래서 GIL이 생겨 났다.<br>
+GIL은 실행하기 쉽고 파이썬에 쉽게 더해졌다.<br>
+이것은 싱글 쓰레드 상에서 하나의 락만이 관리되야한다는 점에 의해 퍼포먼스 향상을 가져왔다.<br>
+쓰레드세이프 하지 않은 C라이브러리 들은 더욱 통합하기 쉬워졌다.<br>
+그렇게 통합된 C라이브러리들이 파이썬이 여러 커뮤니티에서 손쉽게 적용될 수 있었던 이유이기도 하다.</p>
+<p>니가 볼 수 있듯이, GIL은 Cpython개발자들이 초기 파이썬에서 복잡한 문제를 빠르게 해결할 수 있는 방법이었다.</p>
+<hr>
+<p><strong>왜 GIL은 아직 사라지 않았는가?</strong></p>
+<p>GIL은 명백하게 사라질 수 있고, 그런 시도들이 많았으나, 그러한 시도들은 GIL이 주는 해결책에 의존하는 C-extensions를 망가뜨렸다.<br>
+물론, GIL을 대체하는 해결책도 있지만, 하지만 그들의 일부는 싱글쓰레드, 멀티쓰레드/IO바운드 프로그램에 성능을 떨어뜨렸고,<br>
+일부는 너무 어려웠다.<br>
+어찌됐든, 지금 존재하는 파이썬 프로그램이 새로운 버전이 나옴으로 더 느려지는 바라는 사람은 없지 않은가?</p>
+<p>귀도 반 로썸이 <a href="https://www.artima.com/weblogs/viewpost.jsp?thread=214235" target="_blank" rel="noopener">It isn’t Easy to Remove the GIL</a>의 포스트로 2007년에 해명을 했다.</p>
+<blockquote>
+<p>“나는 Py3k에 대한 패치들을 환영할 것이다. 만약! <strong>퍼포먼스가 떨어지지 않는다면.</strong>”</p>
+</blockquote>
+</blockquote>
+<hr>
+<p><strong>Garbage Collection</strong></p>
+<p>파이썬의 모든 구조체에는 Refcount라는 것이 있고 아래와 같은 경우들에 증가한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">&gt; more_numbers = numbers</span><br><span class="line">&gt; <span class="comment"># refcount = 2</span></span><br><span class="line">&gt; total = sum(numbers) <span class="comment"># refcount = 3</span></span><br><span class="line">&gt; <span class="comment"># refcount = 2</span></span><br><span class="line">&gt; matrix = [numbers, numbers]</span><br><span class="line">&gt; <span class="comment"># refcount = 4</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>파이썬은 현재 오브젝트의 러퍼런스 카운트를 sys모듈을 통해서 확인 할 수 있게 해준다. <code>sys.getrefcount(object)</code><br>
+그렇지만 deallocate기능을 사용하게 되면, 어떻게 메모리가 <code>free</code>되는가? 어떻게 객체가 그 과정을 거치는가?</p>
+<hr>
+<p><strong>Cpython의 메모리 관리자</strong></p>
+<p>위에서 말했듯, 하드웨어에서 Cpython으로 이어지는 추상화 계층이 있다.<br>
+OS는 실제 물리메모리를 추상화 하고 가상메모리 계층을 만들어 어플리케이션이 접촉할 수 있도록 한다.</p>
+<p>OS에 따른 메모리 관리자들은 파이썬 프로세스를 위한 메모리 청크를 조각해낸다.<br>
+파이썬은 일단 운영체제에 malloc함수로 메모리할당을 요구한 다는 것을 알아야한다.</p>
+<p>파이썬 프로세스는 내부적인 사용을 위한 메모리공간과 비객체적인 메모리를 위한 공간을 사용한다.<br>
+마지막 공간은 object storage를 위해 사용된다.(<code>int, dict, and elses</code>)<br>
+메모리 관리의 구현부인 <a href="https://github.com/python/cpython/blob/7d6ddb96b34b94c1cbdf95baa94492c48426404e/Objects/obmalloc.c" target="_blank" rel="noopener">Cpython source</a>를 참고해도 좋다.</p>
+<p>객체 메모리 공간에 파이썬은 object allocator을 두고 있다. 그것이 대부분의 기능이 이루어 지는 곳이다.<br>
+흔한 경우로, <code>list</code>나 <code>int</code>같은 파이썬 객체를 생성하거나 삭제하는 것은 그렇게 많은 데이터를 필요로 하지 않는다.<br>
+따라서, 메모리 할당자는 작은 양의 데이터 많으로 잘 작동하도록 되어 있다.<br>
+그리고 그것은 실제로 그 객체가 필요해지기 전까지 메모리에 할당하지 않으려고 한다.</p>
+<p>위에 <code>Cpython source</code>구현부에서는, 객체 할당자를<br>
+“작은 블록을 위한 빠르고, 특별한 용도를 위한 메모리 할당자이다. 그리고 일반적인 목적의 <code>malloc</code>위에서 실행된다.”<br>
+라고 설명한다.</p>
+<p>이제 Cpython의 메모리 할당 전략에 대해 살펴볼 것 이다.<br>
+<code>Arenas</code>는 페이지 범위내에서 가장 크고 정렬된 단위이다.<br>
+페이지 영역은 고정된 길이의 연속적인 메모리 청크라고 할 수 있다.(실제 주소가 달라도, 가상주소상으론 연속적인 주소 그리고 실제주소는 랜덤 엑세스가 가능하기 때문에,)<br>
+파이썬은 시스템의 페이지 사이즈를 256kb정도 라고 가정한다.(내 컴퓨터 페이지 사이즈는 4kb이다)</p>
+<p><code>Arenas</code>내부에는 <code>pools</code>가 있고, 그것은 하나의 가상 메모리 페이지이다.<br>
+그리고 풀은 실제로 동적 할당으로서 작은 메모리 사이즈로 조각난다.<br>
+풀 내부에 모든 블록은 동일한 <code>size class</code>이다.<br>
+<code>size class</code>는 특정 블록 사이즈를 정의하고, 요청한 정보가 들어간다.<br>
+아래 차트는 소스코드에서 직접 가져온 커멘트이다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Request in bytes</th>
+<th style="text-align:center">Size of allocated block</th>
+<th style="text-align:center">Size class Index</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1-8</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">9-16</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">17-24</td>
+<td style="text-align:center">24</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">25-32</td>
+<td style="text-align:center">32</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">.</td>
+</tr>
+<tr>
+<td style="text-align:center">505-512</td>
+<td style="text-align:center">512</td>
+<td style="text-align:center">63</td>
+</tr>
+</tbody>
+</table>
+<p>예를 들어 42바이트의 데이터가 요청되었다면, 데이터는 48-byte블록까지 차지하게 될 것이다.</p>
+<hr>
+<p><strong>Pools</strong></p>
+<p>Pools는 단일 size class로부터 조합된 블록들로 구성된다.<br>
+각 풀은 double-linked list로 같은 size class로 구성된 다른 풀들로 연결되어 있다. 그런 방식에서 볼 때,<br>
+더블링크드리스트를 통한 알고리즘은 쉽게 블록사이즈 만큼 요구된 공간을 다른 풀들 사이에서 찾을 수 있는 것이다.</p>
+<p>사용된 Pool들의 리스트는 할당가능한 블록들이 남아있는 모든 풀들을 추적한다.<br>
+어떤 블록 사이즈가 요구되면, 알고리즘이 <code>usedpools</code>리스트를 확인하여, 블록사이즈가 할당 가능한 pool list를 반환한다.<br>
+Pool들은 각자 3가지 상태가 존재한다.</p>
+<ul>
+<li>used: 저장가능한 <code>avaliable blocks</code>를 지님.</li>
+<li>full: 모든 블록들에 데이터가 할당되었음.</li>
+<li>empty: 아무런 데이터가 없고, 언제든 어떤 사이즈의 블록들도 할당 할 수 있다.</li>
+</ul>
+<p><code>freepools</code>리스트가 비어있는 상태의 풀들의 리스트를 추적한다. 그러면 언제 비어있는 풀은 사용되는 가?<br>
+네가 8byte의 청크 메모리를 할당해야 한다고 치자.<br>
+만약 거기에 8바이트를 할당 할 수 있는 <code>usedpools</code>가 없다면, 새로운 <code>empty pool</code>애 8바이트가 초기화 될 것이다.<br>
+이 새로운 <code>pool</code>은 <code>usedpools</code>리스트로 더해지고, 이것은 이후에 올 요청의 첫 대상이 된다.<br>
+마찬가지로 <code>full</code>상태인 <code>pool</code>이 일부 블록을 해제한다면, <code>usedpools</code>리스트로 옮겨진다.</p>
+<hr>
+<p><strong>Blocks</strong></p>
+<p>아까 블록에 실제로 데이터가 할당 되는 것은 해당 블록의 데이터가 실제로 필요해질 떄 그럴 것이라고 했었다.<br>
+그러한 이유로 blocks도 3가지 상태를 가진다.</p>
+<ul>
+<li>untoched: 아직 할당 되지 않은 메모리블록.</li>
+<li>free: 데이터가 할당된 블록이나, Cpython에 의해서 <code>free</code>되어서 현재 유효한 데이터가 들어있지 않은 블록.</li>
+<li>allocatd: 실제로 데이터를 가지고 있는 블록.</li>
+</ul>
+<p><code>freeblock</code> 포인터는 single linked list인 비어있는 메모리 블록의 list를 가르킨다.<br>
+더 많은 길이의 블록이 필요하면, 메모리 할당자는 해당 풀 안에 <code>untouched</code>블록을 더해서 돌려줄 것이다.<br>
+할당되어 있던 블록(allocated)가 해제되어 free상태가 되면,<br>
+single linked list인 Free block list의 head로 오게 된다.</p>
+<hr>
+<p><strong>Arenas</strong></p>
+<p>아레나들은 pools를 포함한다. pools와 blocks는 3가지 상태가 있었던 반면, 아레나들은 명시적인 상태가 없다.<br>
+아레나들은 반면에 <code>usable_arenas</code>라 불리는 Double linked list로 구성 및 조직된다.<br>
+이 리스트는 freepools를 얼마 가지고 있냐에 따라 정렬된다.<br>
+freepools가 적을수록 해당 아레나는 리스트의 head쪽으로 오게 된다.</p>
+<p>그런데 왜 가장 사용가능한 데이터가 많은 arena가 아니라 그 반대인가? 그곳에 메모리해제의 개념이 있다.<br>
+block이 free하게 전환되면, 그 메모리는 실제로 OS에게로 돌아가는 게 아니라,<br>
+파이썬 프로세스가 그 공간을 계속 점유하고, 다음 데이터를 위해 사용할 것이다.<br>
+실제로 메모리를 해제한다면 OS에게 돌려주는 것을 의미한다.</p>
+<p>아레나야 말로 유일하게 정말 해제될 수 있는 메모리이다.<br>
+따라서, 가장 많이 비어있는 데이터가 가장 쉽게 empty arena가 될 수 있도록 그러한 것이다.<br>
+그 방식에서 메모리의 청크는 실제로 해제되고, 파이썬 프로세스의 점유나 감시에서 벗어날 수 있도록 돕는 것이다.</p>
+</blockquote>
+<p>type은 Cpython계층에서 타입안전성을 런타임에서 보장할 때 사용된다.<br>
+마지막으로 value가 실제로 object와 관련된 페이로드를 말한다.</p>
+<p>모든 객체가 동일한 객체는 아니나, 그런 단순한 사실 외에도 당신이 꼭 알아야할 더 중요할 구분이 있다.<br>
+<strong>mutable vs immutable</strong>객체 이다. 이 두 타입의 객체의 차이를 이해하는 것은, 파이썬의 포인터의 초반부를 이해하는데 굉장히 도움이 된다.</p>
+<hr>
+<h2 id="mutable_vs_immutable"><a class="markdownIt-Anchor" href="#mutable_vs_immutable"></a> mutable_vs_immutable</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">type</th>
+<th style="text-align:center">immutable?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">int</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center">float</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center">complex</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center">tuple</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center">frozenset</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center">str</td>
+<td style="text-align:center">Yes</td>
+</tr>
+<tr>
+<td style="text-align:center">list</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center">set</td>
+<td style="text-align:center">No</td>
+</tr>
+<tr>
+<td style="text-align:center">dict</td>
+<td style="text-align:center">No</td>
+</tr>
+</tbody>
+</table>
+<p>위에 보이듯 대부분 사용되는 원시타입들은 immutable하다. 아래 기능을 사용하여 그것을 검증할 수 있다.</p>
+<ol>
+<li><code>id()</code>: object’s memory address를 반환</li>
+<li><code>is</code>: 두 개체가 동일한 메모리 주소를 가지고 있다면 True를 반환.</li>
+</ol>
+<h2 id="understanding_variables"><a class="markdownIt-Anchor" href="#understanding_variables"></a> Understanding_Variables</h2>
+<p>파이썬의 변수는 구조적으로 C, C++과 다르다. 사실, 파이썬은 변수가 존재 하지 않고, <code>names</code>가 존재한다.<br>
+이것은 현학적으로 보일 수 있다. 대부분의 경우에 파이썬의 names를 변수로 이해하는 경우가 많다. 그러나 차이를 아는 것은 중요하다.<br>
+C에서 변수와 파이썬의 name을 대조하는 것으로 이해하자.</p>
+<ul>
+<li>C</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">2337</span>;</span><br><span class="line"><span class="comment">// x.Location = 0x7f1</span></span><br><span class="line"><span class="comment">// x.value = 2337</span></span><br><span class="line"></span><br><span class="line">x = <span class="number">2338</span>;</span><br><span class="line"><span class="comment">// x.Location = 0x7f1</span></span><br><span class="line"><span class="comment">// x.value = 2338</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> y = x;</span><br><span class="line"><span class="comment">// y.Location = 0x7f5</span></span><br><span class="line"><span class="comment">// y.value = 2338</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Python</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">2337</span></span><br><span class="line">x = <span class="number">2338</span></span><br><span class="line">y = x</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Create PyObject</li>
+<li>set The typecode to integer to PyObject</li>
+<li>Set the value to 2337 for the PyObject</li>
+<li>Create a name called x</li>
+<li>Point x to the new PyObject</li>
+<li>Increase the refcount of the PyObject by 1</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">name</th>
+<th style="text-align:center">PyObject-Type</th>
+<th style="text-align:center">PyObject-Value</th>
+<th style="text-align:center">PyObject_RefCount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">x</td>
+<td style="text-align:center">integer</td>
+<td style="text-align:center">2337</td>
+<td style="text-align:center">1-&gt;0()</td>
+</tr>
+<tr>
+<td style="text-align:center">x</td>
+<td style="text-align:center">integer</td>
+<td style="text-align:center">2338</td>
+<td style="text-align:center">0-&gt;1</td>
+</tr>
+<tr>
+<td style="text-align:center">y</td>
+<td style="text-align:center">integer</td>
+<td style="text-align:center">2338</td>
+<td style="text-align:center">1-&gt;2</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>y is x</span></span><br><span class="line"><span class="string">True</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>파이썬에서 너는 변수에 값을 할당하는 것이 아니라, 이름을 Pyobject_레퍼런스에 할당하는 것이다.</p>
+</blockquote>
+<h3 id="a_note_on_intern_objects_in_python"><a class="markdownIt-Anchor" href="#a_note_on_intern_objects_in_python"></a> A_Note_on_Intern_objects_in_python</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>x = 1000</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>y = 1000</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>x is y</span></span><br><span class="line"><span class="string">True</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>x = 1000</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>y = 499 + 501</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>x is y</span></span><br><span class="line"><span class="string">False</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>Create PyObject(1000)</li>
+<li>Assign the name <code>x</code> to that object</li>
+<li>Create PyObject(499)</li>
+<li>Create PyObject(501)</li>
+<li>Add these two Objects</li>
+<li>Create new PyObject(1000)</li>
+<li>Assign the name <code>y</code> to that object</li>
+</ol>
+<blockquote>
+<p>위에 과정은 REPL에서만 위처럼 동작한다.<br>
+만약 파일로서 만들고 실행하면, <code>x is y</code>라는 것은 True가 나올 것이다.</p>
+<p>이것은 CPython컴파일러가 영리하게 처리하기 때문에 그렇다.<br>
+Cpython컴파일러의 Optimizations를 <code>peephole optimizations</code>으로 수행하려 하는데,<br>
+실행부를 최대한 줄이려고 하는 것이다.<br>
+<a href="https://github.com/python/cpython/blob/master/Python/peephole.c" target="_blank" rel="noopener">SourceCode on peephole.c</a>를 확인가능하다.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>x = 20</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>y = 19 + 1</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>x is y</span></span><br><span class="line"><span class="string">True</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<p>위의 결과가 위의 결과가 다른 이유는 파이썬의 이미 존재하는 객체를 재사용 하는 특성 때문이다.(interned object)<br>
+파이썬은 일부의 셋의 객체를 실행할 떄 미리 만들고, global namespace에 저장해놓고 사용한다.</p>
+<p>CPython 3.7에 따르면 Interned Object는 아래를 따른다.</p>
+<ol>
+<li>integer numbers between -5 and 256</li>
+<li>String taht contains ASCII letters , digits, or underscores only</li>
+</ol>
+<p>위의 범위에 포함되는 값들의 타입을 생성하면, 내제되있는 미리 생성된 global namespace에 존재하는 것을 레퍼런싱 하도록 한다.<br>
+그것은 물론 Cpython based 3.7이상이라면, 프로세스가 종료될 때까지 유효하다.<br>
+이를 통해서 작은 값들은 미리 존재하는 것들을 사용해서(자주 사용될 것으로 예상되는 범위의 것들을) 메모리 할당을 줄인다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>s1 = "realpython"</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>s2 = "realpython"</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>s1 is s2</span></span><br><span class="line"><span class="string">True</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>s1 = "Real Python!"</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>s2 = "Real Python!"</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>s1 is s2</span></span><br><span class="line"><span class="string">False</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>import sys</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>sys.intern(s2)</span></span><br><span class="line"><span class="string">"Real Python"</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<p>위의경우는 <code>!</code>(exclumation mark)때문에 생기는 현상이다.<br>
+이 문자열은 내부 저장된 값이 아닌 것을 사용하기 때문에, 완전히 새로운 Pyobject를 생성하는 것이다.</p>
+<hr>
+<h2 id="simulating_pointers_in_python"><a class="markdownIt-Anchor" href="#simulating_pointers_in_python"></a> simulating_pointers_in_python</h2>
+<p>파이썬에 포인터가 구현되어 있지 않다고 해서, 포인터를 사용하는 것에서 이점을 얻을 수 없다는 것은 아니다.<br>
+사실 포인터를 흉내낼 수 있는 여러 방법이 있다.</p>
+<ol>
+<li>Using mutable types as pointers</li>
+<li>Using custom Python objects</li>
+</ol>
+<h3 id="using_mutable_types_as_pointers"><a class="markdownIt-Anchor" href="#using_mutable_types_as_pointers"></a> using_mutable_types_as_pointers</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mutable인 List 사용해서 흉내</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>def add_one(x):</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>    x[0] += 1</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>#</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>y = [2337]</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>add_one(y)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>y[0]</span></span><br><span class="line"><span class="string">2338</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="comment"># mutable인 dict 사용해서 흉내</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>counters = &#123;"func_calls": 0&#125;</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>def bar():</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>    counters["func_calls"] += 1</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>#</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>def foo():</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>    counters["func_calls"] += 1</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>    bar()</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>#</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>foo()</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>counters["func_calls"]</span></span><br><span class="line"><span class="string">2</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>이것은 C나 C<ins>의 실제 포인터가 아니라, 흉내내는 것이기 때문에,<br>
+논법적으로 봤을때, 이 행동으로 조정하는 것은<br>
+C나 C</ins>의 포인터를 다루는 것보다 훨씬 비용이 비싸다.</p>
+</blockquote>
+<h3 id="using_python_objects"><a class="markdownIt-Anchor" href="#using_python_objects"></a> using_python_objects</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Metrics</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._metrics = &#123;</span><br><span class="line">            <span class="string">"func_calls"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">"cat_pictures_served"</span>: <span class="number">0</span>,</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func_calls</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._metrics[<span class="string">"func_calls"</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cat_pictures_served</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._metrics[<span class="string">"cat_pictures_served"</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inc_func_calls</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._metrics[<span class="string">"func_calls"</span>] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inc_cat_pics</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._metrics[<span class="string">"cat_pictures_served"</span>] += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>func_calls</code>나 <code>cat_pictures_served</code>속성자를 통해서 포인터처럼 접근 할 수 있지만,<br>
+이것 또한 그저 흉내이고, 이것은 자주 변경되는 것을 처리할 때 유용한 방식이다.</p>
+</blockquote>
+<hr>
+<h2 id="real_pointers_with_ctypes"><a class="markdownIt-Anchor" href="#real_pointers_with_ctypes"></a> real_pointers_with_ctypes</h2>
+<p><code>ctypes</code>모듈을 사용하면 Cpython에서 포인터를 사용할 수 있다.<br>
+<a href="https://dbader.org/blog/python-ctypes-tutorial" target="_blank" rel="noopener">ctypes</a>에 대해서 사용법이 궁금하다면 이 포스트가 도움이 될 것이다.</p>
+<ol>
+<li>
+<p>c함수 파일</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_one</span><span class="params">(<span class="keyword">int</span> *x)</span> </span>&#123;</span><br><span class="line">    *x += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>컴파일</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -c -Wall -Werror -fpic add.c</span><br><span class="line">gcc -shared -o libadd1.so add.o</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>python에서 사용</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line">add_lib = ctypes.CDLL(<span class="string">"..libadd1.so"</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>add_lib.add_one</span></span><br><span class="line"><span class="string">&lt;_FuncPtr object at 0x7f9f3b8852a0&gt;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">add_one = add_lib.add_one</span><br><span class="line">add_one.argtypes = [ctypes.POINTER(ctypes.c_int)]</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>add_one(1)</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File "&lt;stdin&gt;", line 1, in &lt;module&gt;</span></span><br><span class="line"><span class="string">ctypes.ArgumentError: argument 1: &lt;class 'TypeError'&gt;: \</span></span><br><span class="line"><span class="string">expected LP_c_int instance instead of int</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">x = ctypes.c_int()</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>x</span></span><br><span class="line"><span class="string">c_int(0)</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>add_one(ctypes.byref(x))</span></span><br><span class="line"><span class="string">998793640</span></span><br><span class="line"><span class="string"><span class="meta">&gt;&gt;&gt; </span>x</span></span><br><span class="line"><span class="string">c_int(1)</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/08/30/python/post/pointer_in_python/" data-id="ckkdb52hv002u1pqks99nb6fb" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-post/">python post</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/09/05/python/post/async_coroutine_5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          비동기 코루틴 번역-5-End
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/27/c/io_functions_advanced/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">소켓과 스트림을 이해하기 위한 고급 IO함수</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

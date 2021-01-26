@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>비동기 코루틴 번역-4 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="제너레이터로_코루틴_구성하기 우리의 코루틴들은 Asyncio라이브러리 등으로 단순화 될 것이다. 우리는 generator, future, yield from을 사용할 것이다. 123456789101112class Future:    def __init__(self):        self.result = None        self._callbacks">
+<meta name="keywords" content="python,python post">
+<meta property="og:type" content="article">
+<meta property="og:title" content="비동기 코루틴 번역-4">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/06/19/python/post/async_coroutine_4/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="제너레이터로_코루틴_구성하기 우리의 코루틴들은 Asyncio라이브러리 등으로 단순화 될 것이다. 우리는 generator, future, yield from을 사용할 것이다. 123456789101112class Future:    def __init__(self):        self.result = None        self._callbacks">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.083Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="비동기 코루틴 번역-4">
+<meta name="twitter:description" content="제너레이터로_코루틴_구성하기 우리의 코루틴들은 Asyncio라이브러리 등으로 단순화 될 것이다. 우리는 generator, future, yield from을 사용할 것이다. 123456789101112class Future:    def __init__(self):        self.result = None        self._callbacks">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/post/async_coroutine_4" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/19/python/post/async_coroutine_4/" class="article-date">
+  <time datetime="2019-06-19T09:11:02.000Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      비동기 코루틴 번역-4
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="제너레이터로_코루틴_구성하기"><a class="markdownIt-Anchor" href="#제너레이터로_코루틴_구성하기"></a> 제너레이터로_코루틴_구성하기</h2>
+<p>우리의 코루틴들은 <code>Asyncio</code>라이브러리 등으로 단순화 될 것이다.<br>
+우리는 <code>generator</code>, <code>future</code>, <code>yield from</code>을 사용할 것이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Future</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.result = <span class="literal">None</span></span><br><span class="line">        self._callbacks = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_done_callback</span><span class="params">(self,fn)</span>:</span></span><br><span class="line">        self._callbacks.append(fn)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_result</span><span class="params">(self,result)</span>:</span></span><br><span class="line">        self.result = result</span><br><span class="line">        <span class="keyword">for</span> fn <span class="keyword">in</span> self._callbacks:</span><br><span class="line">            fn(self)</span><br></pre></td></tr></table></figure>
+<p>위의 future은 원천적으로 <code>pending</code>상태이다. 그리고 <code>set_result</code>를 통해서 <code>resolved</code>된다.<br>
+fetcher에 futures와 코루틴을 적용해 보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fetcher</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.sock = socket.socket()</span><br><span class="line">        self.sock.setblocking(<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            self.sock.connect(&#123;<span class="string">"xkcd.com"</span>, <span class="number">80</span>&#125;)</span><br><span class="line">        <span class="keyword">except</span> BlockingIOError:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        selector.register(self.sock.fileno(),</span><br><span class="line">        EVENT_WRITE,</span><br><span class="line">        self.connected</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">connected</span><span class="params">(self, key, mask)</span>:</span></span><br><span class="line">        print(<span class="string">"connected!"</span>)</span><br></pre></td></tr></table></figure>
+<p><code>fetch</code> 메서드는 소켓연결을 시도하고, 콜백을 등록한다.<br>
+그 콜백은 소켓이 준비되었을때, 실행될 것이다.<br>
+우리는 이 두 단계를 하나의 코루틴으로 조합할 것이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self)</span>:</span></span><br><span class="line">    sock = socket.socket()</span><br><span class="line">    sock.setblocking(<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        sock.connect(&#123;<span class="string">"xkcd.com"</span>, <span class="number">80</span>&#125;)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    f = Future()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_connected</span><span class="params">()</span>:</span></span><br><span class="line">        f.set_result(<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">    selector.register(</span><br><span class="line">        sock.fileno(),</span><br><span class="line">        EVENT_WRITE,</span><br><span class="line">        on_connected</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">yield</span> f</span><br><span class="line">    selector.unregister(</span><br><span class="line">        sock.fileno()</span><br><span class="line">    )</span><br><span class="line">    print(<span class="string">"connected"</span>)</span><br></pre></td></tr></table></figure>
+<p>이제 <code>fetch</code>는 제너레이터 함수이다. 우리는 <code>pending</code>중인 future을 생성한다.<br>
+그리고 yield를 통해서 이것을 정지시키고, 소켓이 연결되었을 때까지, stop상태로 heap에서 대기한다.<br>
+<code>on_connected</code>함수가 등록되어 커널이 소켓에서 예약해놓은 이벤트 시그널을 감지하면,<br>
+다시 실행될 것이다. 그 콜백인 내부 on_connected가 future을 진행 시킬 것이다.</p>
+<p>그러면 future이 진행될 때, 무엇이 제너레이터로 재진입하게 만드는가?<br>
+우리는 코루틴 <code>driver</code>가 필요하다. 이것을 <code>task</code>라 명명하겠다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, coro)</span>:</span></span><br><span class="line">        self.coro = coro</span><br><span class="line">        f = Future()</span><br><span class="line">        f.set_result(<span class="literal">None</span>)</span><br><span class="line">        self.step(f)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">step</span><span class="params">(self, future)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            next_future = self.coro.send(future.result)</span><br><span class="line">        <span class="keyword">except</span> StopIteration:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        next_future.add_done_callback(self.step)</span><br><span class="line"></span><br><span class="line"><span class="comment"># begin fetching</span></span><br><span class="line">fetcher = Fetcher(<span class="string">"/353/"</span>)</span><br><span class="line">Task(fetcher.fetch())</span><br><span class="line"></span><br><span class="line">loop()</span><br></pre></td></tr></table></figure>
+<p>task는 fetch제너레이터를 <code>None</code>을 <code>send()</code>함으로써 시작시킨다.<br>
+fetch는 그것이 future을 <code>yield</code>하기 전까지 동작한다.<br>
+그 future은 task가 <code>next_future</code>로써 처리한다.<br>
+소켓이 연결되고 나면, 이벤트 루프가 <code>on_connected</code>를 실행시킨다.<br>
+그 함수는 future을 진행시키고, <code>step</code>을 호출한다.<br>
+그 <code>step</code>함수가 코루틴 함수로 재진입을 실행한다.</p>
+<h2 id="코루틴을_yield-from으로_전환하기"><a class="markdownIt-Anchor" href="#코루틴을_yield-from으로_전환하기"></a> 코루틴을_<code>yield from</code>으로_전환하기</h2>
+<p>소켓이 연결되고 나면, 우리는 GET에 대한 응답을 받을 것이다.<br>
+이러한 과정은 더이상 callback들 사이에 분산될 필요가 없다.<br>
+그것을 하나의 제너레이터 함수에 모을 것이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self)</span>:</span></span><br><span class="line">    sock.send(request.encode(<span class="string">"ascii"</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        f = Future()</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">on_readable</span><span class="params">()</span>:</span></span><br><span class="line">            f.set_result(sock.recv(<span class="number">4096</span>))</span><br><span class="line"></span><br><span class="line">        selector.register(</span><br><span class="line">            sock.fileno(),</span><br><span class="line">            EVENT_READ,</span><br><span class="line">            on_readable</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        chunk = <span class="keyword">yield</span> f</span><br><span class="line">        selector.unregister(sock.fileno())</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> chunk:</span><br><span class="line">            self.response += chunk</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># Done Reading</span></span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>햔재 코드는 소켓에서 모든 메세지를 읽고 있다.<br>
+우리가 이 fetch에서 어떻게 서브루틴으로 전환 할 수 있을까?<br>
+<code>yield from</code>을 사용해야 할 때이다, 예시를 보자</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_fn</span><span class="params">()</span>:</span></span><br><span class="line">    result = <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    print(<span class="string">f"result of yield_1 <span class="subst">&#123;result&#125;</span>"</span>)</span><br><span class="line">    result_2 = <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">    print(<span class="string">f"result of yield_2 <span class="subst">&#123;result_2&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"done"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">caller_fn</span><span class="params">()</span>:</span></span><br><span class="line">    gen = gen_fn()</span><br><span class="line">    rv = <span class="keyword">yield</span> <span class="keyword">from</span> gen <span class="comment"># line 10</span></span><br><span class="line">    print(<span class="string">f"return val of yield-from: <span class="subst">&#123;rv&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"all done"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    caller = caller_fn()</span><br><span class="line">    caller.send(<span class="literal">None</span>)</span><br><span class="line">    print(<span class="string">"instruction: "</span>, caller.gi_frame.f_lasti)</span><br><span class="line">    <span class="comment"># intruction: 10</span></span><br><span class="line">    caller.send(<span class="string">"hello"</span>)</span><br><span class="line">    <span class="comment"># result of yield_1 hello</span></span><br><span class="line">    print(<span class="string">"instruction: "</span>, caller.gi_frame.f_lasti)</span><br><span class="line">    <span class="comment"># instruction: 10</span></span><br><span class="line">    caller.send(<span class="string">"goodbye"</span>)</span><br><span class="line">    <span class="comment"># result of yield_2 goodbye</span></span><br><span class="line">    <span class="comment"># return val of yield-from: done</span></span><br><span class="line">    <span class="comment"># Traceback...</span></span><br><span class="line">    <span class="comment"># StopIteration: all done</span></span><br></pre></td></tr></table></figure>
+<p><code>caller</code>가 <code>gen</code>으로 부터 <code>yield from</code> 하는동안, <code>caller</code>은 instruction상태를 유지한다.<br>
+루틴으로부터 send받은 것을 yield from 으로 컨텍스트를 양도한다.<br>
+<code>caller</code>밖의 시점에서 바라볼때, 우리는 그것이 caller에서 오는 것인지, 또 다른 제너레이터에서 오는 것인지 알 수 없다.<br>
+그리고 <code>gen</code>내부에서, 우리는 또한, <code>caller</code>에서 온것인지, 루틴에서 온것인지 알 수 없다.</p>
+<blockquote>
+<p><code>yield from</code>진술은 마찰없는 선언문이다. 값들이 <code>gen</code>이 종료되기 전까지, 안팎으로 이동한다.</p>
+</blockquote>
+<p>코루틴은 이렇듯 <code>yield from</code>을 통해서, 컨텍스트를 서브-코루틴으로 양도하고, 그 결과를 받을 수 있다.<br>
+마지막에 <code>gen</code>에서 돌려받은 값을 &quot;return val of yield-from: done&quot;으로 받은 것을 생각하자.</p>
+<p><code>rv = yield from gen</code></p>
+<p>우리가 초기에 callback기반 비동기 프로그래밍을 평가 할때, 우리의 주요 불평은, <code>stack ripping</code>에 대한 것이었다.</p>
+<ul>
+<li><code>stack-ripping</code>: 콜백이 예외를 발생하면, <code>stack trace</code>가 무의미해진다.</li>
+</ul>
+<p>그러면 우리가 만든 코루틴 기법은 어떤 결과를 보일까?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_fn</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># raise Exception("my error")</span></span><br><span class="line">    result = <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    print(<span class="string">f"result of yield_1 <span class="subst">&#123;result&#125;</span>"</span>)</span><br><span class="line">    result_2 = <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">    print(<span class="string">f"result of yield_2 <span class="subst">&#123;result_2&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"done"</span></span><br></pre></td></tr></table></figure>
+<p>가장 link-depth가 깊은 스텍에 에러를 억지로 발생해 보면, 정확히 에러를 분석할 수 있는 것을 알 수 있다.<br>
+<code>caller_fn</code>이  <code>gen_fn</code>을 바라보고 있다는 것을 스텍 트레이싱을 통해서 알 수 있다.<br>
+우리는 서브-코루틴을 호출할때, 래핑을 하여 에러 핸들링을 할 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">caller_fn</span><span class="params">()</span>:</span></span><br><span class="line">    gen = gen_fn()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        rv = <span class="keyword">yield</span> <span class="keyword">from</span> gen</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> exc:</span><br><span class="line">        print(<span class="string">f"caught <span class="subst">&#123;exc&#125;</span>"</span>)</span><br><span class="line">    print(<span class="string">f"return val of yield-from:  <span class="subst">&#123;rv&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"all done"</span></span><br></pre></td></tr></table></figure>
+<p>따라서 우리는 서브-코루틴을 마치 일반적인 함수(서브루틴)처럼 로직은 정비하였다.<br>
+본론으로 돌아가 우리의 fetcher에서 부터 서브코루틴을 정비하자.<br>
+우리는 <code>read</code>코루틴을 작성하고, 하나의 chunk를 받을 것이다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read</span><span class="params">(sock)</span>:</span></span><br><span class="line">    f = Future()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_readable</span><span class="params">()</span>:</span></span><br><span class="line">        f.set_result(sock.recv(<span class="number">4096</span>)) <span class="comment"># self.result로 받으면 등록된 콜백을 전부 순회하고 종료한다.</span></span><br><span class="line"></span><br><span class="line">    selector.register(socket.fileno(), EVENT_READ, on_readable)</span><br><span class="line">    chunk = <span class="keyword">yield</span> f <span class="comment"># EVENT_READ가 발생하면 onreadable을 이미 등록하고, 동작하면이 아니라 바로 Future 인스턴스를 돌려준다.</span></span><br><span class="line">    <span class="comment"># 해당 소켓은 논 블로킹 소켓으로 4kb이상 들어오면 그만큼 읽어내고 flush</span></span><br><span class="line">    <span class="comment"># 모든 약속들은 Future인스턴스에 의해 처리된다고 보면 된다.</span></span><br><span class="line">    selector.unregister(sock.fileno())</span><br><span class="line">    <span class="keyword">return</span> chunk <span class="comment"># chunk는 읽은 데이터가 아니라, 루틴에서 전달 받은 것.</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_all</span><span class="params">(sock)</span>:</span></span><br><span class="line">    response = []</span><br><span class="line">    chunk = <span class="keyword">yield</span> <span class="keyword">from</span> read(sock) <span class="comment"># yield 1회 하고 종료 바로 돌아온다.</span></span><br><span class="line">    <span class="keyword">while</span> chunk: <span class="comment"># 루틴에서 전달 받은것이 유효한 동안.</span></span><br><span class="line">        response.append(chunk) <span class="comment">#</span></span><br><span class="line">        chunk = <span class="keyword">yield</span> <span class="keyword">from</span> read(sock)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">b""</span>.join(response)</span><br><span class="line"></span><br><span class="line"><span class="comment"># reads = read_all(sock)</span></span><br><span class="line"><span class="comment"># reads.send(None) f를 돌려주고, 종료 chunk에는 값이 할당되지 않는다.</span></span><br><span class="line"><span class="comment"># 이후 넌블로킹 소켓에서 데이터를 읽으면 예약한 대로, 4kb 청크 데이터에 대한 Future에 예약된 콜백들을 실행하지만 별도 send를 추가로 진행해야 read가 마저 진행된다.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># reads.send(True) read로 전달, read의 chunk에 처음으로 값이 맺힌다.</span></span><br><span class="line"><span class="comment"># 연달아 read는 1회 종료되고, unregi된다. read_all로 리턴하면서 종료한다.</span></span><br><span class="line"><span class="comment"># read_all의 chunk에 chunk를 리턴한다.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Future_set_result를 통한 콜백 순회가 이루어 지고, 그러면 그 콜백의 마지막 요소가</span></span><br><span class="line"><span class="comment"># reads.send(True)로 다시 실행하면,</span></span><br><span class="line"><span class="comment"># 만약 그러다가 읽을 데이터가 이제 없다면, 소켓 selector타입아웃으로 처리해서, chunk를 False로 리턴하는 함수도 예약하면,</span></span><br><span class="line"><span class="comment"># 마지막에 read_all에 send(False)한 것은 b"".join(response)를 통해서 완전한 응답을 받을것이다.</span></span><br><span class="line"><span class="comment"># 요청이 들어온 것에 대한 하나의 처리가 종료되는 것.</span></span><br></pre></td></tr></table></figure>
+<p><code>yield from read</code>는 2번의 send를 통해 종료되기 전까지 <code>read all</code>을 진행시키지 않는다.<br>
+그리고 1회 실행에서 <code>read_all</code>이 정지되어 있는 동안, asyncio의 EVENTLOOP이 등록되어 있는게 계속 돌아간다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fetcher</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self)</span>:</span></span><br><span class="line">        sock.send(request.encode(<span class="string">"ascii"</span>))</span><br><span class="line">        self.response = <span class="keyword">yield</span> <span class="keyword">from</span> read_all(sock)</span><br></pre></td></tr></table></figure>
+<p>기적적이게도, Task class는 수정이 필요하지 않다.</p>
+<p><code>Task(fetcher.fetch())</code><br>
+<code>loop()</code></p>
+<p><code>read</code>가 future을 yield할 때, task는 이것을 yield from 진술을 통한 연결에서 전달 받는다.<br>
+정확하게 future이 fetch에서 직접적으로 yield되는 것처럼 되는 것처럼.<br>
+loop가 future을 진행시키면, task는 그것을 결과를 fetch로 보낸다. 그리고 값은 read에서 돌려받는다.<br>
+마치 정확히 task가 read를 조종하는 것처럼 보인다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">class name</th>
+<th style="text-align:center">method</th>
+<th style="text-align:center">return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Task</td>
+<td style="text-align:center">init(self, coro)</td>
+<td style="text-align:center">self.coro = coro, f = Future(), f.set_result(None), self.step(f)</td>
+</tr>
+<tr>
+<td style="text-align:center">Task</td>
+<td style="text-align:center">step(self, future)</td>
+<td style="text-align:center">next_future = self.coro.send(future.result), next_future.add_done_callback(self.step)</td>
+</tr>
+<tr>
+<td style="text-align:center">Fetcher</td>
+<td style="text-align:center">init(self, path)</td>
+<td style="text-align:center">self.location = path</td>
+</tr>
+<tr>
+<td style="text-align:center">Fetcher</td>
+<td style="text-align:center">fetch(self)</td>
+<td style="text-align:center">socket setup, socket.connect(path), f = Future, selector.register(socket, EVENT_WRITE, f.set_result(None)), yield f, selector.unregi(socket)</td>
+</tr>
+<tr>
+<td style="text-align:center">Future</td>
+<td style="text-align:center">init(self)</td>
+<td style="text-align:center">self.result = None, self._callbacks = []</td>
+</tr>
+<tr>
+<td style="text-align:center">Future</td>
+<td style="text-align:center">add_done_callback(self, fn)</td>
+<td style="text-align:center">self._callbacks.append(fn)</td>
+</tr>
+<tr>
+<td style="text-align:center">Future</td>
+<td style="text-align:center">set_result(self, result)</td>
+<td style="text-align:center">self.result = result, for fn in _callbacks: fn(self)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">from</th>
+<th style="text-align:left">name</th>
+<th style="text-align:center">do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Fetcher_instance</td>
+<td style="text-align:left">Fetcher.init(self, path)</td>
+<td style="text-align:center">fetcher = Fetcher(&quot;/353/&quot;)</td>
+</tr>
+<tr>
+<td style="text-align:center">Task_instance</td>
+<td style="text-align:left">Task(fetcher.fetch())</td>
+<td style="text-align:center">task.coro = fetcher.fetch(), f = Future()…</td>
+</tr>
+<tr>
+<td style="text-align:center">Future_instance</td>
+<td style="text-align:left">Future.init(self)</td>
+<td style="text-align:center">self.result = None, self._callbacks = []</td>
+</tr>
+<tr>
+<td style="text-align:center">task</td>
+<td style="text-align:left">Task(fetcher.fetch())</td>
+<td style="text-align:center">…self.step(f)</td>
+</tr>
+<tr>
+<td style="text-align:center">task</td>
+<td style="text-align:left">step(f)</td>
+<td style="text-align:center">next_future = self.coro.send(future.result#None)…</td>
+</tr>
+<tr>
+<td style="text-align:center">fetcher</td>
+<td style="text-align:left">send(None)</td>
+<td style="text-align:center">yield new Future()</td>
+</tr>
+<tr>
+<td style="text-align:center">task</td>
+<td style="text-align:left">step(f)</td>
+<td style="text-align:center">…new_future.add_done_callback(self.step)</td>
+</tr>
+<tr>
+<td style="text-align:center">selector_EVENT_WRITE_Callback</td>
+<td style="text-align:left">future.set_result(None)</td>
+<td style="text-align:center">task.step(None)</td>
+</tr>
+<tr>
+<td style="text-align:center">task</td>
+<td style="text-align:left">step(f)</td>
+<td style="text-align:center">self.coro.send(None)…</td>
+</tr>
+<tr>
+<td style="text-align:center">fetcher</td>
+<td style="text-align:left">send(None)</td>
+<td style="text-align:center">unregister(socket), print(“connected”), raise StopIteration</td>
+</tr>
+<tr>
+<td style="text-align:center">task</td>
+<td style="text-align:left">step(f)</td>
+<td style="text-align:center">… except StopIteration: return</td>
+</tr>
+</tbody>
+</table>
+<p>이것으로 1회 Path에 대한 소켓 연결이 활성화 되어 WRITE가 가능해진 상태가 되었음을 공지 받는다.</p>
+<p>우리의 코루틴 구현을 좀 더 치밀하게 만들기 위해서, 하나를 수정한다.<br>
+우리는 future이 socket이벤트를 기다릴때, <code>Fetcher.fetch</code>에서 현재 yield를 사용해서, future인스턴스를 리턴한다.<br>
+하지만 <code>yield from</code>을 사용해서, 서브코루틴을 가르키도록 할 것이다.<br>
+이것은 더욱 깔끔한 것이 될 것이다. 그러면 <code>yield from</code>을 사용하는 코루틴은 더이상 어떤 타입에 대해서 기다리는지 걱정할 필요가 없게 된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Future</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">yield</span> self</span><br><span class="line">        <span class="keyword">return</span> self.result</span><br></pre></td></tr></table></figure>
+<p>이제 next(f)는 코루틴 함수가 되었고,<br>
+<code>yield f</code> 를 <code>yield from f</code>로 교체하도록 한다.</p>
+<p>기능상 동일하다. 진행중인 Task는 future을 <code>send</code>를 통해서 받고, 그리고 <code>future</code>이 EVENT_WRITE되고 나면, <code>yield from</code>의 2번째가 작동할 것이다.<br>
+그렇다면, <code>yield from</code>을 사용하는 이점은 무엇인가?<br>
+<code>yield</code>로 바로 돌려 받는 것과 <code>yield from</code>을 통해 서브코루틴을 가르키도록 하는 것은 무엇이 더 나은가?</p>
+<p>메서드는 <code>caller</code>의 영향 없이 자유롭게 구현을 변환 할 수 있다.<br>
+두 경우 모두 다, caller은 오직 <code>yield from</code>메서드만을 통해서 결과를 기다릴 수 있게 된다.</p>
+<p>우리는 어떻게 <code>asyncio</code>가 두 세상을 동시에 가지는지 그려냈다.:<br>
+동시성 I/O가 멀티쓰레드보다 더 효과적이고, callback보다 더 정교하다.<br>
+물론 실제 asyncio는 우리의 밑그림 보다 더욱 정교하다.<br>
+실제 프레임웤은 <code>zero-copy I\O</code>, <code>fair scheduling</code>, <code>exception handling</code>을 요구한다.</p>
+<p>asyncio유저에게 코루틴을 활용해 코딩하는 것은 당신이 여기서 본 것 보다 훨씬 간단하다.<br>
+우리는 첫번째 원칙부터 코루틴을 구현해 낸것이다. 그렇게 때문에 callbacks, tasks, futures등을 본 것이다.<br>
+그리고 Non-blocking소켓까지 보았고, select를 호출했다.</p>
+<blockquote>
+<p>그러나 <code>asyncio</code>를 사용하면 위의 것들은 전혀 등장하지 않을 것이다.<br>
+우리가 위에서 그렸듯이 아주 부드럽게 URL을 fetch할 수 있다.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@asyncio.coroutine</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetch</span><span class="params">(self, url)</span>:</span></span><br><span class="line">    response = <span class="keyword">yield</span> <span class="keyword">from</span> self.session.get(url)</span><br><span class="line">    <span class="comment">#session이 yield를 거쳐서 최종적으로 return 하는 것. send(something)은 session.get의 yield로 전달 된다.</span></span><br><span class="line">    body = <span class="keyword">yield</span> <span class="keyword">from</span> response.read()</span><br><span class="line">    <span class="comment"># Response.read가 yield하는 것이 계속 되고 종료되면 return 하는 것을 chunk로 누적시켜 return할 것이다.</span></span><br><span class="line">    <span class="keyword">return</span> body</span><br><span class="line">    <span class="comment"># 최종적으로 EVENT_READ등을 통한 콜백들이 순차적으로 예약되고 진행되면서 알아서 작동하고, 마지막에 return 될 것이다.</span></span><br></pre></td></tr></table></figure>
+<p>이제 우리의 원래 목적인 async web crwaler를 asyncio를 통해서 구현하는 것으로 돌아간다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/19/python/post/async_coroutine_4/" data-id="ckkdb52hi002d1pqkdv9kuq3o" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-post/">python post</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/19/python/post/async_coroutine_2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          비동기 코루틴 번역-2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/19/python/post/async_coroutine_3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">비동기 코루틴 번역-3</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>파이썬의 GC와 메모리 관리자 | Junehan&#39;s workbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="reference counting -official Python doc     Py_INCEREF(), Py_DECREF()등을 통하여 레버런스 Count를 관리하고, (파이썬 인터프리터와 메모리관리자가) refcount가 최초로 0에서 1로 Init되면서, garbage collection의 Generation[0]부터 등록을 시작한다.   refc">
+<meta name="keywords" content="python,python post">
+<meta property="og:type" content="article">
+<meta property="og:title" content="파이썬의 GC와 메모리 관리자">
+<meta property="og:url" content="https://codenamenadja.github.io/2019/06/19/python/post/memory_and_GC/index.html">
+<meta property="og:site_name" content="Junehan&#39;s workbook">
+<meta property="og:description" content="reference counting -official Python doc     Py_INCEREF(), Py_DECREF()등을 통하여 레버런스 Count를 관리하고, (파이썬 인터프리터와 메모리관리자가) refcount가 최초로 0에서 1로 Init되면서, garbage collection의 Generation[0]부터 등록을 시작한다.   refc">
+<meta property="og:locale" content="ko">
+<meta property="og:updated_time" content="2021-01-25T08:36:06.087Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="파이썬의 GC와 메모리 관리자">
+<meta name="twitter:description" content="reference counting -official Python doc     Py_INCEREF(), Py_DECREF()등을 통하여 레버런스 Count를 관리하고, (파이썬 인터프리터와 메모리관리자가) refcount가 최초로 0에서 1로 Init되면서, garbage collection의 Generation[0]부터 등록을 시작한다.   refc">
+  
+    <link rel="alternate" href="/atom.xml" title="Junehan&#39;s workbook" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Junehan&#39;s workbook</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">work flow and descriptions</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="검색"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://codenamenadja.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python/post/memory_and_GC" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/19/python/post/memory_and_GC/" class="article-date">
+  <time datetime="2019-06-19T09:22:23.000Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      파이썬의 GC와 메모리 관리자
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>
+<h2 id="reference-counting-official-python-doc"><a class="markdownIt-Anchor" href="#reference-counting-official-python-doc"></a> reference counting -official Python doc</h2>
+</li>
+</ul>
+<ol>
+<li>
+<p>Py_INCEREF(), Py_DECREF()등을 통하여 레버런스 Count를 관리하고,<br>
+(파이썬 인터프리터와 메모리관리자가)<br>
+refcount가 최초로 0에서 1로 Init되면서, garbage collection의 Generation[0]부터 등록을 시작한다.</p>
+</li>
+<li>
+<p>refcount에 따라서 자연스럽게 Deallocate memory를 시도하는데, 만약 Cyclic Garbage Collector에 최초에 참가한다는 타입이라고 초기화된 객체라면(PyObject_New()를 Exnted 하는 PyObject_init()으로 인한 선언이었을때,<br>
+: 추가적으로 타입등의 정보를 추가하여 객체의 Fields를 더해서 선언하는,</p>
+</li>
+<li>
+<p>detector’s Set of observed Objects에 추가된다. 이것이 객체 생성의 최종 마무리 이며 다른 필드에 대한 영향은 없다. 함수 실행과 종료와함께 Deallocate되는 객체에 대해서는 따로 GC에 대한 등록없이 스텍과 함께 사라지도록 구현되어있을것이다.</p>
+</li>
+<li>
+<p>그러나 순환참조가 일어나는 객체라면 초기화 당시, 타입과 함께 Python_init()으로 선언될 때 Garbage collection의 어느 부분에 dictionary의 형태로 관리된다.</p>
+</li>
+</ol>
+<hr>
+<ul>
+<li>
+<h2 id="gc의-라이프사이클에-대해"><a class="markdownIt-Anchor" href="#gc의-라이프사이클에-대해"></a> GC의 라이프사이클에 대해</h2>
+</li>
+</ul>
+<p>gc.get_thredhold()를 통하여 리턴되는 것은 generation[0]~ generation[2] 까지 수용할 수 있는 총 객체의 수다.</p>
+<ol>
+<li>
+<p>최초 객체 선언시 Refcount도 올라가지만, Generation[0]에 등록함으로써</p>
+</li>
+<li>
+<p>generation에 바인딩된 이벤트가 특정 수치에 도달하였을 때</p>
+<ol>
+<li>generation[0].count=0</li>
+<li>gen[1].count++,</li>
+</ol>
+</li>
+<li>
+<p>그리고 gen[0]에서 아직 레퍼런스가 남아있거나, cyclic garbage collector의 set of observed object에 등록되어 있고 아직 유효하다면</p>
+<ol>
+<li>0세대에 등록되어 있는 객체들은 1세대로 등록된다.</li>
+</ol>
+</li>
+<li>
+<p>메모리 해제를 위한 검사가 실행되면 gen[2]부터 gen[0]의 순서로 검사가 실행된다.</p>
+</li>
+</ol>
+<hr>
+<ul>
+<li>
+<h2 id="순환참조가-일어나지-않는-객체의-메모리-해제"><a class="markdownIt-Anchor" href="#순환참조가-일어나지-않는-객체의-메모리-해제"></a> 순환참조가 일어나지 않는 객체의 메모리 해제</h2>
+</li>
+</ul>
+<p>기본적으로 객체는 Refcount라는 개념이 내장되어있다, 그 객체가 Gc의 generation에 등록되어 있지 않다고 한다면, 자체적으로 Ref가 0이 되는 스스로의 allocation을 해제한다.</p>
+<hr>
+<ul>
+<li>
+<h2 id="인스타그램은-gc를-사용하지-않기로-했다고한다"><a class="markdownIt-Anchor" href="#인스타그램은-gc를-사용하지-않기로-했다고한다"></a> 인스타그램은 GC를 사용하지 않기로 했다고한다.</h2>
+</li>
+</ul>
+<ol>
+<li>
+<p>인스타그램의 서버는 순환참조를 일으키는 객체의 생성을 최대한 막고 함수지향적인 코드를 작성하여 서버를 운영해 왔다고 한다.</p>
+</li>
+<li>
+<p>그러나 GC가 늘 onloadState이라는 점이나 일부 순환참조가 일어나는 객체들 등에 의해서, cache miss가 적지 않다고 느꼈다.</p>
+</li>
+<li>
+<p>그래서 파이썬 오피셜이 제안했던 것처럼 gc.disable()을 통해 해제 했으나,</p>
+<ul>
+<li>서드파티에서 gc.enable()을 호출하는 등 결국 효과를 보지 못했기 때문에,</li>
+</ul>
+</li>
+<li>
+<p>threshold의 제한수를 없애주어서 Gc가 수행되는 시점을 사라지게 했다.\</p>
+<ul>
+<li>수행되는 시점에 그 모든 객체에 대해서 순환참조 탐지 알고리즘을 적용하는 것이 기존의 Cache를 가득 메우는 점이 맘에 안들었던 것이다.<br>
+그 양이 적지 않아 워낙에 대규모 서비스 이다보니, 다른일로 돌아가야 하는데도 가상메모리상에 pageFault가 일어났다고 한다.</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>
+<h2 id="결과"><a class="markdownIt-Anchor" href="#결과"></a> 결과</h2>
+</li>
+</ul>
+<ol>
+<li>
+<p>개별 서버에 8gb 정도의 메모리사용량을 비울 수 있다고 했다.</p>
+<blockquote>
+<p>이는 더 많은 메모리 소모를 필요로 하는 서버를 생성할 수 있다는 얘기이다.</p>
+</blockquote>
+</li>
+<li>
+<p>CPU의 IPC(Cycle 당 instruction 수)가 10% 가까이 증가하였다.</p>
+<blockquote>
+<p>cache miss가 2~3%가량 이득을 보았던 점이 IPC성능의 관건있다고 한다.</p>
+</blockquote>
+</li>
+<li>
+<p>cache miss는 큰 자원소모이다. cache miss -&gt; CPU Pipeline에 Stall발생</p>
+<blockquote>
+<p>youtube(<a href="https://www.youtube.com/watch?v=twQKAoq2OPE" target="_blank" rel="noopener">https://www.youtube.com/watch?v=twQKAoq2OPE</a>)에 등장하는 것처럼 최대한 많은 공유 라이브러리를 공유 메모리로서 캐쉬안에 보관 될 수 있어서, 많은 page들이 캐싱상태에 존재하고이는 Stall을(CPU와 캐시사이의 새로운 allocation등을 위한 Fetch를 포함한 결과까지) 최대한 막아주기 때문에 Cpu가 빠르게 동작하도록 한다.</p>
+</blockquote>
+</li>
+</ol>
+<hr>
+<p>OS는 프로세스들이 (코드 혹은 데이터 세그먼트)공유를 통해 최적화를 하기 원하지만, 힙 안에서, 개별적인 세그먼트를 통해 독립적인 네임스페이스를 형성하기 때문에, reference-counted code objects는 이 이점을 가질 수 없다.</p>
+<blockquote>
+<p>1—&gt; 36-- r <a href="http://libc.so" target="_blank" rel="noopener">libc.so</a> (C 기반-라이브러리를 읽어와서)</p>
+<p>0—&gt; 35-- r python.exe (파이썬을 플랫폼으로)</p>
+</blockquote>
+<p>프레임 워크가 기인하는 라이브러리(C등으로 구성된,)는 stdio를 임포트하는 라인이 있더라도,<br>
+해당라인은 명령으로서 미리 힙의 크기만 빈 크기만 할당하고, 실제로 필요해졌을때, 해당요소를 HDD레벨에서 로드하여 가져온다.</p>
+<p>동등한 프로세스의 경우 PID가 달라서 프로그램은 그들의 코드레벨 혹은 Data 레벨이 어떤 동일한 데이터를 공유할 수 있는지 알수 없다.</p>
+<p>ChildProcess개념에서 childprocess.spawn() as fork까지 개념이 늘어가면, 기존의 프로세스가 spawn한 child process가 자신의 부모프로세스에 대해 코드레벨에서 동일한 프레임을 참조하는 페이지 공유환경이 성립된다. 스텍이 구현된 프레임은 자식프로세스가 새로운 콜스텍 메모리 w해야 하기 때문에 다른 페이지로 매핑된다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://codenamenadja.github.io/2019/06/19/python/post/memory_and_GC/" data-id="ckkdb52hq002n1pqk57ebbmcx" class="article-share-link">공유</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python-post/">python post</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/19/python/post/how_python_saves_memory_with_string/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">최신</strong>
+      <div class="article-nav-title">
+        
+          파이썬이 문자열을 저장할 때 어떻게 데이터를 저장하는가? 번역
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/19/python/post/memory_management/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">이전</strong>
+      <div class="article-nav-title">파이썬의 메모리 관리 번역</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/custom-module/">custom module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fabric/">fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/">functional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo-deploy/">hexo-deploy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/postgresql/">postgresql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/project/">project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-module/">python module</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python-post/">python post</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/travel-note/">travel_note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tutorial/">tutorial</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">태그 클라우드</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/c/" style="font-size: 11.43px;">c</a> <a href="/tags/custom-module/" style="font-size: 12.86px;">custom module</a> <a href="/tags/django/" style="font-size: 14.29px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/fabric/" style="font-size: 10px;">fabric</a> <a href="/tags/functional-programming/" style="font-size: 11.43px;">functional programming</a> <a href="/tags/hexo-deploy/" style="font-size: 10px;">hexo-deploy</a> <a href="/tags/http/" style="font-size: 11.43px;">http</a> <a href="/tags/linux/" style="font-size: 15.71px;">linux</a> <a href="/tags/network/" style="font-size: 11.43px;">network</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pipenv/" style="font-size: 10px;">pipenv</a> <a href="/tags/postgresql/" style="font-size: 10px;">postgresql</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/python-module/" style="font-size: 17.14px;">python module</a> <a href="/tags/python-post/" style="font-size: 18.57px;">python post</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/travel-note/" style="font-size: 10px;">travel_note</a> <a href="/tags/tutorial/" style="font-size: 10px;">tutorial</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">아카이브</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">1월 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">9월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">8월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">7월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">6월 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">5월 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">최근 포스트</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/26/fastcamp/my_post/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/17/http/2_http_sementics/">http_1.0_sementics</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/project/travel_note/">travel_note 서비스 고찰</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/06/http/1_http_1.0_basic_four_feature/">http/1.0의 신택스: 기본이 되는 네가지 요소</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python/post/async_coroutine_5/">비동기 코루틴 번역-5-End</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 junehan<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
