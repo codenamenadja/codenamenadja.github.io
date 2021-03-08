@@ -13,7 +13,7 @@ timezone: Asia/Seoul
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://codenamenadja.github.io/
+url: https://junehan-dev.github.io/
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -78,7 +78,7 @@ theme: landscape
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  repo: https://github.com/codenamenadja/codenamenadja.github.io.git
+  repo: https://github.com/junehan-dev/junehan-dev.github.io.git
   type: git
   branch: master
 
